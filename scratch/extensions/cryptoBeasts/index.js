@@ -181,17 +181,6 @@ class Scratch3CryptoBeastsBlocks {
                 ],
 
                 cardProperty: this._formatMenu(cardProperty),
-
-                // cardProperty: [
-                //     {value: 'Name'},
-                //     {value: 'Ability'},
-                //     {value: 'Speed'},
-                //     {value: 'Attack'},
-                //     {value: 'Special'},
-                //     {value: 'Health'},
-                //     {value: 'Defence'},
-                //     {value: 'Mana'},
-                // ],
             }
         }
     }
