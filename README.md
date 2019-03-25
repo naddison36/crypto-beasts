@@ -2,6 +2,12 @@
 
 A Blockchain-based trading card game that uses Scratch for the UI and Loom for the Ethereum smart contracts.
 
+## Prerequisite 
+
+The following software must be installed before running the installation steps
+- [Git](https://git-scm.com/downloads)
+- [Node.js](https://nodejs.org/en/download/)
+
 ## Installation
 
 The following will install this [loom-scratch-tcg](https://github.com/naddison36/loom-scratch-tcg) repository and the Scratch repositories [scratch-gui](https://github.com/LLK/scratch-gui) and [scratch-vm](https://github.com/LLK/scratch-vm). This will allow Scratch with the custom extensions to be run locally.
