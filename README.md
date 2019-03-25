@@ -10,12 +10,12 @@ The following software must be installed before running the installation steps
 
 ## Installation
 
-The following will install this [loom-scratch-tcg](https://github.com/naddison36/loom-scratch-tcg) repository and the Scratch repositories [scratch-gui](https://github.com/LLK/scratch-gui) and [scratch-vm](https://github.com/LLK/scratch-vm). This will allow Scratch with the custom extensions to be run locally.
+The following will install this [crypto-beasts](https://github.com/naddison36/crypto-beasts) repository and the Scratch repositories [scratch-gui](https://github.com/LLK/scratch-gui) and [scratch-vm](https://github.com/LLK/scratch-vm). This will allow Scratch with the custom extensions to be run locally.
 ```bash
 mkdir scratch
 cd scratch
-git clone https://github.com/naddison36/loom-scratch-tcg.git
-cd loom-scratch-tcg
+git clone https://github.com/naddison36/crypto-beasts.git
+cd crypto-beasts
 npm install
 cd ..
 git clone https://github.com/LLK/scratch-gui.git
@@ -29,12 +29,7 @@ npm link
 cd ../scratch-gui
 npm link scratch-vm
 cd ../scratch-vm/src/extensions
-```
-
-Now link the `./scratch/extensions/cryptoBeasts` folder from this repository to the `/src/extensions` folder in the `scratch-vm` repository.
-```bash
-ln -s ../../../loom-scratch-tcg/scratch/extensions/cryptoBeasts ./scratch3_cryptoBeasts
-ls -l scratch3_cryptoBeasts
+ln -s ../../../crypto-beasts/scratch/extensions/cryptoBeasts ./scratch3_cryptoBeasts
 ```
 
 Next, the new extension needs to be registered in the scratch-gui. Go to the `src/lib/libraries/extensions/index.jsx` file in the scratch-gui folder created above and add this to the extensions array
