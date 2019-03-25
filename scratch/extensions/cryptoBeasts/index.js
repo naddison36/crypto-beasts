@@ -4,15 +4,8 @@ const ArgumentType = require('../../extension-support/argument-type');
 const BlockType = require('../../extension-support/block-type');
 const log = require('../../util/log');
 
-const cardProperty = [
-    'Name',
-    'Ability',
-    'Speed',
-    'Attack',
-    'Special',
-    'Health',
-    'Defence',
-    'Mana']
+const cards = require('./cards').cards;
+const regEx = require('./regEx');
 
 class Scratch3CryptoBeastsBlocks {
 
@@ -41,7 +34,7 @@ class Scratch3CryptoBeastsBlocks {
             name: formatMessage({
                 id: 'cryptoBeasts.categoryName',
                 default: 'Crypto Beasts',
-                description: 'Crypto Beasts extension'
+                description: 'Crypto Beasts extension',
             }),
 
             // Optional: URI for a block icon, to display at the edge of each block for this
@@ -66,7 +59,7 @@ class Scratch3CryptoBeastsBlocks {
                 {
                     // Required: the machine-readable name of this operation.
                     // This will appear in project JSON.
-                    opcode: 'turn', // becomes 'cryptoBeastsBlocks.myReporter'
+                    opcode: 'playerMove',
 
                     // Required: the kind of block we're defining, from a predefined list:
                     // 'command' - a normal command block, like "move {} steps"
@@ -103,9 +96,9 @@ class Scratch3CryptoBeastsBlocks {
                     // placeholders. Argument placeholders should be in [MACRO_CASE] and
                     // must be [ENCLOSED_WITHIN_SQUARE_BRACKETS].
                     text: formatMessage({
-                        id: 'cryptoBeasts.turn',
+                        id: 'cryptoBeasts.playerMove',
                         default: 'Player [PLAYER] makes move [MOVE]',
-                        description: 'Player has a turn by making a move'
+                        description: 'Player makes a move when it is their turn',
                     }),
 
                     // Required: describe each argument.
@@ -122,7 +115,12 @@ class Scratch3CryptoBeastsBlocks {
                             type: ArgumentType.NUMBER,
                             menu: 'move',
                             // Optional: the default value of the argument
-                            default: 1
+                            defaultValue: 1,
+                        },
+                        PLAYER: {
+                            type: ArgumentType.STRING,
+                            // TODO populate with MetaMask address
+                            defaultValue: '0x',
                         }
                     },
 
@@ -136,19 +134,119 @@ class Scratch3CryptoBeastsBlocks {
                     text: formatMessage({
                         id: 'cryptoBeasts.getCardProperty',
                         default: 'get [CARD_PROPERTY] for card [CARD_ID]',
-                        description: 'get a property of a card'
+                        description: 'get a property of a card',
                     }),
                     blockType: BlockType.REPORTER,
                     arguments: {
                         CARD_PROPERTY: {
                             type: ArgumentType.STRING,
                             menu: 'cardProperty',
-                            defaultValue: 'Name'
+                            defaultValue: 'name'
                         },
                         CARD_ID: {
                             type: ArgumentType.NUMBER,
                             defaultValue: 0
                         }
+                    }
+                },
+                {
+                    opcode: 'countCards',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.countCards',
+                        default: 'Number of cards',
+                        description: 'Counts the number of cards',
+                    }),
+                    blockType: BlockType.REPORTER,
+                },
+                {
+                    opcode: 'challengeAll',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.challengeAll',
+                        default: 'Challenge anyone to a battle',
+                        description: 'Notifies anyone not in a battle that you are challenging them to a battle',
+                    }),
+                    blockType: BlockType.COMMAND,
+                },
+                {
+                    opcode: 'challengePlayer',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.challengePlayer',
+                        default: 'Challenge player [PLAYER] to a battle',
+                        description: 'Challenges a player to a battle',
+                    }),
+                    blockType: BlockType.COMMAND,
+                    arguments: {
+                        PLAYER: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '0x',
+                        },
+                    }
+                },
+                {
+                    opcode: 'acceptChallenge',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.acceptChallenge',
+                        default: 'Accept challenge from player [PLAYER]',
+                        description: 'Accept the challenges to battle from a player',
+                    }),
+                    blockType: BlockType.COMMAND,
+                    arguments: {
+                        PLAYER: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '0x',
+                        },
+                    }
+                },
+                {
+                    opcode: 'whenPlayersTurn',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.whenPlayersTurn',
+                        default: 'When current player\'s turn',
+                        description: 'Fires when current player\'s turn',
+                    }),
+                    blockType: BlockType.HAT,
+                },
+                {
+                    opcode: 'whenChallenged',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.whenChallenged',
+                        default: 'When challenged by another player',
+                        description: 'Fires when someone has challenged the current player',
+                    }),
+                    blockType: BlockType.HAT,
+                },
+                {
+                    opcode: 'whenChallengedAccepted',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.whenChallengedAccepted',
+                        default: 'When challenge accepted by another player',
+                        description: 'Fires when someone has accepted the current player\'s challenge',
+                    }),
+                    blockType: BlockType.HAT,
+                },
+                {
+                    opcode: 'loadCards',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.loadCards',
+                        default: 'Loads cards from the Blockchain',
+                        description: 'Loads all the cards into this extension from the Blockchain cards contract',
+                    }),
+                    blockType: BlockType.COMMAND,
+                },
+                {
+                    opcode: 'pickCards',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.pickCards',
+                        default: 'Pick cards [CARD_1], [CARD_2], [CARD_3], [CARD_4] and [CARD_5]',
+                        description: 'Notifies anyone not in a battle that you are challenging them to a battle',
+                    }),
+                    blockType: BlockType.COMMAND,
+                    arguments: {
+                        CARD_1: {type: ArgumentType.STRING},
+                        CARD_2: {type: ArgumentType.STRING},
+                        CARD_3: {type: ArgumentType.STRING},
+                        CARD_4: {type: ArgumentType.STRING},
+                        CARD_5: {type: ArgumentType.STRING},
                     }
                 },
             ],
@@ -167,7 +265,7 @@ class Scratch3CryptoBeastsBlocks {
                         text: formatMessage({
                             id: 'cryptoBeasts.menu.move.attack',
                             default: 'Attack',
-                            description: 'Attack move'
+                            description: 'Attack move',
                         })
                     },
                     {
@@ -175,33 +273,143 @@ class Scratch3CryptoBeastsBlocks {
                         text: formatMessage({
                             id: 'cryptoBeasts.menu.move.specialAttack',
                             default: 'Special Attack',
-                            description: 'Special attack move'
+                            description: 'Special attack move',
+                        })
+                    },
+                    {
+                        value: 3,
+                        text: formatMessage({
+                            id: 'cryptoBeasts.menu.move.ability',
+                            default: 'Ability',
+                            description: 'Use ability',
                         })
                     },
                 ],
 
-                cardProperty: this._formatMenu(cardProperty),
+                cardProperty: [
+                    {text: 'Name', value: 'name'},
+                    {text: 'Ability', value: 'ability'},
+                    {text: 'Speed', value: 'speed'},
+                    {text: 'Attack', value: 'attack'},
+                    {text: 'Special Attack', value: 'specialAttack'},
+                    {text: 'Health', value: 'health'},
+                    {text: 'Defence', value: 'defence'},
+                    {text: 'Mana', value: 'mana'},
+                ],
             }
         }
     }
 
-    turn (args, util) {
-        // This message contains ICU placeholders, not Scratch placeholders
-        const message = formatMessage({
-            id: 'turn.result',
-            default: 'Player move {MOVE}.',
-            description: 'Player makes a move on their turn'
-        });
+    playerMove(args, util) {
 
-        log.debug(`Player's ? turn is move ${JSON.stringify(args)}`);
+        return new Promise((resolve, reject) => {
+            // TODO call challenge function on the Battle contract
+
+            if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
+                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`);
+                return reject(error);
+            }
+
+            log.debug(`Player ${args.PLAYER} did move ${args.MOVE} for their turn`);
+
+            // Run for some time even when no motor is connected
+            setTimeout(resolve, 1000);
+        });
     }
 
     getCardProperty(args) {
 
-        log.debug(`get ${args.CARD_PROPERTY} for card with id ${args.CARD_ID}`);
-        return `${rgs.CARD_PROPERTY} of card id ${args.CARD_ID}`;
+        if (args.CARD_ID < 0 || args.CARD_ID >= cards.length) {
+            log.error(`Invalid card id ${args.CARD_ID}. Must be a positive integer and less than ${cards.length}`)
+            return
+        }
+
+        const cardPropertyValue = cards[args.CARD_ID][args.CARD_PROPERTY];
+
+        log.debug(`got ${cardPropertyValue} for property ${args.CARD_PROPERTY}, card id ${args.CARD_ID}`);
+        return cardPropertyValue;
     }
 
+    countCards() {
+        return cards.length;
+    }
+
+    challengeAll(args) {
+        return new Promise(resolve => {
+            // TODO call challenge function on the Battle contract
+
+            log.debug(`About to challenge all players`);
+
+            // Run for some time even when no motor is connected
+            setTimeout(resolve, 1000);
+        });
+    }
+
+    challengePlayer(args) {
+        return new Promise(resolve => {
+            // TODO call challenge function on the Battle contract
+
+            log.debug(`About to challenge player ${args.PLAYER}`);
+
+            // Run for some time even when no motor is connected
+            setTimeout(resolve, 1000);
+        });
+    }
+
+
+    acceptChallenge(args) {
+        return new Promise((resolve, reject) => {
+            // TODO call challenge function on the Battle contract
+
+            if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
+                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`);
+                return reject(error);
+            }
+
+            log.debug(`About to accept challenge from player ${args.PLAYER}`);
+
+            // TODO call accept challenge function on the Battle contract
+
+            // TODO Get playersTurn from the emitted event
+            this.playersTurn = '0x123'
+
+            // TODO remove once the smart contract call has been implemented above
+            setTimeout(resolve, 1000);
+        });
+    }
+
+    whenPlayersTurn() {
+        return false;
+    }
+
+    whenChallenged() {
+        return false;
+    }
+
+    whenChallengedAccepted() {
+        return false;
+    }
+
+    pickCards(args) {
+        return new Promise(resolve => {
+            // TODO call pickCards function on the Battle contract
+
+            log.debug(`About to get deck of cards with args ${JSON.stringify(args)}`);
+
+            // Run for some time even when no motor is connected
+            setTimeout(resolve, 1000);
+        });
+    }
+
+    loadCards() {
+        return new Promise(resolve => {
+
+            log.debug(`About to load cards from the Blockchain cards contract`);
+
+            // Run for some time even when no motor is connected
+            setTimeout(resolve, 1000);
+        });
+    }
 
     /**
      * Formats menus into a format suitable for block menus, and loading previously
