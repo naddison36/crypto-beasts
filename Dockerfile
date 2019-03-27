@@ -38,11 +38,11 @@ COPY scratch/extensions/cryptoBeasts /scratch/scratch-vm/src/extensions/scratch3
 COPY scratch/gui/index.jsx /scratch/scratch-gui/src/lib/libraries/extensions/index.jsx
 COPY scratch/vm/extension-manager.js /scratch/scratch-vm/src/extension-support/extension-manager.js
 
-FROM node:${NODE_VERSION}-alpine AS crypto-beasts-web
+# FROM node:${NODE_VERSION}-alpine AS crypto-beasts-web
 
-# copy the modules that have been cleaned of dev dependencies and tests
-COPY --from=crypto-beasts-base /scratch /scratch
+# # copy the modules that have been cleaned of dev dependencies and tests
+# COPY --from=crypto-beasts-base /scratch /scratch
 
-WORKDIR /scratch/scratch-gui
+# WORKDIR /scratch/scratch-gui
 
 CMD ["npm", "start"]
