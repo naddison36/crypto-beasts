@@ -4,9 +4,12 @@
   "description": "Battle your friends in a Blockchain-based trading card game",
   "main": "index.js",
   "scripts": {
-    "buildImage": "docker build -t scratch-server .",
-    "bashImage": "docker run -it scratch-server bash",
-    "runImage": "docker run -p 8601:8601 scratch-server",
+    "buildBaseImage": "docker build -t registry.heroku.com/crypto-beasts-dev/base:latest --target crypto-beasts-base .",
+    "bashBaseImage": "docker run -it registry.heroku.com/crypto-beasts-dev/base:latest bash",
+    "runBaseImage": "docker run -p 8601:8601 registry.heroku.com/crypto-beasts-dev/base:latest",
+    "buildWebImage": "docker build -t registry.heroku.com/crypto-beasts-dev/web:latest --target crypto-beasts-web .",
+    "bashWebImage": "docker run -it registry.heroku.com/crypto-beasts-dev/web:latest bash",
+    "runWebImage": "docker run -p 8601:8601 registry.heroku.com/crypto-beasts-dev/web:latest",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
