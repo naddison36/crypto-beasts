@@ -1,19 +1,23 @@
-const formatMessage = require('format-message');
+const formatMessage = require('format-message')
 
-const ArgumentType = require('../../extension-support/argument-type');
-const BlockType = require('../../extension-support/block-type');
-const log = require('../../util/log');
+const ArgumentType = require('../../extension-support/argument-type')
+const BlockType = require('../../extension-support/block-type')
+const log = require('../../util/log')
 
-const cards = require('./cards').cards;
-const regEx = require('./regEx');
+const cards = require('./cards').cards
+const regEx = require('./regEx')
+
+// For testing
+const playerAddresses = ['0x48118F98aD3aceF72Bc33D42C0E2fa3B16751d38', '0xFf33Eb72e6184E5102Fb9938Ff360c131835861D']
 
 class Scratch3CryptoBeastsBlocks {
 
     constructor(runtimeProxy) {
-        this.runtime = runtimeProxy;
+        this.runtime = runtimeProxy
 
-        this.playerCards = {
-        };
+        // player addresses are the properties
+        this.playerCards = {}
+        this.playersCurrentCard = {}
     }
 
     getInfo() {
@@ -25,7 +29,7 @@ class Scratch3CryptoBeastsBlocks {
 
             // Optional: the human-readable name of this extension as string.
             // This and any other string to be displayed in the Scratch UI may either be
-            // a string or a call to `formatMessage`; a plain string will not be
+            // a string or a call to `formatMessage` a plain string will not be
             // translated whereas a call to `formatMessage` will connect the string
             // to the translation map (see below). The `formatMessage` call is
             // similar to `formatMessage` from `react-intl` in form, but will actually
@@ -43,14 +47,14 @@ class Scratch3CryptoBeastsBlocks {
             // Optional: URI for a block icon, to display at the edge of each block for this
             // extension. Data URI OK.
             // TODO: what file types are OK? All web images? Just PNG?
-            // blockIconURI: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAAAAACyOJm3AAAAFklEQVQYV2P4DwMMEMgAI/+DEUIMBgAEWB7i7uidhAAAAABJRU5ErkJggg==',
+            // blockIconURI: 'data:image/pngbase64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAAAAACyOJm3AAAAFklEQVQYV2P4DwMMEMgAI/+DEUIMBgAEWB7i7uidhAAAAABJRU5ErkJggg==',
 
             // Optional: URI for an icon to be displayed in the blocks category menu.
             // If not present, the menu will display the block icon, if one is present.
             // Otherwise, the category menu shows its default filled circle.
             // Data URI OK.
             // TODO: what file types are OK? All web images? Just PNG?
-            // menuIconURI: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAAAAACyOJm3AAAAFklEQVQYV2P4DwMMEMgAI/+DEUIMBgAEWB7i7uidhAAAAABJRU5ErkJggg==',
+            // menuIconURI: 'data:image/pngbase64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAAAAACyOJm3AAAAFklEQVQYV2P4DwMMEMgAI/+DEUIMBgAEWB7i7uidhAAAAABJRU5ErkJggg==',
 
             // Optional: Link to documentation content for this extension.
             // If not present, offer no link.
@@ -80,7 +84,7 @@ class Scratch3CryptoBeastsBlocks {
 
                     // Required for conditional blocks, ignored for others: the number of
                     // child branches this block controls. An "if" or "repeat" block would
-                    // specify a branch count of 1; an "if-else" block would specify a
+                    // specify a branch count of 1 an "if-else" block would specify a
                     // branch count of 2.
                     // TODO: should we support dynamic branch count for "switch"-likes?
                     branchCount: 0,
@@ -123,7 +127,7 @@ class Scratch3CryptoBeastsBlocks {
                         PLAYER: {
                             type: ArgumentType.STRING,
                             // TODO populate with MetaMask address
-                            defaultValue: '0x',
+                            defaultValue: 'Player address',
                         }
                     },
 
@@ -172,7 +176,37 @@ class Scratch3CryptoBeastsBlocks {
                         },
                         PLAYER: {
                             type: ArgumentType.STRING,
-                            defaultValue: '0x',
+                            defaultValue: 'Player address',
+                        },
+                    }
+                },
+                {
+                    opcode: 'getPlayersCurrentCard',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.getPlayersCurrentCard',
+                        default: 'get current card of [PLAYER] ',
+                        description: 'get current card of player',
+                    }),
+                    blockType: BlockType.REPORTER,
+                    arguments: {
+                        PLAYER: {
+                            type: ArgumentType.STRING,
+                            defaultValue: 'Player address',
+                        },
+                    }
+                },
+                {
+                    opcode: 'getPlayerAddress',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.getPlayerAddress',
+                        default: 'address of player [PLAYER_NUMBER]',
+                        description: 'get the Ethereum address of a test player',
+                    }),
+                    blockType: BlockType.REPORTER,
+                    arguments: {
+                        PLAYER_NUMBER: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: 1,
                         },
                     }
                 },
@@ -205,7 +239,7 @@ class Scratch3CryptoBeastsBlocks {
                     arguments: {
                         PLAYER: {
                             type: ArgumentType.STRING,
-                            defaultValue: '0x',
+                            defaultValue: 'Player address',
                         },
                     }
                 },
@@ -220,7 +254,7 @@ class Scratch3CryptoBeastsBlocks {
                     arguments: {
                         PLAYER: {
                             type: ArgumentType.STRING,
-                            defaultValue: '0x',
+                            defaultValue: 'Player address',
                         },
                     }
                 },
@@ -228,7 +262,7 @@ class Scratch3CryptoBeastsBlocks {
                     opcode: 'whenPlayersTurn',
                     text: formatMessage({
                         id: 'cryptoBeasts.whenPlayersTurn',
-                        default: 'When current player\'s turn',
+                        default: 'When my turn',
                         description: 'Fires when current player\'s turn',
                     }),
                     blockType: BlockType.HAT,
@@ -269,12 +303,12 @@ class Scratch3CryptoBeastsBlocks {
                     }),
                     blockType: BlockType.COMMAND,
                     arguments: {
-                        PLAYER: {type: ArgumentType.STRING},
-                        CARD_1: {type: ArgumentType.STRING},
-                        CARD_2: {type: ArgumentType.STRING},
-                        CARD_3: {type: ArgumentType.STRING},
-                        CARD_4: {type: ArgumentType.STRING},
-                        CARD_5: {type: ArgumentType.STRING},
+                        PLAYER: {type: ArgumentType.STRING, defaultValue: 'Player address'},
+                        CARD_1: {type: ArgumentType.STRING, defaultValue: 1},
+                        CARD_2: {type: ArgumentType.STRING, defaultValue: 2},
+                        CARD_3: {type: ArgumentType.STRING, defaultValue: 3},
+                        CARD_4: {type: ArgumentType.STRING, defaultValue: 4},
+                        CARD_5: {type: ArgumentType.STRING, defaultValue: 5},
                     }
                 },
             ],
@@ -334,67 +368,115 @@ class Scratch3CryptoBeastsBlocks {
             // TODO call challenge function on the Battle contract
 
             if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
-                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`);
-                return reject(error);
+                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`)
+                return reject(error)
             }
 
-            log.debug(`Player ${args.PLAYER} did move ${args.MOVE} for their turn`);
+            log.debug(`Player ${args.PLAYER} did move ${args.MOVE} for their turn`)
 
             // Run for some time even when no motor is connected
-            setTimeout(resolve, 1000);
-        });
+            setTimeout(resolve, 1000)
+        })
     }
 
     getCardProperty(args) {
 
         if (args.CARD_ID < 0 || args.CARD_ID >= cards.length) {
-            log.error(`Invalid card id ${args.CARD_ID}. Must be a positive integer and less than ${cards.length}`)
+            return log.error(`Invalid card id ${args.CARD_ID}. Must be a positive integer and less than ${cards.length}`)
+        }
+
+        if (!args.CARD_PROPERTY) {
+            log.error(`Invalid card property ${args.CARD_PROPERTY}`)
             return
         }
 
-        const cardPropertyValue = cards[args.CARD_ID][args.CARD_PROPERTY];
+        if (!cards[args.CARD_ID][args.CARD_PROPERTY]) {
+            return log.error(`Failed to find card property ${args.CARD_PROPERTY} for card ${args.CARD_ID}`)
+        }
 
-        log.debug(`got ${cardPropertyValue} for property ${args.CARD_PROPERTY}, card id ${args.CARD_ID}`);
-        return cardPropertyValue;
+        const cardPropertyValue = cards[args.CARD_ID][args.CARD_PROPERTY]
+
+        log.debug(`got ${cardPropertyValue} for property ${args.CARD_PROPERTY}, card id ${args.CARD_ID}`)
+        return cardPropertyValue
     }
 
     getPlayerCardProperty(args) {
 
         if (args.DECK_ID < 0 || args.DECK_ID >= cards.length) {
-            log.error(`Invalid deck id ${args.DECK_ID}. Must be a positive integer and less than ${3}`)
-            return
+            return log.error(`Invalid deck id ${args.DECK_ID}. Must be a positive integer and less than ${3}`)
         }
 
-        const cardPropertyValue = this.playerCards[PLAYER][args.DECK_ID][args.CARD_PROPERTY];
+        if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
+            const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`)
+            return reject(error)
+        }
 
-        log.debug(`got ${cardPropertyValue} for property ${args.CARD_PROPERTY}, card id ${args.CARD_ID}`);
-        return cardPropertyValue;
+        if (!this.playerCards[args.PLAYER]) {
+            
+            const error = new TypeError(`Could not find player cards for ${args.PLAYER}`)
+            return reject(error)
+        }
+
+        if (!this.playerCards[args.PLAYER][args.DECK_ID]) {
+            
+            const error = new TypeError(`Could not find deck card ${args.DECK_ID} for player ${args.PLAYER}`)
+            return reject(error)
+        }
+
+        if (!this.playerCards[args.PLAYER][args.DECK_ID][args.CARD_PROPERTY]) {
+            
+                const error = new TypeError(`Could not find property ${args.CARD_PROPERTY} for deck card ${args.DECK_ID} for player ${args.PLAYER}`)
+            return reject(error)
+        }
+
+        const cardPropertyValue = this.playerCards[args.PLAYER][args.DECK_ID][args.CARD_PROPERTY]
+
+        log.debug(`got ${cardPropertyValue} for property ${args.CARD_PROPERTY}, deck id ${args.DECK_ID}, player ${args.PLAYER}`)
+
+        return cardPropertyValue
     }
 
     countCards() {
-        return cards.length;
+        return cards.length
+    }
+
+    getPlayerAddress(args) {
+
+        if (!Number.isInteger(args.PLAYER_NUMBER) && args.PLAYER_NUMBER < 0) {
+            return log.error(`Invalid PLAYER_NUMBER argument ${args.PLAYER_NUMBER} for get player address. Must be a positive integer`)
+        }
+
+        if (args.PLAYER_NUMBER >= playerAddresses.length) {
+            return log.error(`Failed to get address for player number ${args.PLAYER_NUMBER}. Only ${playerAddresses.length} test players exist. The player number must be less than ${playerAddresses.lengt}`)
+        }
+
+        return playerAddresses[args.PLAYER_NUMBER]
     }
 
     challengeAll(args) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             // TODO call challenge function on the Battle contract
 
-            log.debug(`About to challenge all players`);
+            log.debug(`About to challenge all players`)
 
             // Run for some time even when no motor is connected
-            setTimeout(resolve, 1000);
-        });
+            setTimeout(resolve, 1000)
+        })
     }
 
     challengePlayer(args) {
-        return new Promise(resolve => {
-            // TODO call challenge function on the Battle contract
+        return new Promise((resolve, reject) => {
 
-            log.debug(`About to challenge player ${args.PLAYER}`);
+            if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
+                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`)
+                return reject(error)
+            }
+
+            log.debug(`About to challenge player ${args.PLAYER}`)
 
             // Run for some time even when no motor is connected
-            setTimeout(resolve, 1000);
-        });
+            setTimeout(resolve, 1000)
+        })
     }
 
 
@@ -403,11 +485,11 @@ class Scratch3CryptoBeastsBlocks {
             // TODO call challenge function on the Battle contract
 
             if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
-                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`);
-                return reject(error);
+                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`)
+                return reject(error)
             }
 
-            log.debug(`About to accept challenge from player ${args.PLAYER}`);
+            log.debug(`About to accept challenge from player ${args.PLAYER}`)
 
             // TODO call accept challenge function on the Battle contract
 
@@ -415,55 +497,77 @@ class Scratch3CryptoBeastsBlocks {
             this.playersTurn = '0x123'
 
             // TODO remove once the smart contract call has been implemented above
-            setTimeout(resolve, 1000);
-        });
+            setTimeout(resolve, 1000)
+        })
     }
 
     whenPlayersTurn() {
-        return false;
+        return false
     }
 
     whenChallenged() {
-        return false;
+        return false
     }
 
     whenChallengedAccepted() {
-        return false;
+        return false
     }
 
     pickCards(args) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             // TODO call pickCards function on the Battle contract
 
             if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
-                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the pick cards command. Must be a 40 char hexadecimal with a 0x prefix`);
-                return reject(error);
+                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the pick cards command. Must be a 40 char hexadecimal with a 0x prefix`)
+                return reject(error)
             }
 
             if (this.playerCards[args.PLAYER]) {
-                const error = new Error(`PLAYER ${args.PLAYER} has already picked cards`);
-                return reject(error);
+                const error = new Error(`PLAYER ${args.PLAYER} has already picked cards`)
+                return reject(error)
             }
 
-            const {pickedCards, PLAYER} = args;
+            log.debug(`Player ${args.PLAYER} picks cards ${JSON.stringify(args)}`)
 
-            log.debug(`Player ${args.PLAYER} picks cards ${JSON.stringify(pickedCards)}`);
+            // clone the cards into player cards
+            this.playerCards[args.PLAYER] = [
+                {...cards[args.CARD_1]},
+                {...cards[args.CARD_2]},
+                {...cards[args.CARD_3]},
+            ]
 
-            this.playerCards[args.PLAYER] = [args.CARD_1, args.CARD_2, args.CARD_3];
+            this.playersCurrentCard[args.PLAYER] = 0
 
             // Run for some time even when no motor is connected
-            setTimeout(resolve, 1000);
-        });
+            setTimeout(resolve, 200)
+        })
+    }
+
+    getPlayersCurrentCard(args) {
+
+        if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
+            return log.error(`Invalid PLAYER argument ${args.PLAYER} for the pick cards command. Must be a 40 char hexadecimal with a 0x prefix`)
+        }
+
+        if (!this.playersCurrentCard.hasOwnProperty(args.PLAYER)) {
+            return log.error(`Failed to find current card of player ${args.PLAYER}. The player needs to pick cards first.`)
+        }
+
+        const playerCard = this.playersCurrentCard[args.PLAYER]
+
+        log.debug(`Current card of player ${args.PLAYER} is ${playerCard}`)
+
+        return playerCard
     }
 
     loadCards() {
         return new Promise(resolve => {
 
-            log.debug(`About to load cards from the Blockchain cards contract`);
+            log.debug(`About to load cards from the Blockchain cards contract`)
 
             // Run for some time even when no motor is connected
-            setTimeout(resolve, 1000);
-        });
+            setTimeout(resolve, 1000)
+        })
     }
 
     /**
@@ -486,14 +590,14 @@ class Scratch3CryptoBeastsBlocks {
      * @private
      */
     _formatMenu (menu) {
-        const m = [];
+        const m = []
         for (let i = 0; i < menu.length; i++) {
-            const obj = {};
-            obj.text = menu[i];
-            obj.value = i.toString();
-            m.push(obj);
+            const obj = {}
+            obj.text = menu[i]
+            obj.value = i.toString()
+            m.push(obj)
         }
-        return m;
+        return m
     }
 }
-module.exports = Scratch3CryptoBeastsBlocks;
+module.exports = Scratch3CryptoBeastsBlocks
