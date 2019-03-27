@@ -1,6 +1,6 @@
 # Crypto Beasts
 
-A Blockchain-based trading card game that uses Scratch for the UI and Loom for the Ethereum smart contracts.
+A Blockchain-based card game that uses [Scratch](https://scratch.mit.edu/) for the UI and [Loom](https://loomx.io/) for the Ethereum smart contracts.
 
 ## Prerequisite 
 
@@ -37,17 +37,16 @@ Next, the new extension needs to be registered in the scratch-gui. Go to the `sr
 {
     name: 'Crypto Beasts',
     extensionId: 'cryptoBeasts',
-    collaborator: 'Edcon hack team',
+    collaborator: 'Nick Addison, Baxter Addison, Liam Ryan, Zac Isterling, Oliver Ackerman',
     description: (
         <FormattedMessage
             defaultMessage="Crypto Beasts Trading Card Game"
-            description="Battle your friends in a Blockchain-based trading card game"
+            description="Battle your friends in a Blockchain-based card game"
             id="gui.extension.cryptoBeasts.description"
         />
     ),
     featured: true,
     disabled: false,
-    bluetoothRequired: false,
     internetConnectionRequired: true
 },
 ```
@@ -66,6 +65,6 @@ npm start
 After the server starts, Scratch should be available at [http://localhost:8601](http://localhost:8601) 
 
 ## Useful links
+* [How to Develop Your Own Block for Scratch 3.0](https://medium.com/@hiroyuki.osaki/how-to-develop-your-own-block-for-scratch-3-0-1b5892026421) matches what has been done for this project.
 * The [Scratch 3.0 Extensions Specification](https://github.com/LLK/scratch-vm/wiki/Scratch-3.0-Extensions-Specification) is now out of date and does not work.
-
 * The unofficial Scratch 3 wiki is also now out of date. It covers how to install Scratch 3.0 on your local machine and develop an extension. See [Testing your Extensions](https://github.com/kyleplo/scratch-three-extension-docs/wiki/Testing-your-Extensions) and [Scratch GUI Getting Started](https://github.com/LLK/scratch-gui/wiki/Getting-Started) for more details.
