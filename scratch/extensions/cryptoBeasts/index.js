@@ -11,6 +11,9 @@ class Scratch3CryptoBeastsBlocks {
 
     constructor(runtimeProxy) {
         this.runtime = runtimeProxy;
+
+        this.playerCards = {
+        };
     }
 
     getInfo() {
@@ -150,6 +153,30 @@ class Scratch3CryptoBeastsBlocks {
                     }
                 },
                 {
+                    opcode: 'getPlayerCardProperty',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.getPlayerCardProperty',
+                        default: 'get [CARD_PROPERTY] from deck card [DECK_ID] for player [PLAYER] ',
+                        description: 'get a property of a card',
+                    }),
+                    blockType: BlockType.REPORTER,
+                    arguments: {
+                        CARD_PROPERTY: {
+                            type: ArgumentType.STRING,
+                            menu: 'cardProperty',
+                            defaultValue: 'name'
+                        },
+                        DECK_ID: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: 0
+                        },
+                        PLAYER: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '0x',
+                        },
+                    }
+                },
+                {
                     opcode: 'countCards',
                     text: formatMessage({
                         id: 'cryptoBeasts.countCards',
@@ -237,11 +264,12 @@ class Scratch3CryptoBeastsBlocks {
                     opcode: 'pickCards',
                     text: formatMessage({
                         id: 'cryptoBeasts.pickCards',
-                        default: 'Pick cards [CARD_1], [CARD_2], [CARD_3], [CARD_4] and [CARD_5]',
-                        description: 'Notifies anyone not in a battle that you are challenging them to a battle',
+                        default: 'Player [PLAYER] picks cards [CARD_1], [CARD_2], [CARD_3], [CARD_4] and [CARD_5]',
+                        description: 'Player picks cards for their deck',
                     }),
                     blockType: BlockType.COMMAND,
                     arguments: {
+                        PLAYER: {type: ArgumentType.STRING},
                         CARD_1: {type: ArgumentType.STRING},
                         CARD_2: {type: ArgumentType.STRING},
                         CARD_3: {type: ArgumentType.STRING},
@@ -330,6 +358,19 @@ class Scratch3CryptoBeastsBlocks {
         return cardPropertyValue;
     }
 
+    getPlayerCardProperty(args) {
+
+        if (args.DECK_ID < 0 || args.DECK_ID >= cards.length) {
+            log.error(`Invalid deck id ${args.DECK_ID}. Must be a positive integer and less than ${3}`)
+            return
+        }
+
+        const cardPropertyValue = this.playerCards[PLAYER][args.DECK_ID][args.CARD_PROPERTY];
+
+        log.debug(`got ${cardPropertyValue} for property ${args.CARD_PROPERTY}, card id ${args.CARD_ID}`);
+        return cardPropertyValue;
+    }
+
     countCards() {
         return cards.length;
     }
@@ -394,7 +435,21 @@ class Scratch3CryptoBeastsBlocks {
         return new Promise(resolve => {
             // TODO call pickCards function on the Battle contract
 
-            log.debug(`About to get deck of cards with args ${JSON.stringify(args)}`);
+            if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
+                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the pick cards command. Must be a 40 char hexadecimal with a 0x prefix`);
+                return reject(error);
+            }
+
+            if (this.playerCards[args.PLAYER]) {
+                const error = new Error(`PLAYER ${args.PLAYER} has already picked cards`);
+                return reject(error);
+            }
+
+            const {pickedCards, PLAYER} = args;
+
+            log.debug(`Player ${args.PLAYER} picks cards ${JSON.stringify(pickedCards)}`);
+
+            this.playerCards[args.PLAYER] = [args.CARD_1, args.CARD_2, args.CARD_3];
 
             // Run for some time even when no motor is connected
             setTimeout(resolve, 1000);
