@@ -2,7 +2,8 @@ ARG NODE_VERSION=10.15.3
 
 # First build is just the base image that helps work around no layer caching in CircleCi
 # is pulled from the Heroku Container Registry so it's layers
-FROM node:${NODE_VERSION}-stretch AS crypto-beasts-base
+# FROM node:${NODE_VERSION}-stretch AS crypto-beasts-base
+FROM node:${NODE_VERSION}-stretch AS crypto-beasts-web
 WORKDIR /scratch
 
 ADD https://github.com/LLK/scratch-vm/archive/develop.tar.gz /scratch/scratch-vm.tar.gz
