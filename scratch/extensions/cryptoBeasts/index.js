@@ -479,7 +479,6 @@ class Scratch3CryptoBeastsBlocks {
         })
     }
 
-
     acceptChallenge(args) {
         return new Promise((resolve, reject) => {
             // TODO call challenge function on the Battle contract
