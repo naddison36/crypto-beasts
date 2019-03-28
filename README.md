@@ -35,7 +35,13 @@ ln -s ../../../crypto-beasts/scratch/extensions ./custom
 Next, the new extension needs to be registered in the scratch-gui. Go to the `src/lib/libraries/extensions/index.jsx` file in the scratch-gui folder created above and add this to the extensions array
 ```js
 {
-    name: 'Crypto Beasts',
+    name: (
+        <FormattedMessage
+            defaultMessage="Crypto Beasts"
+            description="Name for the 'Crypto Beasts' extension"
+            id="gui.extension.cryptoBeasts.name"
+        />
+    ),
     extensionId: 'cryptoBeasts',
     collaborator: 'Nick Addison, Baxter Addison, Liam Ryan, Zac Isterling, Oliver Ackerman',
     description: (
@@ -53,7 +59,7 @@ Next, the new extension needs to be registered in the scratch-gui. Go to the `sr
 
 The JavaScript in the extension file needs to be loaded via the `src/extension-support/extension-manager.js` file in the `scratch-vm` repository. Add the following function property to the `builtinExtensions` object in the `src/extension-support/extension-manager.js` file
 ```
-cryptoBeasts: () => require('../extensions/custom/cryptoBeasts'),
+cryptoBeasts: () => require('../extensions/custom/custom/cryptoBeasts'),
 ```
 
 Finally, start the local Scratch server
@@ -63,6 +69,31 @@ npm start
 ```
 
 After the server starts, Scratch should be available at [http://localhost:8601](http://localhost:8601) 
+
+# Docker
+
+This [Dockerfile](./Dockerfile) will add the [Crypto Beasts extension](./scratch/extensions/cryptoBeasts/index.js) as a built in extension, build the Scratch 3.0 react app and copy it into a nginx image. This can then be deployed to a cloud provider. I'm using Heroku, but others like AWS, Azure and GCP will also work.
+
+`npm run buildWebImage` will build the Docker image which runs
+```
+docker build -t registry.heroku.com/crypto-beasts-prod/web:latest --target web .
+```
+
+`npm run bashWebImage` will shell into the build image which runs
+```
+docker run -it registry.heroku.com/crypto-beasts-prod/web:latest sh
+```
+
+`npm run runWebImage` will run the Scratch 3.0 react app locally
+```
+runWebImage": "docker run -p 8601:8601 -e PORT=8601 registry.heroku.com/crypto-beasts-prod/web:latest
+```
+
+This project is deploying to Heroku hence the `registry.heroku.com/crypto-beasts-prod` image names. These will need to be changed if deploying to other cloud based Container Registries.
+
+# Continuous Integration
+
+[CicleCi](https://circleci.com/) is used for CI. The config file is [.circleci/config.yml](.circleci/config.yml).
 
 ## Useful links
 * [How to Develop Your Own Block for Scratch 3.0](https://medium.com/@hiroyuki.osaki/how-to-develop-your-own-block-for-scratch-3-0-1b5892026421) matches what has been done for this project.
