@@ -45,6 +45,8 @@ COPY scratch/extensions /scratch/vm/src/extensions/custom
 COPY scratch/gui/index.jsx /scratch/gui/src/lib/libraries/extensions/index.jsx
 COPY scratch/vm/extension-manager.js /scratch/vm/src/extension-support/extension-manager.js
 
+ENV NODE_ENV=production
+
 # Build the react app into the /scratch/gui/build folder
 RUN npm run build
 
