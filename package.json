@@ -1,15 +1,14 @@
 {
-  "name": "loom-scratch-tcg",
+  "name": "crypto-beasts",
   "version": "0.0.1",
   "description": "Battle your friends in a Blockchain-based trading card game",
   "main": "index.js",
   "scripts": {
-    "buildBaseImage": "docker build -t registry.heroku.com/crypto-beasts-dev/base:latest --target base .",
-    "bashBaseImage": "docker run -it registry.heroku.com/crypto-beasts-dev/base:latest bash",
-    "runBaseImage": "docker run -p 8601:8601 registry.heroku.com/crypto-beasts-dev/base:latest",
-    "buildWebImage": "docker build -t registry.heroku.com/crypto-beasts-dev/web:latest --target web .",
-    "bashWebImage": "docker run -it registry.heroku.com/crypto-beasts-dev/web:latest sh",
-    "runWebImage": "docker run -p 8601:8601 registry.heroku.com/crypto-beasts-dev/web:latest"
+    "buildBaseImage": "docker build -t registry.heroku.com/crypto-beasts-prod/base:latest --target base .",
+    "bashBaseImage": "docker run -it registry.heroku.com/crypto-beasts-prod/base:latest bash",
+    "buildWebImage": "docker build -t registry.heroku.com/crypto-beasts-prod/web:latest --target web .",
+    "bashWebImage": "docker run -it registry.heroku.com/crypto-beasts-prod/web:latest sh",
+    "runWebImage": "docker run -p 8601:8601 -e PORT=8601 registry.heroku.com/crypto-beasts-prod/web:latest"
   },
   "repository": {
     "type": "git",
@@ -22,7 +21,7 @@
     "Zac Isterling",
     "Oliver Ackerman"
   ],
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/naddison36/loom-scratch-tcg/issues"
   },

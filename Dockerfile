@@ -20,7 +20,7 @@ RUN mv /scratch/scratch-gui-develop /scratch/scratch-gui
 
 COPY heroku/.env.* /scratch/scratch-gui/
 COPY scratch/gui/index.jsx /scratch/scratch-gui/src/lib/libraries/extensions/index.jsx
-COPY scratch/extensions/cryptoBeasts /scratch/scratch-vm/src/extensions/scratch3_cryptoBeasts
+COPY scratch/extensions /scratch/scratch-vm/src/extensions/custom
 COPY scratch/vm/extension-manager.js /scratch/scratch-vm/src/extension-support/extension-manager.js
 
 WORKDIR /scratch/scratch-gui
