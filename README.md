@@ -29,7 +29,7 @@ npm link
 cd ../scratch-gui
 npm link scratch-vm
 cd ../scratch-vm/src/extensions
-ln -s ../../../crypto-beasts/scratch/extensions/cryptoBeasts ./scratch3_cryptoBeasts
+ln -s ../../../crypto-beasts/scratch/extensions ./custom
 ```
 
 Next, the new extension needs to be registered in the scratch-gui. Go to the `src/lib/libraries/extensions/index.jsx` file in the scratch-gui folder created above and add this to the extensions array
@@ -53,7 +53,7 @@ Next, the new extension needs to be registered in the scratch-gui. Go to the `sr
 
 The JavaScript in the extension file needs to be loaded via the `src/extension-support/extension-manager.js` file in the `scratch-vm` repository. Add the following function property to the `builtinExtensions` object in the `src/extension-support/extension-manager.js` file
 ```
-cryptoBeasts: () => require('../extensions/scratch3_cryptoBeasts'),
+cryptoBeasts: () => require('../extensions/custom/cryptoBeasts'),
 ```
 
 Finally, start the local Scratch server
