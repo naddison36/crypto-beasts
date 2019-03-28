@@ -45,5 +45,5 @@ RUN npm run build
 
 # Build the production image
 FROM nginx:alpine  AS crypto-beasts-web
-COPY — from=rcrypto-beasts-base /scratch/gui/build /usr/share/nginx/html
+COPY — from=crypto-beasts-base /scratch/gui/build /usr/share/nginx/html
 CMD [“nginx”, “-g”, “daemon off;”]
