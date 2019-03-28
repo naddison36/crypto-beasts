@@ -46,16 +46,14 @@ jobs:
             docker build
             --cache-from registry.heroku.com/${HEROKU_APP_NAME}/base:latest
             -t registry.heroku.com/${HEROKU_APP_NAME}/base:latest
-            --target crypto-beasts-base
+            --target base
             .
       - run:
           name: Build Scratch server image
           command: >
             docker build
-            --cache-from registry.heroku.com/${HEROKU_APP_NAME}/base:latest
-            --cache-from registry.heroku.com/${HEROKU_APP_NAME}/web:latest
             -t registry.heroku.com/${HEROKU_APP_NAME}/web:latest
-            --target crypto-beasts-web
+            --target web
             .
       - run:
           name: Push images to Heroku Container Registry

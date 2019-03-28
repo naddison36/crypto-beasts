@@ -2,16 +2,20 @@ ARG NODE_VERSION=10.15.3
 
 # First build is just the base image that helps work around no layer caching in CircleCi
 # is pulled from the Heroku Container Registry so it's layers
-FROM node:${NODE_VERSION}-stretch AS crypto-beasts-base
+FROM node:${NODE_VERSION}-stretch AS base
 WORKDIR /scratch
 
-ADD https://github.com/LLK/scratch-vm/archive/develop.tar.gz /scratch/scratch-vm.tar.gz
-RUN tar xfz scratch-vm.tar.gz && \
-    mv /scratch/scratch-vm-develop /scratch/vm
+# Following is used in the CI build
+ADD https://github.com/LLK/scratch-vm/archive/develop.tar.gz /scratch/vm.tar.gz
+RUN tar xfz vm.tar.gz 
+ADD https://github.com/LLK/scratch-gui/archive/develop.tar.gz /scratch/gui.tar.gz
+RUN tar xfz gui.tar.gz
 
-ADD https://github.com/LLK/scratch-gui/archive/develop.tar.gz /scratch/scratch-gui.tar.gz
-RUN tar xfz scratch-gui.tar.gz && \
-    mv /scratch/scratch-gui-develop /scratch/gui
+# The following is used for faster local testing
+# ADD scratch-vm-develop.tar.gz /scratch
+# RUN mv /scratch/scratch-vm-develop /scratch/vm
+# ADD scratch-gui-develop.tar.gz /scratch
+# RUN mv /scratch/scratch-gui-develop /scratch/gui
 
 COPY heroku/.env.* /scratch/gui/
 
@@ -44,6 +48,6 @@ COPY scratch/vm/extension-manager.js /scratch/vm/src/extension-support/extension
 RUN npm run build
 
 # Build the production image
-FROM nginx:alpine  AS crypto-beasts-web
-COPY —-from=crypto-beasts-base /scratch/gui/build /usr/share/nginx/html
+FROM nginx:alpine AS web
+COPY --from=base /scratch/gui/build /usr/share/nginx/html
 CMD [“nginx”, “-g”, “daemon off;”]
