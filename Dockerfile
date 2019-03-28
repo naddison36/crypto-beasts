@@ -51,4 +51,5 @@ RUN npm run build
 # Build the production image
 FROM nginx:alpine AS web
 COPY --from=base /scratch/gui/build /usr/share/nginx/html
-CMD ["nginx", "-g", "daemon off;"]
+COPY scratch/nginx.conf /etc/nginx/conf.d/default.conf
+CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
