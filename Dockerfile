@@ -13,9 +13,10 @@ RUN tar xfz gui.tar.gz
 
 # The following is used for faster local testing
 # ADD scratch-vm-develop.tar.gz /scratch
-# RUN mv /scratch/scratch-vm-develop /scratch/vm
 # ADD scratch-gui-develop.tar.gz /scratch
-# RUN mv /scratch/scratch-gui-develop /scratch/gui
+
+RUN mv /scratch/scratch-vm-develop /scratch/vm
+RUN mv /scratch/scratch-gui-develop /scratch/gui
 
 COPY heroku/.env.* /scratch/gui/
 
