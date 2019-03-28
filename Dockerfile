@@ -14,6 +14,8 @@ ADD https://github.com/LLK/scratch-gui/archive/develop.tar.gz /scratch/scratch-g
 RUN tar xfz scratch-gui.tar.gz && \
     mv /scratch/scratch-gui-develop /scratch/scratch-gui
 
+COPY heroku/.env.development /scratch
+
 WORKDIR /scratch/scratch-gui
 
 RUN npm set progress=false && \
