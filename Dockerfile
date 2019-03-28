@@ -15,19 +15,22 @@ RUN tar xfz gui.tar.gz
 # ADD scratch-vm-develop.tar.gz /scratch
 # ADD scratch-gui-develop.tar.gz /scratch
 
-RUN mv /scratch/scratch-vm-develop /scratch/vm
-RUN mv /scratch/scratch-gui-develop /scratch/gui
+RUN mv /scratch/scratch-vm-develop /scratch/scratch-vm
+RUN mv /scratch/scratch-gui-develop /scratch/scratch-gui
 
-COPY heroku/.env.* /scratch/gui/
+COPY heroku/.env.* /scratch/scratch-gui/
+COPY scratch/gui/index.jsx /scratch/scratch-gui/src/lib/libraries/extensions/index.jsx
+COPY scratch/extensions/cryptoBeasts /scratch/scratch-vm/src/extensions/scratch3_cryptoBeasts
+COPY scratch/vm/extension-manager.js /scratch/scratch-vm/src/extension-support/extension-manager.js
 
-WORKDIR /scratch/gui
+WORKDIR /scratch/scratch-gui
 
 RUN npm set progress=false && \
    npm config set depth 0 && \
    npm install && \
    npm cache clean --force
 
-WORKDIR /scratch/vm
+WORKDIR /scratch/scratch-vm
 
 RUN npm set progress=false && \
    npm config set depth 0 && \
@@ -36,20 +39,16 @@ RUN npm set progress=false && \
 
 RUN npm link
 
-WORKDIR /scratch/gui
+WORKDIR /scratch/scratch-gui
 
-RUN npm link vm
-
-COPY scratch/extensions /scratch/vm/src/extensions/custom
-
-COPY scratch/gui/index.jsx /scratch/gui/src/lib/libraries/extensions/index.jsx
-COPY scratch/vm/extension-manager.js /scratch/vm/src/extension-support/extension-manager.js
+# Link the Scratch GUI to the modified Scratch VM
+RUN npm link scratch-vm
 
 # Build the react app into the /scratch/gui/build folder
 RUN npm run build
 
 # Build the production image
 FROM nginx:alpine AS web
-COPY --from=base /scratch/gui/build /usr/share/nginx/html
+COPY --from=base /scratch/scratch-gui/build /usr/share/nginx/html
 COPY scratch/nginx.conf /etc/nginx/conf.d/default.conf
 CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'

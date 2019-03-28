@@ -1,8 +1,8 @@
 const formatMessage = require('format-message')
 
-const ArgumentType = require('../../../extension-support/argument-type')
-const BlockType = require('../../../extension-support/block-type')
-const log = require('../../../util/log')
+const ArgumentType = require('../../extension-support/argument-type')
+const BlockType = require('../../extension-support/block-type')
+const log = require('../../util/log')
 
 const cards = require('./cards').cards
 const regEx = require('./regEx')
