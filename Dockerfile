@@ -45,12 +45,10 @@ COPY scratch/extensions /scratch/vm/src/extensions/custom
 COPY scratch/gui/index.jsx /scratch/gui/src/lib/libraries/extensions/index.jsx
 COPY scratch/vm/extension-manager.js /scratch/vm/src/extension-support/extension-manager.js
 
-ENV NODE_ENV=production
-
 # Build the react app into the /scratch/gui/build folder
 RUN npm run build
 
 # Build the production image
 FROM nginx:alpine AS web
 COPY --from=base /scratch/gui/build /usr/share/nginx/html
-CMD [“nginx”, “-g”, “daemon off;”]
+CMD ["nginx", "-g", "daemon off;"]
