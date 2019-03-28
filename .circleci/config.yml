@@ -66,4 +66,4 @@ jobs:
           command: |
             echo "About to release the Scratch server container to Heroku app ${HEROKU_APP_NAME}"
 
-            ./heroku/scripts/release.sh ${HEROKU_APP_NAME} /web
+            ./heroku/scripts/release.sh ${HEROKU_APP_NAME} web
