@@ -10,10 +10,6 @@ jobs:
     executor: endor-executor
     steps:
       - checkout
-      # Docker Layer Caching is $15 per project per month with the Performance plan which ConsenSys does not have
-      # The Performance plan is $60 per month for 100,000 credits plus $15 per user per month
-      # A small docker container costs 10 credits per minute. A large is 40 credirs per minute
-      # ConsenSys is currently on the Container Plan with 8 containers
       - setup_remote_docker:
           docker_layer_caching: false
       - run:
@@ -42,20 +38,21 @@ jobs:
       - run:
           name: Pull images from Heroku Container Registry so the docker layers can be cached
           command: |
-            # docker pull registry.heroku.com/${HEROKU_APP_NAME}/base:latest || true
+            docker pull registry.heroku.com/${HEROKU_APP_NAME}/base:latest || true
             docker pull registry.heroku.com/${HEROKU_APP_NAME}/web:latest || true
-      # - run:
-      #     name: Build base image
-      #     command: >
-      #       docker build
-      #       --cache-from registry.heroku.com/${HEROKU_APP_NAME}/base:latest
-      #       -t registry.heroku.com/${HEROKU_APP_NAME}/base:latest
-      #       --target crypto-beasts-base
-      #       .
+      - run:
+          name: Build base image
+          command: >
+            docker build
+            --cache-from registry.heroku.com/${HEROKU_APP_NAME}/base:latest
+            -t registry.heroku.com/${HEROKU_APP_NAME}/base:latest
+            --target crypto-beasts-base
+            .
       - run:
           name: Build Scratch server image
           command: >
             docker build
+            --cache-from registry.heroku.com/${HEROKU_APP_NAME}/base:latest
             --cache-from registry.heroku.com/${HEROKU_APP_NAME}/web:latest
             -t registry.heroku.com/${HEROKU_APP_NAME}/web:latest
             --target crypto-beasts-web
@@ -64,7 +61,7 @@ jobs:
           name: Push images to Heroku Container Registry
           command: |
             echo "About to push containers to the Heroku Container Registry for the Heroku app ${HEROKU_APP_NAME}"
-            # docker push registry.heroku.com/${HEROKU_APP_NAME}/base
+            docker push registry.heroku.com/${HEROKU_APP_NAME}/base
             docker push registry.heroku.com/${HEROKU_APP_NAME}/web
       - deploy:
           name: Release Scratch server image from the Heroku Container Registry
@@ -72,5 +69,3 @@ jobs:
             echo "About to release the Scratch server container to Heroku app ${HEROKU_APP_NAME}"
 
             ./heroku/scripts/release.sh ${HEROKU_APP_NAME} /web
-
-  
