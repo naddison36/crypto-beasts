@@ -18,6 +18,13 @@ class Scratch3CryptoBeastsBlocks {
         // player addresses are the properties
         this.playerCards = {}
         this.playersCurrentCard = {}
+
+        this.whenChallengedFlag = false
+        // Address of the challenger
+        this.challengedBy = undefined
+
+        this.whenChallengedAcceptedFlag = false
+        this.challengeAcceptedBy = undefined
     }
 
     getInfo() {
@@ -140,7 +147,7 @@ class Scratch3CryptoBeastsBlocks {
                     opcode: 'getCardProperty',
                     text: formatMessage({
                         id: 'cryptoBeasts.getCardProperty',
-                        default: 'get [CARD_PROPERTY] for card [CARD_ID]',
+                        default: '[CARD_PROPERTY] of card [CARD_ID]',
                         description: 'get a property of a card',
                     }),
                     blockType: BlockType.REPORTER,
@@ -160,7 +167,7 @@ class Scratch3CryptoBeastsBlocks {
                     opcode: 'getPlayerCardProperty',
                     text: formatMessage({
                         id: 'cryptoBeasts.getPlayerCardProperty',
-                        default: 'get [CARD_PROPERTY] from deck card [DECK_ID] for player [PLAYER] ',
+                        default: '[CARD_PROPERTY] of deck card [DECK_ID] for player [PLAYER] ',
                         description: 'get a property of a card',
                     }),
                     blockType: BlockType.REPORTER,
@@ -184,7 +191,7 @@ class Scratch3CryptoBeastsBlocks {
                     opcode: 'getPlayersCurrentCard',
                     text: formatMessage({
                         id: 'cryptoBeasts.getPlayersCurrentCard',
-                        default: 'get current card of [PLAYER] ',
+                        default: 'current card of [PLAYER] ',
                         description: 'get current card of player',
                     }),
                     blockType: BlockType.REPORTER,
@@ -220,13 +227,37 @@ class Scratch3CryptoBeastsBlocks {
                     blockType: BlockType.REPORTER,
                 },
                 {
+                    opcode: 'challengedByPlayer',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.challengedByPlayer',
+                        default: 'Challenger',
+                        description: 'Player that has challenged the current player to battle',
+                    }),
+                    blockType: BlockType.REPORTER,
+                },
+                {
+                    opcode: 'challengeAcceptedByPlayer',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.challengeAcceptedByPlayer',
+                        default: 'Challenge Acceptor',
+                        description: 'Player that has accepted the challenge to battle',
+                    }),
+                    blockType: BlockType.REPORTER,
+                },
+                {
                     opcode: 'challengeAll',
                     text: formatMessage({
                         id: 'cryptoBeasts.challengeAll',
-                        default: 'Challenge anyone to a battle',
+                        default: 'Player [PLAYER] challenges anyone to a battle',
                         description: 'Notifies anyone not in a battle that you are challenging them to a battle',
                     }),
                     blockType: BlockType.COMMAND,
+                    arguments: {
+                        PLAYER: {
+                            type: ArgumentType.STRING,
+                            defaultValue: 'Player address',
+                        },
+                    }
                 },
                 {
                     opcode: 'challengePlayer',
@@ -455,12 +486,27 @@ class Scratch3CryptoBeastsBlocks {
 
     challengeAll(args) {
         return new Promise((resolve, reject) => {
-            // TODO call challenge function on the Battle contract
+
+            if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
+                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the challenge all command. Must be a 40 char hexadecimal with a 0x prefix`)
+                return reject(error)
+            }
 
             log.debug(`About to challenge all players`)
 
-            // Run for some time even when no motor is connected
-            setTimeout(resolve, 1000)
+            // Just simulate for now
+            setTimeout(() => {
+
+                if (args.PLAYER != playerAddresses[0]) {
+                    this.challengeAcceptedBy = playerAddresses[0]
+                } else {
+                    this.challengeAcceptedBy = playerAddresses[1]
+                }
+
+                this.whenChallengedAcceptedFlag = true
+
+                resolve
+            }, 10000)
         })
     }
 
@@ -491,13 +537,27 @@ class Scratch3CryptoBeastsBlocks {
             log.debug(`About to accept challenge from player ${args.PLAYER}`)
 
             // TODO call accept challenge function on the Battle contract
-
             // TODO Get playersTurn from the emitted event
-            this.playersTurn = '0x123'
 
-            // TODO remove once the smart contract call has been implemented above
-            setTimeout(resolve, 1000)
+            // TODO Just simulate the contract calls for now
+            setTimeout(() => {
+
+                this.challengeAcceptor = args.PLAYER
+
+                // just set the turn to the challenge acceptor for now
+                this.playersTurn = args.PLAYER
+
+                resolve
+            }, 5000)
         })
+    }
+
+    challengedByPlayer() {
+        return this.challengedBy
+    }
+
+    challengeAcceptedByPlayer() {
+        return this.challengeAcceptedBy
     }
 
     whenPlayersTurn() {
@@ -505,10 +565,26 @@ class Scratch3CryptoBeastsBlocks {
     }
 
     whenChallenged() {
+        if (this.whenChallengedFlag) {
+
+            log.info(`Challenged by player ${this.challenger}`)
+
+            this.whenChallengedFlag = false
+            return true
+        }
+        
         return false
     }
 
     whenChallengedAccepted() {
+        if (this.whenChallengedAcceptedFlag) {
+
+            log.info(`Challenge accepted by player ${this.challengedAcceptedBy}`)
+
+            this.whenChallengedAcceptedFlag = false
+            return true
+        }
+        
         return false
     }
 
@@ -565,7 +641,7 @@ class Scratch3CryptoBeastsBlocks {
             log.debug(`About to load cards from the Blockchain cards contract`)
 
             // Run for some time even when no motor is connected
-            setTimeout(resolve, 1000)
+            setTimeout(resolve, 200)
         })
     }
 
