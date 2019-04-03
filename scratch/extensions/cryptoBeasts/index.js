@@ -18,6 +18,7 @@ class Scratch3CryptoBeastsBlocks {
         // player addresses are the properties
         this.playerCards = {}
         this.playersCurrentCard = {}
+        this.currentPlayer = undefined
 
         this.whenChallengedFlag = false
         // Address of the challenger
@@ -245,11 +246,11 @@ class Scratch3CryptoBeastsBlocks {
                     blockType: BlockType.REPORTER,
                 },
                 {
-                    opcode: 'challengeAll',
+                    opcode: 'setCurrentPlayer',
                     text: formatMessage({
-                        id: 'cryptoBeasts.challengeAll',
-                        default: 'Player [PLAYER] challenges anyone to a battle',
-                        description: 'Notifies anyone not in a battle that you are challenging them to a battle',
+                        id: 'cryptoBeasts.setCurrentPlayer',
+                        default: 'My player address is [PLAYER]',
+                        description: 'Sets the current player\'s address',
                     }),
                     blockType: BlockType.COMMAND,
                     arguments: {
@@ -258,6 +259,15 @@ class Scratch3CryptoBeastsBlocks {
                             defaultValue: 'Player address',
                         },
                     }
+                },
+                {
+                    opcode: 'challengeAll',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.challengeAll',
+                        default: 'Challenge anyone to a battle',
+                        description: 'Notifies anyone not in a battle that you are challenging them to a battle',
+                    }),
+                    blockType: BlockType.COMMAND,
                 },
                 {
                     opcode: 'challengePlayer',
@@ -273,6 +283,15 @@ class Scratch3CryptoBeastsBlocks {
                             defaultValue: 'Player address',
                         },
                     }
+                },
+                {
+                    opcode: 'testOtherPlayerChallenge',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.testOtherPlayerChallenge',
+                        default: 'Test another player challenging this player',
+                        description: 'Testing only',
+                    }),
+                    blockType: BlockType.COMMAND,
                 },
                 {
                     opcode: 'acceptChallenge',
@@ -487,22 +506,22 @@ class Scratch3CryptoBeastsBlocks {
     challengeAll(args) {
         return new Promise((resolve, reject) => {
 
-            if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
-                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the challenge all command. Must be a 40 char hexadecimal with a 0x prefix`)
-                return reject(error)
+            if (!this.currentPlayer) {
+                return reject(`Failed to challenge other players as my player address has not been set. ${this.currentPlayer}`)
             }
 
-            log.debug(`About to challenge all players`)
+            log.debug(`About to challenge any player to battle`)
 
             // Just simulate for now
             setTimeout(() => {
 
-                if (args.PLAYER != playerAddresses[0]) {
+                if (this.currentPlayer != playerAddresses[0]) {
                     this.challengeAcceptedBy = playerAddresses[0]
                 } else {
                     this.challengeAcceptedBy = playerAddresses[1]
                 }
 
+                this.playersTurn = this.currentPlayer
                 this.whenChallengedAcceptedFlag = true
 
                 resolve
@@ -518,16 +537,51 @@ class Scratch3CryptoBeastsBlocks {
                 return reject(error)
             }
 
+            if (!this.currentPlayer) {
+                return reject(`Failed to challenge player as my player address has not been set. ${this.currentPlayer}`)
+            }
+
             log.debug(`About to challenge player ${args.PLAYER}`)
 
-            // Run for some time even when no motor is connected
-            setTimeout(resolve, 1000)
+            // Just simulate for now
+            setTimeout(() => {
+                this.challengeAcceptedBy = args.PLAYER
+                this.playersTurn = this.currentPlayer
+                this.whenChallengedAcceptedFlag = true
+
+                resolve
+            }, 5000)
+        })
+    }
+
+    testOtherPlayerChallenge() {
+        return new Promise((resolve, reject) => {
+
+            log.debug(`About to test another player challenging this player ${this.currentPlayer}`)
+
+            // TODO call accept challenge function on the Battle contract
+            // TODO Get playersTurn from the emitted event
+
+            // TODO Just simulate the contract calls for now
+            setTimeout(() => {
+
+                if (this.currentPlayer != playerAddresses[0]) {
+                    this.challengedBy = playerAddresses[0]
+                } else {
+                    this.challengedBy = playerAddresses[1]
+                }
+
+                log.debug(`Another plater ${this.challengedBy} challenged my player ${this.currentPlayer}`)
+
+                this.whenChallengedFlag = true
+
+                resolve
+            }, 2000)
         })
     }
 
     acceptChallenge(args) {
         return new Promise((resolve, reject) => {
-            // TODO call challenge function on the Battle contract
 
             if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
                 const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`)
@@ -542,7 +596,7 @@ class Scratch3CryptoBeastsBlocks {
             // TODO Just simulate the contract calls for now
             setTimeout(() => {
 
-                this.challengeAcceptor = args.PLAYER
+                this.challengedBy = args.PLAYER
 
                 // just set the turn to the challenge acceptor for now
                 this.playersTurn = args.PLAYER
@@ -560,6 +614,17 @@ class Scratch3CryptoBeastsBlocks {
         return this.challengeAcceptedBy
     }
 
+    setCurrentPlayer(args) {
+        if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
+            const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`)
+            return reject(error)
+        }
+
+        this.currentPlayer = args.PLAYER
+
+        log.debug(`Current player address set to ${this.currentPlayer}`)
+    }
+
     whenPlayersTurn() {
         return false
     }
@@ -567,7 +632,7 @@ class Scratch3CryptoBeastsBlocks {
     whenChallenged() {
         if (this.whenChallengedFlag) {
 
-            log.info(`Challenged by player ${this.challenger}`)
+            log.info(`Challenged by player ${this.challengedBy}`)
 
             this.whenChallengedFlag = false
             return true
@@ -579,7 +644,7 @@ class Scratch3CryptoBeastsBlocks {
     whenChallengedAccepted() {
         if (this.whenChallengedAcceptedFlag) {
 
-            log.info(`Challenge accepted by player ${this.challengedAcceptedBy}`)
+            log.info(`Challenge accepted by player ${this.challengeAcceptedBy}`)
 
             this.whenChallengedAcceptedFlag = false
             return true
