@@ -19,12 +19,16 @@ class Scratch3CryptoBeastsBlocks {
         this.playerCards = {}
         this.playersCurrentCard = {}
         this.currentPlayer = undefined
+        this.myTurnFlag = false
+        this.winningPlayer = undefined
+        this.gameOverFlag = false
 
         this.whenChallengedFlag = false
         // Address of the challenger
         this.challengedBy = undefined
 
         this.whenChallengedAcceptedFlag = false
+        // Address of the player that accepted my challenge
         this.challengeAcceptedBy = undefined
     }
 
@@ -132,11 +136,6 @@ class Scratch3CryptoBeastsBlocks {
                             // Optional: the default value of the argument
                             defaultValue: 1,
                         },
-                        PLAYER: {
-                            type: ArgumentType.STRING,
-                            // TODO populate with MetaMask address
-                            defaultValue: 'Player address',
-                        }
                     },
 
                     // Optional: list of target types for which this block should appear.
@@ -217,6 +216,15 @@ class Scratch3CryptoBeastsBlocks {
                             defaultValue: 1,
                         },
                     }
+                },
+                {
+                    opcode: 'getWinningPlayer',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.getWinningPlayer',
+                        default: 'Winning player',
+                        description: 'The address of the winning player',
+                    }),
+                    blockType: BlockType.REPORTER
                 },
                 {
                     opcode: 'countCards',
@@ -318,6 +326,15 @@ class Scratch3CryptoBeastsBlocks {
                     blockType: BlockType.HAT,
                 },
                 {
+                    opcode: 'whenGameOver',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.whenGameOver',
+                        default: 'When game over',
+                        description: 'When game has finished',
+                    }),
+                    blockType: BlockType.HAT,
+                },
+                {
                     opcode: 'whenChallenged',
                     text: formatMessage({
                         id: 'cryptoBeasts.whenChallenged',
@@ -412,17 +429,28 @@ class Scratch3CryptoBeastsBlocks {
         }
     }
 
-    playerMove(args, util) {
+    playerMove(args) {
 
         return new Promise((resolve, reject) => {
             // TODO call challenge function on the Battle contract
 
-            if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
-                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`)
-                return reject(error)
+            if (!this.currentPlayer) {
+                return reject(`Failed to move as my player address has not been set. ${this.currentPlayer}`)
             }
 
-            log.debug(`Player ${args.PLAYER} did move ${args.MOVE} for their turn`)
+            log.debug(`Player ${this.currentPlayer} did move ${args.MOVE} for their turn`)
+
+            if (args.move == 1) { // attack
+
+            } else if (args.move == 2) {    // special attack
+
+            
+            } else if (args.move == 3) {    // ability
+
+            }
+            else {
+                log.error(`Invalid move ${args.move}. Must be 1, 2 or 3`)
+            }
 
             // Run for some time even when no motor is connected
             setTimeout(resolve, 1000)
@@ -503,6 +531,18 @@ class Scratch3CryptoBeastsBlocks {
         return playerAddresses[args.PLAYER_NUMBER]
     }
 
+    getWinningPlayer() {
+
+        if (!this.winningPlayer) {
+            log.warn(`No winner yet`)
+        }
+        else {
+            log.info(`Winning player is ${this.winningPlayer}`)
+        }
+
+        return this.winningPlayer
+    }
+
     challengeAll(args) {
         return new Promise((resolve, reject) => {
 
@@ -522,6 +562,7 @@ class Scratch3CryptoBeastsBlocks {
                 }
 
                 this.playersTurn = this.currentPlayer
+                this.myTurnFlag = true
                 this.whenChallengedAcceptedFlag = true
 
                 resolve
@@ -626,6 +667,26 @@ class Scratch3CryptoBeastsBlocks {
     }
 
     whenPlayersTurn() {
+        if (this.myTurnFlag) {
+            
+            log.info(`Now current player\'s turn`)
+
+            this.myTurnFlag = false
+            return true
+        }
+
+        return false
+    }
+
+    whenGameOver() {
+        if (this.gameOverFlag) {
+            
+            log.info(`Game over. Winning player was ${this.winningPlayer}`)
+
+            this.gameOverFlag = false
+            return true
+        }
+
         return false
     }
 
