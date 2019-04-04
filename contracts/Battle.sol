@@ -1,7 +1,7 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.5.2;
 pragma experimental ABIEncoderV2;
 
-import "./PlayerCards.sol";
+import {PlayerCards} from "./PlayerCards.sol";
 
 contract Battle is PlayerCards {
 
@@ -11,50 +11,18 @@ contract Battle is PlayerCards {
         Ability
     }
 
-    uint16 constant turnDefenceIncrease = 50;
+    uint16 constant turnDefenceIncrease = 30;
 
-    address player1;
-    address player2;
-    uint8 currenctCardPlayer1 = 0;
-    uint8 currenctCardPlayer2 = 0;
     address playersTurn;
     address winningPlayer;
 
-    PlayerCard[] public player1Cards;
-    PlayerCard[] public player2Cards;
-    bool cardsPicked;
-
     event Turn(Move move, uint attachCardId, PlayerCard defenceCard, address nextPlayer);
-
-    constructor(address _player1, address _player2) public {
-        player1 = _player1;
-        player2 = _player2;
-    }
-
-    function pickCards(uint[5] memory desiredCards) public {
-
-        if (player1 == msg.sender) {
-            require(player1Cards.length == 0, "Player 1 already picked deck");
-            player1Cards = getPayerCards(desiredCards);
-
-            if (player2Cards.length > 0) {
-                _startBattle();
-            }
-        }
-        else if (player2 == msg.sender) {
-            require(player2Cards.length == 0, "Player 2 already picked deck");
-            player2Cards = getPayerCards(desiredCards);
-
-            if (player1Cards.length > 0) {
-                _startBattle();
-            }
-        }
-        else {
-            revert("Not a player");
-        }
-    }
     
-    function _startBattle() internal {
+    constructor(address _player1, address _player2) public
+        PlayerCards(_player1, _player2)
+    {}
+
+    function startBattle() public {
         cardsPicked = true;
 
         // TODO work out who goes first. Will just set to player 1 for now
@@ -66,26 +34,32 @@ contract Battle is PlayerCards {
     function turn(Move move) public {
         require(playersTurn == msg.sender);
 
-        // Who is the next player's turn?
-        PlayerCard attackCard;
-        PlayerCard defenceCard;
-        address nextPlayer;
-        if (playersTurn == player1) {
-            attackCard = player1Cards[currenctCardPlayer2];
-            defenceCard = player2Cards[currenctCardPlayer2];
-            nextPlayer = player2;
-        } else if (playersTurn == player2) {
-            attackCard = player2Cards[currenctCardPlayer1];
+        // Assume playersTurn == player1 as Solidity does not allow uninitialized storage pointers
+        PlayerCard storage attackCard = player1Cards[currenctCardPlayer1];
+        PlayerCard storage defenceCard = player2Cards[currenctCardPlayer2];
+        address nextPlayer = player2;
+        // if (playersTurn == player1) {
+        //     attackCard = player1Cards[currenctCardPlayer1];
+        //     defenceCard = player2Cards[currenctCardPlayer2];
+        //     nextPlayer = player2;
+        // } else 
+        if (playersTurn == player2) {
+            attackCard = player2Cards[currenctCardPlayer2];
             defenceCard = player1Cards[currenctCardPlayer1];
             nextPlayer = player1;
+        } else if (playersTurn != player1) {
+            revert('players turn does not equal either player');
         }
 
-        // TODO move logic
+        // move logic
         uint16 attackAmount;
         if (move == Move.Attack) {
-            attackAmount = cards[attackCard.cardId].attacks;
+            attackAmount = cards[attackCard.cardId].attack;
         } else if (move == Move.SpecialAttack) {
-            attackAmount = cards[attackCard.cardId].specialAttacks;
+            attackAmount = cards[attackCard.cardId].specialAttack;
+
+            require(attackCard.mana > 0);
+            attackCard.mana = attackCard.mana - 1;
         }
 
         if (defenceCard.defence > 0) {
@@ -99,7 +73,7 @@ contract Battle is PlayerCards {
                 }
                 else {
                     defenceCard.health = 0;
-                    nextCard();
+                    nextCard(attackAmount - defenceCard.health);
                 }
             }
         } else {
@@ -108,7 +82,7 @@ contract Battle is PlayerCards {
                 }
                 else {
                     defenceCard.health = 0;
-                    nextCard();
+                    nextCard(attackAmount - defenceCard.health);
                 }
         }
 
@@ -120,11 +94,12 @@ contract Battle is PlayerCards {
         emit Turn(move, attackCard.cardId, defenceCard, nextPlayer);
     }
 
-    function nextCard() public {
+    function nextCard(uint16 remainingAttachAmount) public {
         // if not next card the end the game
+        return;
     }
 
     function endGame() public {
-
+        return;
     }
 }

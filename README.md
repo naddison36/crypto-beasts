@@ -2,6 +2,8 @@
 
 A Blockchain-based card game that uses [Scratch](https://scratch.mit.edu/) for the UI and [Loom](https://loomx.io/) for the Ethereum smart contracts.
 
+# Scratch
+
 ## Prerequisite 
 
 The following software must be installed before running the installation steps
@@ -70,6 +72,47 @@ npm start
 
 After the server starts, Scratch should be available at [http://localhost:8601](http://localhost:8601) 
 
+## Useful links
+* [How to Develop Your Own Block for Scratch 3.0](https://medium.com/@hiroyuki.osaki/how-to-develop-your-own-block-for-scratch-3-0-1b5892026421) matches what has been done for this project.
+* The [Scratch 3.0 Extensions Specification](https://github.com/LLK/scratch-vm/wiki/Scratch-3.0-Extensions-Specification) is now out of date and does not work.
+* The unofficial Scratch 3 wiki is also now out of date. It covers how to install Scratch 3.0 on your local machine and develop an extension. See [Testing your Extensions](https://github.com/kyleplo/scratch-three-extension-docs/wiki/Testing-your-Extensions) and [Scratch GUI Getting Started](https://github.com/LLK/scratch-gui/wiki/Getting-Started) for more details.
+
+# Loom
+
+## Installation
+
+Following the [Loom OSX basic install instructions](https://loomx.io/developers/docs/en/basic-install-osx.html). Note loom was installed under the loom folder to keep it separated from all the other code in the repo.
+
+```
+mkdir loom
+cd loom
+wget https://private.delegatecall.com/loom/osx/stable/loom
+chmod +x loom
+./loom init
+./loom run
+```
+
+## Generate keys
+```
+./loom genkey -a public_key -k private_key
+```
+
+## Contract compile and deploy
+
+[Truffle](https://truffleframework.com/) is used to compile and deploy the contracts.
+
+### Local loom
+
+The [./truffle-config.js](./truffle-config.js) file has the Truffle config to deploy the contracts to a local Loom chain. The simply compile, run `truffle compile`. To compile and deploy the contracts locally, run
+```
+truffle deploy --reset --network loom_dapp_chain
+```
+
+This assume Truffle has been installed globally with
+```
+truffle install -g
+```
+
 # Docker
 
 This [Dockerfile](./Dockerfile) will add the [Crypto Beasts extension](./scratch/extensions/cryptoBeasts/index.js) as a built in extension, build the Scratch 3.0 react app and copy it into a nginx image. This can then be deployed to a cloud provider. I'm using Heroku, but others like AWS, Azure and GCP will also work.
@@ -94,8 +137,3 @@ This project is deploying to Heroku hence the `registry.heroku.com/crypto-beasts
 # Continuous Integration
 
 [CicleCi](https://circleci.com/) is used for CI. The config file is [.circleci/config.yml](.circleci/config.yml).
-
-## Useful links
-* [How to Develop Your Own Block for Scratch 3.0](https://medium.com/@hiroyuki.osaki/how-to-develop-your-own-block-for-scratch-3-0-1b5892026421) matches what has been done for this project.
-* The [Scratch 3.0 Extensions Specification](https://github.com/LLK/scratch-vm/wiki/Scratch-3.0-Extensions-Specification) is now out of date and does not work.
-* The unofficial Scratch 3 wiki is also now out of date. It covers how to install Scratch 3.0 on your local machine and develop an extension. See [Testing your Extensions](https://github.com/kyleplo/scratch-three-extension-docs/wiki/Testing-your-Extensions) and [Scratch GUI Getting Started](https://github.com/LLK/scratch-gui/wiki/Getting-Started) for more details.

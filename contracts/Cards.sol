@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.5.2;
 pragma experimental ABIEncoderV2;
 
 import "../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
@@ -16,8 +16,8 @@ contract Cards is Ownable {
         uint16 initMana;    // 0-20
 
         uint16 speed;   // 0-500
-        uint16 attacks; // 0-120
-        uint16 specialAttacks; // 120-240
+        uint16 attack; // 0-120
+        uint16 specialAttack; // 120-240
     }
 
     Card[] public cards;
