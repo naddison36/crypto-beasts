@@ -20,6 +20,7 @@ class Scratch3CryptoBeastsBlocks {
         this.playersCurrentCard = {}
         this.currentPlayer = undefined
         this.myTurnFlag = false
+        this.myTurnCompletedFlag = false
         this.winningPlayer = undefined
         this.gameOverFlag = false
 
@@ -116,7 +117,7 @@ class Scratch3CryptoBeastsBlocks {
                     // must be [ENCLOSED_WITHIN_SQUARE_BRACKETS].
                     text: formatMessage({
                         id: 'cryptoBeasts.playerMove',
-                        default: 'Player [PLAYER] makes move [MOVE]',
+                        default: 'Player makes move [MOVE]',
                         description: 'Player makes a move when it is their turn',
                     }),
 
@@ -322,6 +323,15 @@ class Scratch3CryptoBeastsBlocks {
                         id: 'cryptoBeasts.whenPlayersTurn',
                         default: 'When my turn',
                         description: 'Fires when current player\'s turn',
+                    }),
+                    blockType: BlockType.HAT,
+                },
+                {
+                    opcode: 'whenPlayerTurnEnded',
+                    text: formatMessage({
+                        id: 'cryptoBeasts.whenPlayerTurnEnded',
+                        default: 'When turn ended',
+                        description: 'Fires when current player\'s turn has ended',
                     }),
                     blockType: BlockType.HAT,
                 },
@@ -669,9 +679,21 @@ class Scratch3CryptoBeastsBlocks {
     whenPlayersTurn() {
         if (this.myTurnFlag) {
             
-            log.info(`Now current player\'s turn`)
+            log.info(`Now current player ${this.currentPlayer} turn`)
 
             this.myTurnFlag = false
+            return true
+        }
+
+        return false
+    }
+
+    whenPlayerTurnEnded() {
+        if (this.myTurnCompletedFlag) {
+            
+            log.info(`Current player ${this.currentPlayer} turn has completed`)
+
+            this.myTurnCompletedFlag = false
             return true
         }
 
