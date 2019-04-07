@@ -35,17 +35,17 @@ contract Battle is PlayerCards {
         require(playersTurn == msg.sender, "Not your turn");
 
         // Assume playersTurn == player1 as Solidity does not allow uninitialized storage pointers
-        PlayerCard storage attackCard = player1Cards[currenctCardPlayer1];
-        PlayerCard storage defenceCard = player2Cards[currenctCardPlayer2];
+        PlayerCard storage attackCard = player1Cards[currentCardPlayer1];
+        PlayerCard storage defenceCard = player2Cards[currentCardPlayer2];
         address nextPlayer = player2;
         // if (playersTurn == player1) {
-        //     attackCard = player1Cards[currenctCardPlayer1];
-        //     defenceCard = player2Cards[currenctCardPlayer2];
+        //     attackCard = player1Cards[currentCardPlayer1];
+        //     defenceCard = player2Cards[currentCardPlayer2];
         //     nextPlayer = player2;
         // } else 
         if (playersTurn == player2) {
-            attackCard = player2Cards[currenctCardPlayer2];
-            defenceCard = player1Cards[currenctCardPlayer1];
+            attackCard = player2Cards[currentCardPlayer2];
+            defenceCard = player1Cards[currentCardPlayer1];
             nextPlayer = player1;
         } else if (playersTurn != player1) {
             revert('players turn does not equal either player');
