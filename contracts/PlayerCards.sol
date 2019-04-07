@@ -7,7 +7,6 @@ contract PlayerCards is Cards {
 
     struct PlayerCard {
         uint cardId;
-        address player;
 
         uint16 health;
         uint16 defence;
@@ -30,11 +29,12 @@ contract PlayerCards is Cards {
         player2 = _player2;
     }
 
-    function _randomNumber(uint numberOfPicks) private view returns (uint) {
+    function _randomNumber(uint numberOfPicks, uint8 pickNumber) private view returns (uint) {
 
         uint rand = uint(
             keccak256(
                 abi.encodePacked(
+                    pickNumber,
                     blockhash(block.number - 1),
                     msg.sender,
                     cards.length
@@ -48,7 +48,6 @@ contract PlayerCards is Cards {
 
         playerCards.push( PlayerCard({
             cardId: cardId,
-            player: msg.sender,
             health: cards[cardId].initHealth,
             defence: cards[cardId].initDefence,
             mana: cards[cardId].initMana,
@@ -79,24 +78,31 @@ contract PlayerCards is Cards {
         uint[3] memory pickedCardNumbers = [uint(0), 0, 0];
 
         // pick one of the 5
-        pickedCardNumbers[0] = _randomNumber(5);
-        _setPlayerCard(playerCards, desiredCards[pickedCardNumbers[0]]);
+        uint randomPick1 = _randomNumber(5, 1);
+        _setPlayerCard(playerCards, desiredCards[randomPick1]);
+        pickedCardNumbers[0] = playerCards[0].cardId;
 
         // 40% chance picking one of the remaining 4 cards. If not, get a random card
         // then just pick a random card
-        pickedCardNumbers[1] = _randomNumber(10);
+        uint randomPick2 = _randomNumber(10, 2);
         // if picked the same card as before, or not the first 5 desgined cards
-        if (pickedCardNumbers[1] == pickedCardNumbers[0] ||
-            pickedCardNumbers[1] > 4) {
-            pickedCardNumbers[1] = _randomNumber(cards.length - 1);
-            // _setPlayerCard(playerCards[1], pickedCardNumbers[1]);
+        if (randomPick1 == randomPick2 ||
+            randomPick2 > 4) {
+            randomPick2 = _randomNumber(cards.length - 1, 2);
+            // pick any card
+            _setPlayerCard(playerCards, randomPick2);
         }
         else {
-            // _setPlayerCard(playerCards[1], desiredCards[pickedCardNumbers[1]]);
+            // Pick from the desired cards
+            _setPlayerCard(playerCards, desiredCards[randomPick2]);
         }
 
-        pickedCardNumbers[2] = _randomNumber(cards.length - 1);
-        // _setPlayerCard(playerCards[2], thirdCardId);
+        pickedCardNumbers[1] = playerCards[1].cardId;
+
+        uint randomPick3 = _randomNumber(cards.length - 1, 3);
+        _setPlayerCard(playerCards, randomPick3);
+
+        pickedCardNumbers[2] = playerCards[2].cardId;
 
         emit PickPayerCards(desiredCards, pickedCardNumbers);
     }

@@ -28,7 +28,8 @@
   "homepage": "https://github.com/naddison36/loom-scratch-tcg#readme",
   "dependencies": {
     "loom-js": "^1.42.2",
-    "loom-truffle-provider": "^0.13.0"
+    "loom-truffle-provider": "^0.13.0",
+    "truffle": "^5.0.11"
   },
   "devDependencies": {
     "openzeppelin-solidity": "^2.1.2",
