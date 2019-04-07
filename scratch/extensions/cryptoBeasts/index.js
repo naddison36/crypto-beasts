@@ -4,12 +4,12 @@ const ArgumentType = require('../../../extension-support/argument-type')
 const BlockType = require('../../../extension-support/block-type')
 const log = require('../../../util/log')
 
-const cards = require('./cards').cards
+const cards = require('./cards')
 const regEx = require('./regEx')
 
 // For testing
 const playerAddresses = ['0x48118F98aD3aceF72Bc33D42C0E2fa3B16751d38', '0xFf33Eb72e6184E5102Fb9938Ff360c131835861D']
-
+const turnDefenceIncrease = 30
 class Scratch3CryptoBeastsBlocks {
 
     constructor(runtimeProxy) {
@@ -481,14 +481,16 @@ class Scratch3CryptoBeastsBlocks {
                 log.error(`Invalid move ${args.move}. Must be 1, 2 or 3`)
             }
 
-            this.attack(attackAmount, defenceCard)
+            this.attack(attackAmount, defenceCard, this.oppositionPlayer)
+
+            attackCard['defence'] += turnDefenceIncrease
 
             // Run for some time even when no motor is connected
             setTimeout(resolve, 1000)
         })
     }
 
-    attack(attackAmount, defenceCard) {
+    attack(attackAmount, defenceCard, attackPlayer, defencePlayer) {
 
         if (defenceCard['defence'] > 0) {
             if (defenceCard['defence'] > attackAmount) {
@@ -500,7 +502,7 @@ class Scratch3CryptoBeastsBlocks {
                     defenceCard['health'] -= attackAmount
                     this.myTurnCompletedFlag = true
                 } else {
-                    this.nextCard(attackAmount, defenceCard)
+                    this.nextCard(attackAmount, defenceCard, attackPlayer, defencePlayer)
                 }
             }
         } else {
@@ -508,18 +510,18 @@ class Scratch3CryptoBeastsBlocks {
                 defenceCard['health'] -= attackAmount
                 this.myTurnCompletedFlag = true
             } else {
-                this.nextCard(attackAmount, defenceCard)
+                this.nextCard(attackAmount, defenceCard, attackPlayer, defencePlayer)
             }
         }
     }
 
-    nextCard(attackAmount, defenceCard) {
+    nextCard(attackAmount, defenceCard, attackPlayer, defencePlayer) {
         defenceCard['health'] = 0
-        if (this.playersCurrentCard[this.oppositionPlayer] == 2) {
-            this.endGame(this.myPlayer)
+        if (this.playersCurrentCard[defencePlayer] == 2) {
+            this.endGame(attackPlayer)
         } else {
-            this.playersCurrentCard[this.oppositionPlayer]++
-            this.attack(attackAmount - defenceCard['health'], this.playerCards[this.oppositionPlayer][this.playersCurrentCard[this.oppositionPlayer]])
+            this.playersCurrentCard[defencePlayer]++
+            this.attack(attackAmount - defenceCard['health'], this.playerCards[defencePlayer][this.playersCurrentCard[defencePlayer]])
         }
     }
 
