@@ -82,19 +82,19 @@ export const cards =
         ability: 'big MUNCH',
         health: 990,
         defence: 330,
-        mana: 4,
+        mana: 6,
         speed: 60,
         attack: 60,
         specialAttack: 100,
         abilityEffectsOpponent: {
-            health: 100,
+            health: 181,
             
         },
         abilityEffectsPlayer: {
             
         
         },
-        abilityMana: ,
+        abilityMana: 4,
     },
     {
         name: 'Extreme chesse',
@@ -105,6 +105,16 @@ export const cards =
         speed: 80,
         attack: 80,
         specialAttack: 140,
+        abilityEffectsOpponent: {
+            health: 100,
+            defence: 100000000,
+        },
+        abilityEffectsPlayer: {
+            
+        
+        },
+        abilityMana: 8,
+        
     },
     {
         name: 'Hippocampus',
@@ -115,6 +125,17 @@ export const cards =
         speed: 100,
         attack: 60,
         specialAttack: 100,
+        abilityEffectsOpponent: {
+            mana: 5,
+            health: 100,
+        },
+        abilityEffectsPlayer: {
+            health: 100
+            
+        
+        },
+        abilityMana: 8,
+        
     },
     {
         name: 'Trumps Henchmen',
@@ -125,6 +146,17 @@ export const cards =
         speed: 100,
         attack: 65,
         specialAttack: 110,
+        abilityEffectsOpponent: {
+            
+            health: 250,
+        },
+        abilityEffectsPlayer: {
+            defence: 200 
+            
+        
+        },
+        abilityMana: 9,
+        
     },
     {
         name: 'Sharperz',
@@ -158,13 +190,13 @@ export const cards =
     },
     {
         name: 'spwash',
-        ability: '??',
+        ability: 'water (thats all)',
         health: 1000,
         defence: 390,
         mana: 8,
         speed: 60,
-        attack: 100,
-        specialAttack: 190,
+        attack: 50,
+        specialAttack: 90,
     },
     {
         name: 'Lava Monster',
@@ -173,18 +205,18 @@ export const cards =
         defence: 300,
         mana: 8,
         speed: 55,
-        attack: 140,
-        specialAttack: 260,
+        attack: 90,
+        specialAttack: 150,
     },
     {
-        name: 'spy rino',
+        name: 'spy rhino',
         ability: 'Give em da horn',
         health: 920,
         defence: 900,
         mana: 6,
         speed: 70,
-        attack: 135,
-        specialAttack: 250,
+        attack: 85,
+        specialAttack: 145,
     },
     {
         name: 'spy pig ionk ionk',
@@ -193,7 +225,7 @@ export const cards =
         defence: 350,
         mana: 6,
         speed: 100,
-        attack: 110,
-        specialAttack: 200,
+        attack: 60,
+        specialAttack: 110,
     },
 ]
