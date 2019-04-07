@@ -32,7 +32,7 @@ contract Battle is PlayerCards {
     }
 
     function turn(Move move) public {
-        require(playersTurn == msg.sender);
+        require(playersTurn == msg.sender, "Not your turn");
 
         // Assume playersTurn == player1 as Solidity does not allow uninitialized storage pointers
         PlayerCard storage attackCard = player1Cards[currenctCardPlayer1];
@@ -54,9 +54,9 @@ contract Battle is PlayerCards {
         // move logic
         uint16 attackAmount;
         if (move == Move.Attack) {
-            attackAmount = cards[attackCard.cardId].attack;
+            attackAmount = attackCard.attack;
         } else if (move == Move.SpecialAttack) {
-            attackAmount = cards[attackCard.cardId].specialAttack;
+            attackAmount = attackCard.specialAttack;
 
             require(attackCard.mana > 0);
             attackCard.mana = attackCard.mana - 1;

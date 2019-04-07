@@ -7,9 +7,23 @@ contract Cards is Ownable {
 
     event NewCard(uint cardId, Card card);
 
+    struct CardProperties {
+        uint16 health;
+        uint16 defence;
+        uint16 mana;
+        uint16 attack;
+        uint16 specialAttack;
+    }
+
+    struct Ability {
+        string name;
+        CardProperties opponent;
+        CardProperties player;
+    }
+
     struct Card {
         string name;
-        string ability;
+        Ability ability;
 
         uint16 initHealth;  // 0-1000
         uint16 initDefence; // 0-500

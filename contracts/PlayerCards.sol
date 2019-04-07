@@ -12,6 +12,9 @@ contract PlayerCards is Cards {
         uint16 health;
         uint16 defence;
         uint16 mana;
+
+        uint16 attack;
+        uint16 specialAttack;
     }
 
     address player1;
@@ -48,6 +51,8 @@ contract PlayerCards is Cards {
         playerCard.health = cards[cardId].initHealth;
         playerCard.defence = cards[cardId].initDefence;
         playerCard.mana = cards[cardId].initMana;
+        playerCard.attack = cards[cardId].attack;
+        playerCard.specialAttack = cards[cardId].specialAttack;
     }
 
     function pickPayerCards(address player, uint[5] memory desiredCards) public returns(bool) {
