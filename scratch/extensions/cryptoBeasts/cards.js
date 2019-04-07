@@ -3,24 +3,36 @@ module.exports =
 [
     {
         name: 'Donald Trump',
-        abilityName: 'Build Wall',
+        ability: {
+            name: 'Build Wall',
+            opponent: {
+                defence: 50,
+            },
+            player: {
+                defence: 250,
+            },
+            mana: 8,
+        },
         health: 950,
         defence: 390,
         mana: 7,
         speed: 70,
         attack: 80,
         specialAttack: 140,
-        abilityEffectsOpponent: {
-            defence: 50,
-        },
-        abilityEffectsPlayer: {
-            defence: 250,
-        },
-        abilityMana: 8,
     },
     {
         name: 'Electro',
-        ability: 'Electro Charge',
+        ability: {
+            name: 'Electro Charge',
+            opponent: {
+                health:375
+            },
+            player: {
+                attack: 50,
+                specialAttack: 50,
+            },
+            mana: 10,
+        },
         health: 900,
         defence: 200,
         mana: 7,
@@ -28,77 +40,66 @@ module.exports =
         attack: 70,
         specialAttack: 120,
 
-        abilityEffectsOpponent: {
-            health:375
-            
-        },
-        abilityEffectsPlayer: {
-            attack: 50,
-            specialAttack: 50,
-        },
-        abilityMana: 10,
+        
     },
     {
         name: 'Hammer Head',
-        ability: 'Big Hammer',
+        ability: {
+            name: 'Big Hammer',
+            opponent: {
+                health: 400,
+            },
+            mana: 9,
+        },
         health: 900,
         defence: 200,
         mana: 5,
         speed: 60,
         attack: 70,
         specialAttack: 120,
-
-        abilityEffectsOpponent: {
-            health: 400,
-            
-        },
-        abilityEffectsPlayer: {
-            
-        
-        },
-        abilityMana: 9,
     },
     {
         name: 'Sea Horse',
-        ability: 'Current Ride',
+        ability: {
+            name: 'Current Ride',
+            opponent: {
+                health: 150,
+            },
+            mana: 5,
+        },
         health: 850,
         defence: 200,
         mana: 7,
         speed: 110,
         attack: 70,
         specialAttack: 120,
-        abilityEffectsOpponent: {
-            health: 150,
-            
-        },
-        abilityEffectsPlayer: {
-            
         
-        },
-        abilityMana: 5,
     },
     {
         name: 'Spy Hippo',
-        ability: 'big MUNCH',
+        ability: {
+            name: 'big MUNCH',
+            opponent: {
+                health: 100,
+            },
+            mana: 4,
+        },
         health: 990,
         defence: 330,
         mana: 4,
         speed: 60,
         attack: 60,
         specialAttack: 100,
-        abilityEffectsOpponent: {
-            health: 100,
-            
-        },
-        abilityEffectsPlayer: {
-            
-        
-        },
-        abilityMana: ,
     },
     {
         name: 'Extreme chesse',
-        ability: 'Obeast Burger',
+        ability: {
+            name: 'Obeast Burger',
+            opponent: {
+                health: 0,
+            },
+            mana: 0,
+        },
         health: 950,
         defence: 210,
         mana: 6,
@@ -108,7 +109,12 @@ module.exports =
     },
     {
         name: 'Hippocampus',
-        ability: 'Whirlpool',
+        ability: {
+            name: 'Whirlpool',
+            opponent: {
+            },
+            mana: 0,
+        },
         health: 850,
         defence: 250,
         mana: 7,
@@ -118,7 +124,15 @@ module.exports =
     },
     {
         name: 'Trumps Henchmen',
-        ability: 'Protect trump',
+        ability: {
+            name: 'Protect trump',
+            opponent: {
+            },
+            player: {
+
+            },
+            mana: 0,
+        },
         health: 940,
         defence: 380,
         mana: 8,
@@ -128,7 +142,15 @@ module.exports =
     },
     {
         name: 'Sharperz',
-        ability: 'Step on Shapes',
+        ability: {
+            name: 'Step on Shapes',
+            opponent: {
+            },
+            player: {
+
+            },
+            mana: 0,
+        },
         health: 950,
         defence: 400,
         mana: 7,
@@ -138,7 +160,15 @@ module.exports =
     },
     {
         name: 'Just Some Stuff in a Suit',
-        ability: 'I\'m throwing stuff at you',
+        ability: {
+            name: 'I\'m throwing stuff at you',
+            opponent: {
+            },
+            player: {
+
+            },
+            mana: 0,
+        },
         health: 0,
         defence: 0,
         mana: 0,
@@ -148,7 +178,15 @@ module.exports =
     },
     {
         name: 'alien UFO',
-        ability: 'abduction',
+        ability: {
+            name: 'abduction',
+            opponent: {
+            },
+            player: {
+
+            },
+            mana: 0,
+        },
         health: 910,
         defence: 350,
         mana: 8,
@@ -158,7 +196,15 @@ module.exports =
     },
     {
         name: 'spwash',
-        ability: '??',
+        ability: {
+            name: '??',
+            opponent: {
+            },
+            player: {
+
+            },
+            mana: 0,
+        },
         health: 1000,
         defence: 390,
         mana: 8,
@@ -168,7 +214,15 @@ module.exports =
     },
     {
         name: 'Lava Monster',
-        ability: 'Volcano strick',
+        ability: {
+            name: 'Volcano strick',
+            opponent: {
+            },
+            player: {
+
+            },
+            mana: 0,
+        },
         health: 990,
         defence: 300,
         mana: 8,
@@ -178,7 +232,15 @@ module.exports =
     },
     {
         name: 'spy rino',
-        ability: 'Give em da horn',
+        ability: {
+            name: 'Give em da horn',
+            opponent: {
+            },
+            player: {
+
+            },
+            mana: 0,
+        },
         health: 920,
         defence: 900,
         mana: 6,
@@ -188,7 +250,15 @@ module.exports =
     },
     {
         name: 'spy pig ionk ionk',
-        ability: '??',
+        ability: {
+            name: '??',
+            opponent: {
+            },
+            player: {
+
+            },
+            mana: 0,
+        },
         health: 950,
         defence: 350,
         mana: 6,
