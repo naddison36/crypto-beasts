@@ -18,19 +18,21 @@ class Scratch3CryptoBeastsBlocks {
         // player addresses are the properties
         this.playerCards = {}
         this.playersCurrentCard = {}
-        this.currentPlayer = undefined
+
+        // Address of the player controlling the game
+        this.myPlayer = undefined
+        // Address of the opposition player
+        this.oppositionPlayer = undefined
+
         this.myTurnFlag = false
         this.myTurnCompletedFlag = false
+
         this.winningPlayer = undefined
         this.gameOverFlag = false
 
         this.whenChallengedFlag = false
-        // Address of the challenger
-        this.challengedBy = undefined
 
         this.whenChallengedAcceptedFlag = false
-        // Address of the player that accepted my challenge
-        this.challengeAcceptedBy = undefined
     }
 
     getInfo() {
@@ -237,20 +239,20 @@ class Scratch3CryptoBeastsBlocks {
                     blockType: BlockType.REPORTER,
                 },
                 {
-                    opcode: 'challengedByPlayer',
+                    opcode: 'getMyPlayer',
                     text: formatMessage({
-                        id: 'cryptoBeasts.challengedByPlayer',
-                        default: 'Challenger',
-                        description: 'Player that has challenged the current player to battle',
+                        id: 'cryptoBeasts.getMyPlayer',
+                        default: 'My Player',
+                        description: 'My player address',
                     }),
                     blockType: BlockType.REPORTER,
                 },
                 {
-                    opcode: 'challengeAcceptedByPlayer',
+                    opcode: 'getOppositionPlayer',
                     text: formatMessage({
-                        id: 'cryptoBeasts.challengeAcceptedByPlayer',
-                        default: 'Challenge Acceptor',
-                        description: 'Player that has accepted the challenge to battle',
+                        id: 'cryptoBeasts.getOppositionPlayer',
+                        default: 'Opposition Player',
+                        description: 'Battle opposition player address',
                     }),
                     blockType: BlockType.REPORTER,
                 },
@@ -444,27 +446,87 @@ class Scratch3CryptoBeastsBlocks {
         return new Promise((resolve, reject) => {
             // TODO call challenge function on the Battle contract
 
-            if (!this.currentPlayer) {
-                return reject(`Failed to move as my player address has not been set. ${this.currentPlayer}`)
+            if (!this.myPlayer) {
+                return reject(`Failed to move as my player address has not been set. ${this.myPlayer}`)
             }
 
-            log.debug(`Player ${this.currentPlayer} did move ${args.MOVE} for their turn`)
+            if (!this.oppositionPlayer) {
+                return reject(`Failed to move as there is no opposition player. ${this.oppositionPlayer}`)
+            }
 
+            if (!this.playersCurrentCard.hasOwnProperty(this.myPlayer)) {
+                return reject(`My player ${this.myPlayer} has not picked cards.`)
+            }
+
+            if (!this.playersCurrentCard.hasOwnProperty(this.oppositionPlayer)) {
+                return reject(`Opposition player ${this.oppositionPlayer} has not picked cards.`)
+            }
+
+            if (this.winningPlayer) {
+                return reject(`Battle has already been won by ${this.winningPlayer}.`)
+            }
+
+            log.debug(`My player ${this.myPlayer} did move ${args.MOVE} for their turn`)
+
+            const attackCard = this.playerCards[this.myPlayer][this.playersCurrentCard[this.myPlayer]]
+            const defenceCard = this.playerCards[this.oppositionPlayer][this.playersCurrentCard[this.oppositionPlayer]]
+
+            let attackAmount
             if (args.move == 1) { // attack
-
+                attackAmount = attackCard['attack']
             } else if (args.move == 2) {    // special attack
-
-            
-            } else if (args.move == 3) {    // ability
-
-            }
-            else {
+                attackAmount = attackCard['specialAttack']
+            // } else if (args.move == 3) {    // ability
+            } else {
                 log.error(`Invalid move ${args.move}. Must be 1, 2 or 3`)
             }
+
+            this.attack(attackAmount, defenceCard)
 
             // Run for some time even when no motor is connected
             setTimeout(resolve, 1000)
         })
+    }
+
+    attack(attackAmount, defenceCard) {
+
+        if (defenceCard['defence'] > 0) {
+            if (defenceCard['defence'] > attackAmount) {
+                defenceCard['defence'] -= attackAmount
+                this.myTurnCompletedFlag = true
+            } else {
+                defenceCard['defence'] = 0
+                if (defenceCard['health'] > attackAmount) {
+                    defenceCard['health'] -= attackAmount
+                    this.myTurnCompletedFlag = true
+                } else {
+                    this.nextCard(attackAmount, defenceCard)
+                }
+            }
+        } else {
+            if (defenceCard['health'] > attackAmount) {
+                defenceCard['health'] -= attackAmount
+                this.myTurnCompletedFlag = true
+            } else {
+                this.nextCard(attackAmount, defenceCard)
+            }
+        }
+    }
+
+    nextCard(attackAmount, defenceCard) {
+        defenceCard['health'] = 0
+        if (this.playersCurrentCard[this.oppositionPlayer] == 2) {
+            this.endGame(this.myPlayer)
+        } else {
+            this.playersCurrentCard[this.oppositionPlayer]++
+            this.attack(attackAmount - defenceCard['health'], this.playerCards[this.oppositionPlayer][this.playersCurrentCard[this.oppositionPlayer]])
+        }
+    }
+
+    endGame(winningPlayer) {
+        this.winningPlayer = winningPlayer
+        this.myTurnCompletedFlag = true
+        this.gameOverFlag = true
     }
 
     getCardProperty(args) {
@@ -556,8 +618,8 @@ class Scratch3CryptoBeastsBlocks {
     challengeAll(args) {
         return new Promise((resolve, reject) => {
 
-            if (!this.currentPlayer) {
-                return reject(`Failed to challenge other players as my player address has not been set. ${this.currentPlayer}`)
+            if (!this.myPlayer) {
+                return reject(`Failed to challenge other players as my player address has not been set. ${this.myPlayer}`)
             }
 
             log.debug(`About to challenge any player to battle`)
@@ -565,13 +627,13 @@ class Scratch3CryptoBeastsBlocks {
             // Just simulate for now
             setTimeout(() => {
 
-                if (this.currentPlayer != playerAddresses[0]) {
-                    this.challengeAcceptedBy = playerAddresses[0]
+                if (this.myPlayer != playerAddresses[0]) {
+                    this.oppositionPlayer = playerAddresses[0]
                 } else {
-                    this.challengeAcceptedBy = playerAddresses[1]
+                    this.oppositionPlayer = playerAddresses[1]
                 }
 
-                this.playersTurn = this.currentPlayer
+                this.playersTurn = this.myPlayer
                 this.myTurnFlag = true
                 this.whenChallengedAcceptedFlag = true
 
@@ -588,16 +650,16 @@ class Scratch3CryptoBeastsBlocks {
                 return reject(error)
             }
 
-            if (!this.currentPlayer) {
-                return reject(`Failed to challenge player as my player address has not been set. ${this.currentPlayer}`)
+            if (!this.myPlayer) {
+                return reject(`Failed to challenge player as my player address has not been set. ${this.myPlayer}`)
             }
 
             log.debug(`About to challenge player ${args.PLAYER}`)
 
             // Just simulate for now
             setTimeout(() => {
-                this.challengeAcceptedBy = args.PLAYER
-                this.playersTurn = this.currentPlayer
+                this.oppositionPlayer = args.PLAYER
+                this.playersTurn = this.myPlayer
                 this.whenChallengedAcceptedFlag = true
 
                 resolve
@@ -608,7 +670,7 @@ class Scratch3CryptoBeastsBlocks {
     testOtherPlayerChallenge() {
         return new Promise((resolve, reject) => {
 
-            log.debug(`About to test another player challenging this player ${this.currentPlayer}`)
+            log.debug(`About to test another player challenging this player ${this.myPlayer}`)
 
             // TODO call accept challenge function on the Battle contract
             // TODO Get playersTurn from the emitted event
@@ -616,13 +678,13 @@ class Scratch3CryptoBeastsBlocks {
             // TODO Just simulate the contract calls for now
             setTimeout(() => {
 
-                if (this.currentPlayer != playerAddresses[0]) {
-                    this.challengedBy = playerAddresses[0]
+                if (this.myPlayer != playerAddresses[0]) {
+                    this.oppositionPlayer = playerAddresses[0]
                 } else {
-                    this.challengedBy = playerAddresses[1]
+                    this.oppositionPlayer = playerAddresses[1]
                 }
 
-                log.debug(`Another plater ${this.challengedBy} challenged my player ${this.currentPlayer}`)
+                log.debug(`Opposition player ${this.oppositionPlayer} challenged my player ${this.myPlayer}`)
 
                 this.whenChallengedFlag = true
 
@@ -647,7 +709,7 @@ class Scratch3CryptoBeastsBlocks {
             // TODO Just simulate the contract calls for now
             setTimeout(() => {
 
-                this.challengedBy = args.PLAYER
+                this.oppositionPlayer = args.PLAYER
 
                 // just set the turn to the challenge acceptor for now
                 this.playersTurn = args.PLAYER
@@ -657,12 +719,12 @@ class Scratch3CryptoBeastsBlocks {
         })
     }
 
-    challengedByPlayer() {
-        return this.challengedBy
+    getMyPlayer() {
+        return this.myPlayer
     }
 
-    challengeAcceptedByPlayer() {
-        return this.challengeAcceptedBy
+    getOppositionPlayer() {
+        return this.oppositionPlayer
     }
 
     setCurrentPlayer(args) {
@@ -671,15 +733,15 @@ class Scratch3CryptoBeastsBlocks {
             return reject(error)
         }
 
-        this.currentPlayer = args.PLAYER
+        this.myPlayer = args.PLAYER
 
-        log.debug(`Current player address set to ${this.currentPlayer}`)
+        log.debug(`Current player address set to ${this.myPlayer}`)
     }
 
     whenPlayersTurn() {
         if (this.myTurnFlag) {
             
-            log.info(`Now current player ${this.currentPlayer} turn`)
+            log.info(`My player ${this.myPlayer} turn`)
 
             this.myTurnFlag = false
             return true
@@ -691,7 +753,7 @@ class Scratch3CryptoBeastsBlocks {
     whenPlayerTurnEnded() {
         if (this.myTurnCompletedFlag) {
             
-            log.info(`Current player ${this.currentPlayer} turn has completed`)
+            log.info(`My player ${this.myPlayer} turn has completed`)
 
             this.myTurnCompletedFlag = false
             return true
@@ -715,7 +777,7 @@ class Scratch3CryptoBeastsBlocks {
     whenChallenged() {
         if (this.whenChallengedFlag) {
 
-            log.info(`Challenged by player ${this.challengedBy}`)
+            log.info(`Challenged by opposition player ${this.oppositionPlayer}`)
 
             this.whenChallengedFlag = false
             return true
@@ -727,7 +789,7 @@ class Scratch3CryptoBeastsBlocks {
     whenChallengedAccepted() {
         if (this.whenChallengedAcceptedFlag) {
 
-            log.info(`Challenge accepted by player ${this.challengeAcceptedBy}`)
+            log.info(`Challenge accepted by opposition player ${this.oppositionPlayer}`)
 
             this.whenChallengedAcceptedFlag = false
             return true
