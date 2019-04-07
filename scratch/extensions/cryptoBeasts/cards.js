@@ -1,5 +1,5 @@
 
-export const cards =
+module.exports =
 [
     {
         name: 'Donald Trump',
