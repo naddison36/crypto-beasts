@@ -16,12 +16,14 @@ contract PlayerCards is Cards {
         uint16 specialAttack;
     }
 
+    struct PlayerDeck {
+        PlayerCard[] playerCards;
+        uint8 currentCard;
+    }
+
     address public player1;
     address public player2;
-    uint8 public currentCardPlayer1 = 0;
-    uint8 public currentCardPlayer2 = 0;
-    PlayerCard[] public player1Cards;
-    PlayerCard[] public player2Cards;
+    mapping (address => PlayerDeck) public playerDecks;
     bool public cardsPicked;
     address public playersTurn;
 
@@ -57,19 +59,29 @@ contract PlayerCards is Cards {
         }));
     }
 
+    function getPlayerCurrentCard(address player) public view returns (PlayerCard memory) {
+
+        uint8 deckNumber = playerDecks[player].currentCard;
+
+        return playerDecks[player].playerCards[deckNumber];
+    }
+
+    function getPlayersCurrentCardNumber(address player) public view returns (uint8) {
+        return playerDecks[player].currentCard;
+    }
+
     function pickPayerCards(uint[5] memory desiredCards) public {
 
-        PlayerCard[] storage playerCards = player1Cards;
+        PlayerCard[] storage playerCards = playerDecks[msg.sender].playerCards;
+        require(playerCards.length == 0, 'Player has already picked their cards');
+
         if (player1 == msg.sender) {
-            require(player1Cards.length == 0, 'Player 1 has already picked their cards');
-            if (player2Cards.length > 0) {
+            if (playerDecks[player2].playerCards.length > 0) {
                 cardsPicked = true;
             }
         }
         else if (player2 == msg.sender) {
-            require(player2Cards.length == 0, 'Player 2 has already picked their cards');
-            playerCards = player2Cards;
-            if (player1Cards.length > 0) {
+            if (playerDecks[player1].playerCards.length > 0) {
                 cardsPicked = true;
             }
         } else {
@@ -117,8 +129,8 @@ contract PlayerCards is Cards {
     function startBattle() internal {
         require(cardsPicked, 'Both players have to have picked their cards');
 
-        uint16 player1MaxSpeed = calcMaxSpeed(player1Cards);
-        uint16 player2MaxSpeed = calcMaxSpeed(player2Cards);
+        uint16 player1MaxSpeed = calcMaxSpeed(playerDecks[player1].playerCards);
+        uint16 player2MaxSpeed = calcMaxSpeed(playerDecks[player2].playerCards);
 
         if (player1MaxSpeed >= player2MaxSpeed) {
             playersTurn = player1;
