@@ -23,6 +23,7 @@ contract PlayerCards is Cards {
     PlayerCard[] public player1Cards;
     PlayerCard[] public player2Cards;
     bool public cardsPicked;
+    address public playersTurn;
 
     constructor(address _player1, address _player2) public {
         player1 = _player1;
@@ -105,7 +106,41 @@ contract PlayerCards is Cards {
         pickedCardNumbers[2] = playerCards[2].cardId;
 
         emit PickPayerCards(desiredCards, pickedCardNumbers);
+
+        if (cardsPicked) {
+            startBattle();
+        }
     }
 
     event PickPayerCards(uint[5] desiredCards, uint[3] pickedCards);
+
+    function startBattle() internal {
+        require(cardsPicked, 'Both players have to have picked their cards');
+
+        uint16 player1MaxSpeed = calcMaxSpeed(player1Cards);
+        uint16 player2MaxSpeed = calcMaxSpeed(player2Cards);
+
+        if (player1MaxSpeed >= player2MaxSpeed) {
+            playersTurn = player1;
+        }
+        else {
+            playersTurn = player2;
+        }
+    }
+
+    function calcMaxSpeed(PlayerCard[] memory playerCards) public returns (uint16) {
+
+        uint16 maxSpeed = 0;
+
+        for (uint i=0; i<playerCards.length; i++) {
+
+            uint16 cardSpeed = cards[playerCards[i].cardId].speed;
+
+            if (cardSpeed > maxSpeed) {
+                maxSpeed = cardSpeed;
+            }
+        }
+
+        return maxSpeed;
+    }
 }

@@ -13,23 +13,13 @@ contract Battle is PlayerCards {
 
     uint16 constant turnDefenceIncrease = 30;
 
-    address playersTurn;
-    address winningPlayer;
+    address public winningPlayer;
 
     event Turn(Move move, uint attachCardId, PlayerCard defenceCard, address nextPlayer);
     
     constructor(address _player1, address _player2) public
         PlayerCards(_player1, _player2)
     {}
-
-    function startBattle() public {
-        cardsPicked = true;
-
-        // TODO work out who goes first. Will just set to player 1 for now
-        // Get the card with the highest speed from each player
-        // the player with the hihest speed does first
-        playersTurn = player1;
-    }
 
     function turn(Move move) public {
         require(playersTurn == msg.sender, "Not your turn");

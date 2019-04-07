@@ -8,6 +8,11 @@ contract('Pick cards test', async accounts => {
         battleContract = await BattleContract.deployed()
     })
 
+    it('Validate deployed contract', async () => {
+        assert.equal(await battleContract.player1.call(), accounts[0])
+        assert.equal(await battleContract.player2.call(), accounts[1])
+    })
+
     it('First card', async () => {
         let card = await battleContract.cards.call(0)
         console.log(`First case name: ${card.name}`)
@@ -19,6 +24,8 @@ contract('Pick cards test', async accounts => {
         desiredCards = [1, 3, 5, 7, 8]
         let result = await battleContract.pickPayerCards(desiredCards, { from: accounts[0] })
 
+        console.log(`Player 1 picked cards results: ${JSON.stringify(result)}`)
+        
         assert.equal(result.tx.length, 66)
         assert.equal(await battleContract.currentCardPlayer1.call(), 0)
         assert.isFalse(await battleContract.cardsPicked.call())
@@ -27,7 +34,6 @@ contract('Pick cards test', async accounts => {
         console.log(`Card id of first card ${firstCard.cardId} ${typeof firstCard.cardId}`)
         assert.isTrue(desiredCards.includes(firstCard.cardId.toNumber()))
 
-        console.log(`Player 1 picked cards results: ${JSON.stringify(result)}`)
     })
 
     it('Player 1 can not pick again', async () => {
@@ -45,14 +51,19 @@ contract('Pick cards test', async accounts => {
         desiredCards = [0, 2, 3, 5, 9]
         let result = await battleContract.pickPayerCards(desiredCards, { from: accounts[1] })
 
+        console.log(`Player 2 picked cards results: ${JSON.stringify(result)}`)
+
         assert.equal(result.tx.length, 66)
         assert.equal(await battleContract.currentCardPlayer2.call(), 0)
         assert.isTrue(await battleContract.cardsPicked.call())
 
+        // playersTurn is either player1 or player2
+        const playersTurn = await battleContract.playersTurn.call()
+        console.log(`Players turn: ${playersTurn}`)
+        assert.isTrue([accounts[0], accounts[1]].includes(playersTurn))
+
         const firstCard = await battleContract.player2Cards.call(0)
         assert.isTrue(desiredCards.includes(firstCard.cardId.toNumber()))
-
-        console.log(`Player 2 picked cards results: ${JSON.stringify(result)}`)
     })
 
     it('Player 2 can not pick again', async () => {
