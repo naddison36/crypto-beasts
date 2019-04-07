@@ -3,13 +3,20 @@ export const cards =
 [
     {
         name: 'Donald Trump',
-        ability: 'Build Wall',
+        abilityName: 'Build Wall',
         health: 950,
         defence: 390,
         mana: 7,
         speed: 70,
-        attack: 130,
+        attack: 80,
         specialAttack: 140,
+        abilityEffectsOpponent: {
+            defence: 50,
+        },
+        abilityEffectsPlayer: {
+            defence: 250,
+        },
+        abilityMana: 8,
     },
     {
         name: 'Electro',
@@ -18,8 +25,18 @@ export const cards =
         defence: 200,
         mana: 7,
         speed: 110,
-        attack: 120,
-        specialAttack: 270,
+        attack: 70,
+        specialAttack: 120,
+
+        abilityEffectsOpponent: {
+            health:375
+            
+        },
+        abilityEffectsPlayer: {
+            attack: 50,
+            specialAttack: 50,
+        },
+        abilityMana: 10,
     },
     {
         name: 'Hammer Head',
@@ -28,8 +45,18 @@ export const cards =
         defence: 200,
         mana: 5,
         speed: 60,
-        attack: 120,
-        specialAttack: 220,
+        attack: 70,
+        specialAttack: 120,
+
+        abilityEffectsOpponent: {
+            health: 400,
+            
+        },
+        abilityEffectsPlayer: {
+            
+        
+        },
+        abilityMana: 9,
     },
     {
         name: 'Sea Horse',
@@ -38,18 +65,36 @@ export const cards =
         defence: 200,
         mana: 7,
         speed: 110,
-        attack: 120,
-        specialAttack: 230,
+        attack: 70,
+        specialAttack: 120,
+        abilityEffectsOpponent: {
+            health: 150,
+            
+        },
+        abilityEffectsPlayer: {
+            
+        
+        },
+        abilityMana: 5,
     },
     {
         name: 'Spy Hippo',
-        ability: 'Poo Fling',
+        ability: 'big MUNCH',
         health: 990,
         defence: 330,
         mana: 4,
         speed: 60,
-        attack: 110,
-        specialAttack: 210,
+        attack: 60,
+        specialAttack: 100,
+        abilityEffectsOpponent: {
+            health: 100,
+            
+        },
+        abilityEffectsPlayer: {
+            
+        
+        },
+        abilityMana: ,
     },
     {
         name: 'Extreme chesse',
@@ -58,8 +103,8 @@ export const cards =
         defence: 210,
         mana: 6,
         speed: 80,
-        attack: 130,
-        specialAttack: 240,
+        attack: 80,
+        specialAttack: 140,
     },
     {
         name: 'Hippocampus',
@@ -68,8 +113,8 @@ export const cards =
         defence: 250,
         mana: 7,
         speed: 100,
-        attack: 110,
-        specialAttack: 210,
+        attack: 60,
+        specialAttack: 100,
     },
     {
         name: 'Trumps Henchmen',
@@ -78,8 +123,8 @@ export const cards =
         defence: 380,
         mana: 8,
         speed: 100,
-        attack: 115,
-        specialAttack: 220,
+        attack: 65,
+        specialAttack: 110,
     },
     {
         name: 'Sharperz',
@@ -88,8 +133,8 @@ export const cards =
         defence: 400,
         mana: 7,
         speed: 80,
-        attack: 90,
-        specialAttack: 180,
+        attack: 50,
+        specialAttack: 90,
     },
     {
         name: 'Just Some Stuff in a Suit',
@@ -108,8 +153,8 @@ export const cards =
         defence: 350,
         mana: 8,
         speed: 130,
-        attack: 100,
-        specialAttack: 200,
+        attack: 50,
+        specialAttack: 90,
     },
     {
         name: 'spwash',
