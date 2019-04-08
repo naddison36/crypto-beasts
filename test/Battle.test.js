@@ -1,13 +1,15 @@
 const BattleContract = artifacts.require('Battle')
-const cards = require('../scratch/extensions/cryptoBeasts/cards')
+const cards = require('../scratch/extensions/cards')
 
 let battleContract
 let firstPlayer
 
 contract('Battle', async accounts => {
 
-    const player1 = accounts[0]
-    const player2 = accounts[1]
+    const player1 = accounts[1]
+    const player2 = accounts[2]
+
+    console.log(`Player 1 and 2 addresses ${player1} ${player2}`)
 
     before(async () => {
         battleContract = await BattleContract.deployed()

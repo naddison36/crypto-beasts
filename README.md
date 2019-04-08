@@ -19,7 +19,22 @@ cd scratch
 git clone https://github.com/naddison36/crypto-beasts.git
 cd crypto-beasts
 npm install
-cd ..
+
+# install Loom locally
+mkdir loom
+cd loom
+wget https://private.delegatecall.com/loom/osx/stable/loom
+chmod +x loom
+./loom genkey -a public_key -k private_key
+./loom genkey -a player1_pub_key -k player1_priv_key
+./loom genkey -a player2_pub_key -k player2_priv_key
+
+# start Loom locally
+./loom init
+./loom run
+
+# install the scratch gui and vm packages
+cd ../..
 git clone https://github.com/LLK/scratch-gui.git
 cd scratch-gui
 npm install
@@ -30,11 +45,26 @@ npm install
 npm link
 cd ../scratch-gui
 npm link scratch-vm
+
+# link crypto beasts to the scratch vm extensions
 cd ../scratch-vm/src/extensions
 ln -s ../../../crypto-beasts/scratch/extensions ./custom
+# Link the extension to Truffle's Battle contract information
+cd ../../../crypto-beasts/scratch/extensions/cryptoBeastsLoom/
+ln -s ../../../build/contracts/Battle.json ./Battle.json
+
+# start the Scratch React App
+cd ../../scratch-gui
+npm start
 ```
 
-Next, the new extension needs to be registered in the scratch-gui. Go to the `src/lib/libraries/extensions/index.jsx` file in the scratch-gui folder created above and add this to the extensions array
+After the server starts, Scratch should be available at [http://localhost:8601](http://localhost:8601) 
+
+## Customization
+
+The following steps are done in the above but a listed here for anyone who wants to write their own Scratch extension.
+
+New extensions are registered in the scratch-gui project in the `src/lib/libraries/extensions/index.jsx` file. Add this to the `extensions` array
 ```js
 {
     name: (
@@ -59,18 +89,10 @@ Next, the new extension needs to be registered in the scratch-gui. Go to the `sr
 },
 ```
 
-The JavaScript in the extension file needs to be loaded via the `src/extension-support/extension-manager.js` file in the `scratch-vm` repository. Add the following function property to the `builtinExtensions` object in the `src/extension-support/extension-manager.js` file
+The JavaScript in the extension file needs to be loaded via the `src/extension-support/extension-manager.js` file in the `scratch-vm` package. Add the following function property to the `builtinExtensions` object in the `src/extension-support/extension-manager.js` file
 ```
 cryptoBeasts: () => require('../extensions/custom/custom/cryptoBeasts'),
 ```
-
-Finally, start the local Scratch server
-```
-cd ../../../scratch-gui
-npm start
-```
-
-After the server starts, Scratch should be available at [http://localhost:8601](http://localhost:8601) 
 
 ## Useful links
 * [How to Develop Your Own Block for Scratch 3.0](https://medium.com/@hiroyuki.osaki/how-to-develop-your-own-block-for-scratch-3-0-1b5892026421) matches what has been done for this project.
@@ -95,7 +117,15 @@ chmod +x loom
 ## Generate keys
 ```
 ./loom genkey -a public_key -k private_key
+./loom genkey -a player1_pub_key -k player1_priv_key
+./loom genkey -a player2_pub_key -k player2_priv_key
 ```
+
+The first private key is used for deploying the Battle contracts and becomes `accounts[0]` in the Loom web3 provider.
+
+For the Edcon Hackathon, the following addresses were used, which become `accounts[1]` and `accounts[2]` in the Loom web3 provider.
+* Player 1: `0xA4aaF6C3762E1635FB4d3e6Fd606d3Fe62830B5d`
+* Player 2: `0x9F66B280e22EB0D92CbDF04d89463c9a0F72Fa61`
 
 ## Contract compile and deploy
 
@@ -103,7 +133,7 @@ chmod +x loom
 
 ### Local loom
 
-The [./truffle-config.js](./truffle-config.js) file has the Truffle config to deploy the contracts to a local Loom chain. The simply compile, run `truffle compile`. To compile and deploy the contracts locally, run
+The [./truffle-config.js](./truffle-config.js) file has the Truffle config to deploy the contracts to a local Loom chain. The simply compile the contracts, run `truffle compile`. To compile and deploy the contracts to a local Loom node, run
 ```
 truffle deploy --reset --network loom_dapp_chain
 ```
@@ -111,6 +141,16 @@ truffle deploy --reset --network loom_dapp_chain
 This assume Truffle has been installed globally with
 ```
 truffle install -g
+```
+
+To run the tests against Ganache, which is a much faster JS implementation of an Ethereum node, run
+```
+truffle test
+```
+
+To run the tests against a local Loom node. Note test that check the revert reason will fail as Loom does not include the revert reason in the transaction receipt.
+```
+truffle test --network loom_dapp_chain
 ```
 
 # Docker

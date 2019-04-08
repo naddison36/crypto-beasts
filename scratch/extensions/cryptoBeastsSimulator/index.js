@@ -4,13 +4,13 @@ const ArgumentType = require('../../../extension-support/argument-type')
 const BlockType = require('../../../extension-support/block-type')
 const log = require('../../../util/log')
 
-const cards = require('./cards')
+const cards = require('../cards')
 const regEx = require('./regEx')
 
 // For testing
-const playerAddresses = ['0x48118F98aD3aceF72Bc33D42C0E2fa3B16751d38', '0xFf33Eb72e6184E5102Fb9938Ff360c131835861D']
+const playerAddresses = ['0xA4aaF6C3762E1635FB4d3e6Fd606d3Fe62830B5d', '0x9F66B280e22EB0D92CbDF04d89463c9a0F72Fa61']
 const turnDefenceIncrease = 30
-class Scratch3CryptoBeastsBlocks {
+class Scratch3CryptoBeastsSimulatorBlocks {
 
     constructor(runtimeProxy) {
         this.runtime = runtimeProxy
@@ -40,7 +40,7 @@ class Scratch3CryptoBeastsBlocks {
         return {
             // Required: the machine-readable name of this extension.
             // Will be used as the extension's namespace.
-            id: 'cryptoBeasts',
+            id: 'cryptoBeastsSim',
 
             // Optional: the human-readable name of this extension as string.
             // This and any other string to be displayed in the Scratch UI may either be
@@ -55,8 +55,8 @@ class Scratch3CryptoBeastsBlocks {
             // name: 'Crypto Beasts',
             name: formatMessage({
                 id: 'cryptoBeasts.categoryName',
-                default: 'Crypto Beasts',
-                description: 'Crypto Beasts extension',
+                default: 'Crypto Beasts Simulator',
+                description: 'Crypto Beasts extension simulator',
             }),
 
             // Optional: URI for a block icon, to display at the edge of each block for this
@@ -887,4 +887,4 @@ class Scratch3CryptoBeastsBlocks {
         return m
     }
 }
-module.exports = Scratch3CryptoBeastsBlocks
+module.exports = Scratch3CryptoBeastsSimulatorBlocks

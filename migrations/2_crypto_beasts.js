@@ -1,13 +1,14 @@
 const Battle = artifacts.require("./Battle.sol")
 
-const cards = require('../scratch/extensions/cryptoBeasts/cards')
+const cards = require('../scratch/extensions/cards')
 console.log(`Number of cards ${cards.length}`)
 
 module.exports = function(deployer, network, accounts) {
 
   deployer.then(async () => {
 
-    await deployer.deploy(Battle, accounts[0], accounts[1])
+    console.log(`About to deploy Battle contract with player 1 and 2 address: ${accounts[1]}, ${accounts[2]}`)
+    await deployer.deploy(Battle, accounts[1], accounts[2], {from: accounts[0]})
     const battleContract = await Battle.deployed()
 
     console.log(`Battle contract address: ${battleContract.address}`)
