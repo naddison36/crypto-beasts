@@ -46,30 +46,50 @@ contract Battle is PlayerCards {
         }
 
         // move logic
-        uint16 attackAmount;
         uint16 remainingAttackAmount;
         if (move == Move.Attack) {
-            attackAmount = attackCard.attack;
             attackCard.mana = attackCard.mana + 1;
+
+            // attack the defence and then health of the opponent
+            attack(attackCard.attack, defenceCard, defenceDeck);
         } else if (move == Move.SpecialAttack) {
-            attackAmount = attackCard.specialAttack;
 
             require(attackCard.mana > 0);
             attackCard.mana = attackCard.mana - 1;
+
+            // attack the defence and then health of the opponent
+            attack(attackCard.specialAttack, defenceCard, defenceDeck);
+
         } else if (move == Move.Ability) {
             uint16 remainder = 0;
 
+            CardProperties memory opponentAbility = cards[attackCard.cardId].ability.opponent;
+            CardProperties memory playerAbility = cards[attackCard.cardId].ability.opponent;
+
             // reduce opponents current card
-            // (defenceCard.health, remainder) = MathUtils.subToZero(defenceCard.health, remainingAttackAmount);
+            (defenceCard.health, remainder) = MathUtils.subToZero(defenceCard.health, opponentAbility.health);
+            (defenceCard.defence, remainder) = MathUtils.subToZero(defenceCard.defence, opponentAbility.defence);
+            (defenceCard.mana, remainder) = MathUtils.subToZero(defenceCard.mana, opponentAbility.mana);
+            (defenceCard.attack, remainder) = MathUtils.subToZero(defenceCard.attack, opponentAbility.attack);
+            (defenceCard.specialAttack, remainder) = MathUtils.subToZero(defenceCard.specialAttack, opponentAbility.specialAttack);
 
+            // if opponent health went to zero
+            if (defenceCard.health == 0) {
+                // if last card in defence deck
+                if  (defenceDeck.currentCard == defenceDeck.playerCards.length - 1) {
+                    endGame(msg.sender);
+                } else {
+                    defenceDeck.currentCard++;
+                }
+            }
+            
             // boost your current card
+            attackCard.health = attackCard.health + playerAbility.health;
+            attackCard.defence = attackCard.defence + playerAbility.defence;
+            attackCard.mana = attackCard.mana + playerAbility.mana;
+            attackCard.attack = attackCard.attack + playerAbility.attack;
+            attackCard.specialAttack = attackCard.specialAttack + playerAbility.specialAttack;
         }
-
-        // attack the defence and then health of the opponent
-        attack(attackAmount, defenceCard, defenceDeck);
-
-        // increase attackers defence
-        attackCard.defence = attackCard.defence + turnDefenceIncrease;
         
         playersTurn = nextPlayer;
 
