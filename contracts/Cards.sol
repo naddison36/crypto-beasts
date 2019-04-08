@@ -19,6 +19,7 @@ contract Cards is Ownable {
         string name;
         CardProperties opponent;
         CardProperties player;
+        uint16 manaCost;
     }
 
     struct Card {

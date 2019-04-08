@@ -55,13 +55,14 @@ contract Battle is PlayerCards {
         } else if (move == Move.SpecialAttack) {
 
             require(attackCard.mana > 0);
-            attackCard.mana = attackCard.mana - 1;
 
             // attack the defence and then health of the opponent
             attack(attackCard.specialAttack, defenceCard, defenceDeck);
 
         } else if (move == Move.Ability) {
             uint16 remainder = 0;
+
+            (attackCard.mana, remainder) = MathUtils.subToZero(attackCard.mana + 1, cards[attackCard.cardId].ability.manaCost);
 
             CardProperties memory opponentAbility = cards[attackCard.cardId].ability.opponent;
             CardProperties memory playerAbility = cards[attackCard.cardId].ability.opponent;
@@ -82,13 +83,16 @@ contract Battle is PlayerCards {
                     defenceDeck.currentCard++;
                 }
             }
-            
+
             // boost your current card
             attackCard.health = attackCard.health + playerAbility.health;
             attackCard.defence = attackCard.defence + playerAbility.defence;
             attackCard.mana = attackCard.mana + playerAbility.mana;
             attackCard.attack = attackCard.attack + playerAbility.attack;
             attackCard.specialAttack = attackCard.specialAttack + playerAbility.specialAttack;
+        }
+        else {
+            revert('Invalid move');
         }
         
         playersTurn = nextPlayer;

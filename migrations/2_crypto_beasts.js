@@ -43,7 +43,7 @@ module.exports = function(deployer, network, accounts) {
             attack: card.ability.player.attack || 0,
             specialAttack: card.ability.player.specialAttack || 0,
           },
-          mana: card.ability.mana,
+          manaCost: card.ability.mana,
         },
         initHealth: card.health,
         initDefence: card.defence,

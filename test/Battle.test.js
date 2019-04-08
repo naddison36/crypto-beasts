@@ -1,4 +1,5 @@
 const BattleContract = artifacts.require('Battle')
+const cards = require('../scratch/extensions/cryptoBeasts/cards')
 
 let battleContract
 let firstPlayer
@@ -160,8 +161,36 @@ contract('Battle', async accounts => {
         const attackAmount = parseInt(preAttackCard.specialAttack)
         validateAttack(attackAmount, preDefenceCard, postDefenceCard)
 
-        // attacker mana has gone up
-        assert.equal(parseInt(postAttackCard.mana), parseInt(preAttackCard.mana) - 1)
+        // attacker mana has not changed
+        assert.equal(postAttackCard.mana, preAttackCard.mana)
+    })
+
+    it('Second player\'s second move is ability', async() => {
+
+        const preAttackCard = await battleContract.getPlayerCurrentCard(secondPlayer)
+        const preDefenceCard = await battleContract.getPlayerCurrentCard(firstPlayer)
+
+        await battleContract.turn(2, { from: secondPlayer })
+
+        assert.equal(await battleContract.playersTurn.call(), firstPlayer)
+
+        // defence player's defence has gone down
+        const postAttackCard = await battleContract.getPlayerCurrentCard(secondPlayer)
+        const postDefenceCard = await battleContract.getPlayerCurrentCard(firstPlayer)
+
+        // const attackAmount = parseInt(preAttackCard.specialAttack)
+        // validateAttack(attackAmount, preDefenceCard, postDefenceCard)
+
+        assert.equal(await battleContract.playersTurn.call(), firstPlayer)
+
+        // attacker mana is plus 1 less the ability mana cost
+        const newMana = parseInt(preAttackCard.mana) + 1 - parseInt(cards[parseInt(preAttackCard.cardId)].ability.mana)
+        if (newMana >= 0) {
+            assert.equal(parseInt(postAttackCard.mana), parseInt(preAttackCard.mana) + 1 - parseInt(cards[parseInt(preAttackCard.cardId)].ability.mana))
+        }
+        else {
+            assert.equal(parseInt(postAttackCard.mana), 0)
+        }
     })
 })
 
