@@ -10,6 +10,11 @@ const player2PrivateKeyBase64 = readFileSync('./loom/player2_priv_key', 'utf-8')
 const player1PrivateKey = CryptoUtils.B64ToUint8Array(player1PrivateKeyBase64)
 const player2PrivateKey = CryptoUtils.B64ToUint8Array(player2PrivateKeyBase64)
 
+// Ropsten testing only
+const HDWalletProvider = require("truffle-hdwallet-provider-privkey")
+// has address 0x6DEd9aCA0B2754C1ce4600A8A39860CaaEAa66c1
+const ropstenKeys = ['D89E31BC833CF02FA12132A127B59E72D99491862A004DB155FE302B21A33321'] // private keys
+
 module.exports = {
   networks: {
     loom_dapp_chain: {
@@ -32,7 +37,13 @@ module.exports = {
         return new LoomTruffleProvider(chainId, writeUrl, readUrl, privateKey)
       },
       network_id: 'extdev-plasma-us1'
-    }
+    },
+    ropsten:  {
+      provider: () => {
+        return new HDWalletProvider(ropstenKeys, "https://ropsten.infura.io/v3/227f03449d6f42808041ee845ec18467")
+      },
+      network_id: 3,
+    },
   },
   compilers: {
     solc: {
