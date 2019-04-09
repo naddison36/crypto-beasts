@@ -12,7 +12,7 @@ export default [
         name: (
             <FormattedMessage
                 defaultMessage="Crypto Beasts on Loom"
-                description="Name for the 'Crypto Beasts' extension"
+                description="Name of extension"
                 id="gui.extension.cryptoBeastsLoom.name"
             />
         ),
@@ -35,8 +35,32 @@ export default [
     {
         name: (
             <FormattedMessage
+                defaultMessage="Crypto Beasts using Web3"
+                description="Name of extension"
+                id="gui.extension.cryptoBeastsWeb3.name"
+            />
+        ),
+        extensionId: 'cryptoBeastsWeb3',
+        collaborator: 'Nick Addison, Baxter Addison, Liam Ryan, Zac Isterling, Oliver Ackerman',
+        // iconURL: boostIconURL,
+        // insetIconURL: boostInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Battle your friends in a Blockchain-based card game"
+                description="Battle your friends in a Blockchain-based card game"
+                id="gui.extension.cryptoBeastsWeb3.description"
+            />
+        ),
+        featured: true,
+        disabled: false,
+        bluetoothRequired: false,
+        internetConnectionRequired: true
+    },
+    {
+        name: (
+            <FormattedMessage
                 defaultMessage="Crypto Beasts Simulator"
-                description="Name for the 'Crypto Beasts' extension"
+                description="Name of extension"
                 id="gui.extension.cryptoBeastsSimulator.name"
             />
         ),

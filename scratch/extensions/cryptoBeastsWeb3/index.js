@@ -1,6 +1,5 @@
 const formatMessage = require('format-message')
 // const Web3 = require('web3')
-// const { Client, CryptoUtils } = require('loom-js')
 
 const ArgumentType = require('../../../extension-support/argument-type')
 const BlockType = require('../../../extension-support/block-type')
@@ -9,40 +8,33 @@ const log = require('../../../util/log')
 const cards = require('../cards')
 const regEx = require('../regEx')
 
-// For testing
+const battleContractAddress = '0x21c96f5b07Ae439399b3075a0BbdD00D5A3dD295'
+const deployAddress = '0x6DEd9aCA0B2754C1ce4600A8A39860CaaEAa66c1'
+
+// For testing only
 const playerKeys = [
     {
-        private: 'yni6McaSX/H3c4YSwwUyucsaFtDudrO4rWl0xHDx90FIO0nOXfSibeIptmRthiS4EcDYFHOlgCUcYEq2Cen3mQ==',
-        address: '0xA4aaF6C3762E1635FB4d3e6Fd606d3Fe62830B5d',
+        address: '0x48118F98aD3aceF72Bc33D42C0E2fa3B16751d38',
     },
     {
-        private: 'qH5oDAPUi2pEu5vGCPoRmbuRk4IhWl4dFA0dpnc2Fo+bGAHYnBPuzmTYBgTYHiV/hcrwOPCFAObdIbXId7831g==',
-        address: '0x9F66B280e22EB0D92CbDF04d89463c9a0F72Fa61',
+        address: '0xFf33Eb72e6184E5102Fb9938Ff360c131835861D',
     },
 ]
 
 const turnDefenceIncrease = 30
-class Scratch3CryptoBeastsLoomBlocks {
+class Scratch3CryptoBeastsWeb3Blocks {
 
     constructor(runtimeProxy) {
         this.runtime = runtimeProxy
-
-        this.init()
-
-        // connectLoom()
-    }
-
-    init() {
-        log.debug(`About to initialize the game`)
 
         // player addresses are the properties
         this.playerCards = {}
         this.playersCurrentCard = {}
 
         // Address of the player controlling the game
-        this.myPlayer = playerKeys[0].address
+        this.myPlayer = undefined
         // Address of the opposition player
-        this.oppositionPlayer = playerKeys[1].address
+        this.oppositionPlayer = undefined
 
         this.myTurnFlag = false
         this.myTurnCompletedFlag = false
@@ -55,31 +47,23 @@ class Scratch3CryptoBeastsLoomBlocks {
         this.whenChallengedAcceptedFlag = false
     }
 
-    // connectLoom() {
+    connectWeb3() {
 
-    //     log.debug(`About to connect to local Loom`)
+        const BattleContract = require('./Battle')
 
-    //     // TODO put these in env vars
-    //     const client = new Client(
-    //         'default',
-    //         'ws://127.0.0.1:46658/websocket',
-    //         'ws://127.0.0.1:46658/queryws',
-    //     )  
+        if (!web3Client) {
+            web3Client = new Web3(web3.currentProvider)
+        }
 
-    //     const loomProvider = new LoomProvider(client, CryptoUtils.B64ToUint8Array(privateKeyBase64));
-    //     const web3 = new Web3(loomProvider)
-    
-    //     battleContractWeb3 = new web3.eth.Contract(BattleABI.abi, BattleABI.networks[network].address, {
-    //         from: currentUserAddress
-    //       })
-    // }
+        this.battleContract = web3Client.eth.contract(BattleContract.abi).at(battleContractAddress)
+    }
 
     getInfo() {
 
         return {
             // Required: the machine-readable name of this extension.
             // Will be used as the extension's namespace.
-            id: 'cryptoBeastsLoom',
+            id: 'cryptoBeastsWeb3',
 
             // Optional: the human-readable name of this extension as string.
             // This and any other string to be displayed in the Scratch UI may either be
@@ -94,8 +78,8 @@ class Scratch3CryptoBeastsLoomBlocks {
             // name: 'Crypto Beasts',
             name: formatMessage({
                 id: 'cryptoBeasts.categoryName',
-                default: 'Crypto Beasts on Loom',
-                description: 'Crypto Beasts extension for Loom',
+                default: 'Crypto Beasts using Web3',
+                description: 'Crypto Beasts extension for Web3',
             }),
 
             // Optional: URI for a block icon, to display at the edge of each block for this
@@ -158,7 +142,7 @@ class Scratch3CryptoBeastsLoomBlocks {
                     // must be [ENCLOSED_WITHIN_SQUARE_BRACKETS].
                     text: formatMessage({
                         id: 'cryptoBeasts.playerMove',
-                        default: 'Move [MOVE]',
+                        default: 'Player makes move [MOVE]',
                         description: 'Player makes a move when it is their turn',
                     }),
 
@@ -296,9 +280,9 @@ class Scratch3CryptoBeastsLoomBlocks {
                     blockType: BlockType.REPORTER,
                 },
                 {
-                    opcode: 'setMyPlayer',
+                    opcode: 'setCurrentPlayer',
                     text: formatMessage({
-                        id: 'cryptoBeasts.setMyPlayer',
+                        id: 'cryptoBeasts.setCurrentPlayer',
                         default: 'My player address is [PLAYER]',
                         description: 'Sets the current player\'s address',
                     }),
@@ -416,7 +400,7 @@ class Scratch3CryptoBeastsLoomBlocks {
                     opcode: 'pickCards',
                     text: formatMessage({
                         id: 'cryptoBeasts.pickCards',
-                        default: 'Player [PLAYER] picks cards [CARD_1], [CARD_2], [CARD_3], [CARD_4] and [CARD_5]',
+                        default: 'Player picks cards [CARD_1], [CARD_2], [CARD_3], [CARD_4] and [CARD_5]',
                         description: 'Player picks cards for their deck',
                     }),
                     blockType: BlockType.COMMAND,
@@ -428,15 +412,6 @@ class Scratch3CryptoBeastsLoomBlocks {
                         CARD_4: {type: ArgumentType.STRING, defaultValue: 4},
                         CARD_5: {type: ArgumentType.STRING, defaultValue: 5},
                     }
-                },
-                {
-                    opcode: 'reset',
-                    text: formatMessage({
-                        id: 'cryptoBeasts.reset',
-                        default: 'Reset game',
-                        description: 'Reset game',
-                    }),
-                    blockType: BlockType.COMMAND,
                 },
             ],
 
@@ -516,67 +491,25 @@ class Scratch3CryptoBeastsLoomBlocks {
 
             log.debug(`My player ${this.myPlayer} did move ${args.MOVE} for their turn`)
 
-            const attackCard = this.playerCards[this.myPlayer][this.playersCurrentCard[this.myPlayer]]
-            const defenceCard = this.playerCards[this.oppositionPlayer][this.playersCurrentCard[this.oppositionPlayer]]
+            this.battleContract.move(args.MOVE).send({from: address})
+                .once('transactionHash', hash => {
+                    log.debug(`Got tx hash ${hash} for player move`)
+                })
+               .once('receipt', receipt => {
+                   log.debug(`Got tx receipt for player move`)
+                   this.myTurnCompletedFlag = true
 
-            let attackAmount
-            if (args.move == 1) { // attack
-                attackAmount = attackCard['attack']
-            } else if (args.move == 2) {    // special attack
-                attackAmount = attackCard['specialAttack']
-            // } else if (args.move == 3) {    // ability
-            } else {
-                log.error(`Invalid move ${args.move}. Must be 1, 2 or 3`)
-            }
+                   // If the receipt contains a EndGame event
+                //    if (receipt.) {
+                //        this.winningPlayer = winningPlayer
+                //        this.gameOverFlag = true
+                //    }
+                   resolve
+               })
 
-            this.attack(attackAmount, defenceCard, this.oppositionPlayer)
-
-            attackCard['defence'] += turnDefenceIncrease
-
-            // Run for some time even when no motor is connected
-            setTimeout(resolve, 1000)
+            // TODO is the game over?
+            
         })
-    }
-
-    attack(attackAmount, defenceCard, attackPlayer, defencePlayer) {
-
-        if (defenceCard['defence'] > 0) {
-            if (defenceCard['defence'] > attackAmount) {
-                defenceCard['defence'] -= attackAmount
-                this.myTurnCompletedFlag = true
-            } else {
-                defenceCard['defence'] = 0
-                if (defenceCard['health'] > attackAmount) {
-                    defenceCard['health'] -= attackAmount
-                    this.myTurnCompletedFlag = true
-                } else {
-                    this.nextCard(attackAmount, defenceCard, attackPlayer, defencePlayer)
-                }
-            }
-        } else {
-            if (defenceCard['health'] > attackAmount) {
-                defenceCard['health'] -= attackAmount
-                this.myTurnCompletedFlag = true
-            } else {
-                this.nextCard(attackAmount, defenceCard, attackPlayer, defencePlayer)
-            }
-        }
-    }
-
-    nextCard(attackAmount, defenceCard, attackPlayer, defencePlayer) {
-        defenceCard['health'] = 0
-        if (this.playersCurrentCard[defencePlayer] == 2) {
-            this.endGame(attackPlayer)
-        } else {
-            this.playersCurrentCard[defencePlayer]++
-            this.attack(attackAmount - defenceCard['health'], this.playerCards[defencePlayer][this.playersCurrentCard[defencePlayer]])
-        }
-    }
-
-    endGame(winningPlayer) {
-        this.winningPlayer = winningPlayer
-        this.myTurnCompletedFlag = true
-        this.gameOverFlag = true
     }
 
     getCardProperty(args) {
@@ -777,10 +710,7 @@ class Scratch3CryptoBeastsLoomBlocks {
         return this.oppositionPlayer
     }
 
-    setMyPlayer(args) {
-
-        log.debug(`Current player address about to be updated from ${this.myPlayer}`)
-
+    setCurrentPlayer(args) {
         if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
             const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the accept challenge command. Must be a 40 char hexadecimal with a 0x prefix`)
             return reject(error)
@@ -789,10 +719,6 @@ class Scratch3CryptoBeastsLoomBlocks {
         this.myPlayer = args.PLAYER
 
         log.debug(`Current player address set to ${this.myPlayer}`)
-    }
-
-    reset() {
-        this.init()
     }
 
     whenPlayersTurn() {
@@ -855,34 +781,30 @@ class Scratch3CryptoBeastsLoomBlocks {
         return false
     }
 
-    pickCards(args) {
-        return new Promise((resolve, reject) => {
-            // TODO call pickCards function on the Battle contract
+    async pickCards(args) {
 
-            if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
-                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the pick cards command. Must be a 40 char hexadecimal with a 0x prefix`)
-                return reject(error)
-            }
+        if (!this.myPlayer) {
+            return reject(`Failed to pick cards as my player address has not been set. ${this.myPlayer}`)
+        }
 
-            if (this.playerCards[args.PLAYER]) {
-                const error = new Error(`PLAYER ${args.PLAYER} has already picked cards`)
-                return reject(error)
-            }
+        if (this.playerCards[this.myPlayer]) {
+            const error = new Error(`PLAYER ${args.PLAYER} has already picked cards`)
+            return reject(error)
+        }
 
-            log.debug(`Player ${args.PLAYER} picks cards ${JSON.stringify(args)}`)
+        log.debug(`Player ${args.PLAYER} picks cards ${JSON.stringify(args)}`)
 
-            // clone the cards into player cards
-            this.playerCards[args.PLAYER] = [
-                {...cards[args.CARD_1]},
-                {...cards[args.CARD_2]},
-                {...cards[args.CARD_3]},
-            ]
+        await this.battleContract.pickPayerCards([args.CARD_1, args.CARD_2, args.CARD_3, args.CARD_4, args.CARD_5])
 
-            this.playersCurrentCard[args.PLAYER] = 0
+        // clone the cards into player cards
+        // this.playerCards[args.PLAYER] = [
+        //     {...cards[args.CARD_1]},
+        //     {...cards[args.CARD_2]},
+        //     {...cards[args.CARD_3]},
+        // ]
 
-            // Run for some time even when no motor is connected
-            setTimeout(resolve, 200)
-        })
+        this.playersCurrentCard[args.PLAYER] = 0
+
     }
 
     getPlayersCurrentCard(args) {
@@ -942,4 +864,4 @@ class Scratch3CryptoBeastsLoomBlocks {
         return m
     }
 }
-module.exports = Scratch3CryptoBeastsLoomBlocks
+module.exports = Scratch3CryptoBeastsWeb3Blocks

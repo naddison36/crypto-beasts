@@ -19,8 +19,9 @@ const builtinExtensions = {
     speech2text: () => require('../extensions/scratch3_speech2text'),
     ev3: () => require('../extensions/scratch3_ev3'),
     makeymakey: () => require('../extensions/scratch3_makeymakey'),
-    cryptoBeastsSimulator: () => require('../extensions/custom/cryptoBeastsSimulator'),
     cryptoBeastsLoom: () => require('../extensions/custom/cryptoBeastsLoom'),
+    cryptoBeastsWeb3: () => require('../extensions/custom/cryptoBeastsWeb3'),
+    cryptoBeastsSimulator: () => require('../extensions/custom/cryptoBeastsSimulator'),
     // todo: only load this extension once we have a compatible way to load its
     // Vernier module dependency.
     // gdxfor: () => require('../extensions/scratch3_gdx_for')
