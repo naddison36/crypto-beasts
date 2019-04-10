@@ -42,6 +42,8 @@ cd ..
 git clone https://github.com/LLK/scratch-vm.git
 cd scratch-vm
 npm install
+npm install loom-js
+npm install web3
 npm link
 cd ../scratch-gui
 npm link scratch-vm
@@ -52,6 +54,12 @@ ln -s ../../../crypto-beasts/scratch/extensions ./custom
 # Link the extension to Truffle's Battle contract information
 cd ../../../crypto-beasts/scratch/extensions/cryptoBeastsLoom/
 ln -s ../../../build/contracts/Battle.json ./Battle.json
+
+# Copy modified scratch vm and gui files into the dependent packages
+cd ../../
+cp gui/index.jsx ../../scratch-gui/src/lib/libraries/extensions/index.jsx
+cp vm/extension-manager.js ../../scratch-vm/src/extension-support/extension-manager.js
+# cp vm/webpack.config.js ../../scratch-vm/src/extension-support/webpack.config.js
 
 # start the Scratch React App
 cd ../../scratch-gui
@@ -94,6 +102,11 @@ The JavaScript in the extension file needs to be loaded via the `src/extension-s
 cryptoBeasts: () => require('../extensions/custom/custom/cryptoBeasts'),
 ```
 
+# Scratch files
+
+* [Game without Loom](./scratch/Crypto Beasts.sb3)
+* [Hackathon presentation](./scratch/Crypto Beasts Presentation.sb3)
+
 ## Useful links
 * [How to Develop Your Own Block for Scratch 3.0](https://medium.com/@hiroyuki.osaki/how-to-develop-your-own-block-for-scratch-3-0-1b5892026421) matches what has been done for this project.
 * The [Scratch 3.0 Extensions Specification](https://github.com/LLK/scratch-vm/wiki/Scratch-3.0-Extensions-Specification) is now out of date and does not work.
@@ -131,11 +144,17 @@ For the Edcon Hackathon, the following addresses were used, which become `accoun
 
 [Truffle](https://truffleframework.com/) is used to compile and deploy the contracts.
 
+[truffle-flattener](https://www.npmjs.com/package/truffle-flattener) is used to flattern the Solidity contracts.
+
+```
+truffle-flattener Battle
+```
+
 ### Local loom
 
 The [./truffle-config.js](./truffle-config.js) file has the Truffle config to deploy the contracts to a local Loom chain. The simply compile the contracts, run `truffle compile`. To compile and deploy the contracts to a local Loom node, run
 ```
-truffle deploy --reset --network loom_dapp_chain
+truffle deploy --reset --network loom_dapp_chain --skip-dry-run
 ```
 
 This assume Truffle has been installed globally with
