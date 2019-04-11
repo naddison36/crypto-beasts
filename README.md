@@ -52,8 +52,8 @@ npm link scratch-vm
 cd ../scratch-vm/src/extensions
 ln -s ../../../crypto-beasts/scratch/extensions ./custom
 # Link the extension to Truffle's Battle contract information
-cd ../../../crypto-beasts/scratch/extensions/cryptoBeastsLoom/
-ln -s ../../../build/contracts/Battle.json ./Battle.json
+cd ../../../crypto-beasts/scratch/extensions/
+ln -s ../../build/contracts/Battle.json ./Battle.json
 
 # Copy modified scratch vm and gui files into the dependent packages
 cd ../../

@@ -8,7 +8,7 @@ const log = require('../../../util/log')
 
 const cards = require('../cards')
 const regEx = require('../regEx')
-const BattleABI = require('./Battle.json')
+const BattleABI = require('../Battle.json')
 const network = 13654820909954
 
 // For testing
