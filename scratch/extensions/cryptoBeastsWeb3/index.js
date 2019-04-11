@@ -49,7 +49,7 @@ class Scratch3CryptoBeastsWeb3Blocks {
 
     connectWeb3() {
 
-        const BattleContract = require('./Battle')
+        const BattleContract = require('../Battle.json')
 
         if (!web3Client) {
             web3Client = new Web3(web3.currentProvider)
