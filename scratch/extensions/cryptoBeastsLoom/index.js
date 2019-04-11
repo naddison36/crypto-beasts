@@ -1,6 +1,6 @@
 const formatMessage = require('format-message')
-// const Web3 = require('web3')
-// const { Client, CryptoUtils } = require('loom-js')
+const Web3 = require('web3')
+const { Client, CryptoUtils, LoomProvider } = require('loom-js')
 
 const ArgumentType = require('../../../extension-support/argument-type')
 const BlockType = require('../../../extension-support/block-type')
@@ -8,6 +8,8 @@ const log = require('../../../util/log')
 
 const cards = require('../cards')
 const regEx = require('../regEx')
+const BattleABI = require('./Battle.json')
+const network = 13654820909954
 
 // For testing
 const playerKeys = [
@@ -29,7 +31,7 @@ class Scratch3CryptoBeastsLoomBlocks {
 
         this.init()
 
-        // connectLoom()
+        this.connectLoom()
     }
 
     init() {
@@ -55,24 +57,22 @@ class Scratch3CryptoBeastsLoomBlocks {
         this.whenChallengedAcceptedFlag = false
     }
 
-    // connectLoom() {
+    connectLoom() {
 
-    //     log.debug(`About to connect to local Loom`)
+        log.debug(`About to connect to local Loom`)
 
-    //     // TODO put these in env vars
-    //     const client = new Client(
-    //         'default',
-    //         'ws://127.0.0.1:46658/websocket',
-    //         'ws://127.0.0.1:46658/queryws',
-    //     )  
+        // TODO put these in env vars
+        const client = new Client(
+            'default',
+            'ws://127.0.0.1:46658/websocket',
+            'ws://127.0.0.1:46658/queryws',
+        )  
 
-    //     const loomProvider = new LoomProvider(client, CryptoUtils.B64ToUint8Array(privateKeyBase64));
-    //     const web3 = new Web3(loomProvider)
+        const loomProvider = new LoomProvider(client, CryptoUtils.B64ToUint8Array(playerKeys[0].private));
+        const web3 = new Web3(loomProvider)
     
-    //     battleContractWeb3 = new web3.eth.Contract(BattleABI.abi, BattleABI.networks[network].address, {
-    //         from: currentUserAddress
-    //       })
-    // }
+        battleContractWeb3 = new web3.eth.Contract(BattleABI.abi, BattleABI.networks[network].address)
+    }
 
     getInfo() {
 

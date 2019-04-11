@@ -20,6 +20,7 @@ RUN mv /scratch/scratch-gui-develop /scratch/scratch-gui
 
 COPY heroku/.env.* /scratch/scratch-gui/
 COPY scratch/gui/index.jsx /scratch/scratch-gui/src/lib/libraries/extensions/index.jsx
+COPY scratch/gui/webpack.config.js /scratch/scratch-gui/webpack.config.js
 COPY scratch/extensions /scratch/scratch-vm/src/extensions/custom
 COPY scratch/vm/extension-manager.js /scratch/scratch-vm/src/extension-support/extension-manager.js
 
@@ -35,6 +36,8 @@ WORKDIR /scratch/scratch-vm
 RUN npm set progress=false && \
    npm config set depth 0 && \
    npm install && \
+   npm install loom-js && \
+   npm install web3@1.0.0-beta.34 && \
    npm cache clean --force
 
 RUN npm link

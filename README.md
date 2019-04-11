@@ -43,7 +43,7 @@ git clone https://github.com/LLK/scratch-vm.git
 cd scratch-vm
 npm install
 npm install loom-js
-npm install web3
+npm install web3@1.0.0-beta.34
 npm link
 cd ../scratch-gui
 npm link scratch-vm
@@ -59,7 +59,7 @@ ln -s ../../../build/contracts/Battle.json ./Battle.json
 cd ../../
 cp gui/index.jsx ../../scratch-gui/src/lib/libraries/extensions/index.jsx
 cp vm/extension-manager.js ../../scratch-vm/src/extension-support/extension-manager.js
-# cp vm/webpack.config.js ../../scratch-vm/src/extension-support/webpack.config.js
+cp gui/webpack.config.js ../../scratch-gui/webpack.config.js
 
 # start the Scratch React App
 cd ../../scratch-gui
@@ -100,6 +100,14 @@ New extensions are registered in the scratch-gui project in the `src/lib/librari
 The JavaScript in the extension file needs to be loaded via the `src/extension-support/extension-manager.js` file in the `scratch-vm` package. Add the following function property to the `builtinExtensions` object in the `src/extension-support/extension-manager.js` file
 ```
 cryptoBeasts: () => require('../extensions/custom/custom/cryptoBeasts'),
+```
+
+The `loom-js` package needs the following webpack config added to the scratch-gui package
+```
+node: {
+    fs: 'empty',
+    child_process: 'empty',
+}
 ```
 
 # Scratch files
