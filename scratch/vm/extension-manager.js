@@ -22,6 +22,7 @@ const builtinExtensions = {
     cryptoBeastsLoom: () => require('../extensions/custom/cryptoBeastsLoom'),
     cryptoBeastsWeb3: () => require('../extensions/custom/cryptoBeastsWeb3'),
     cryptoBeastsSimulator: () => require('../extensions/custom/cryptoBeastsSimulator'),
+    erc20: () => require('../extensions/custom/erc20'),
     // todo: only load this extension once we have a compatible way to load its
     // Vernier module dependency.
     // gdxfor: () => require('../extensions/scratch3_gdx_for')

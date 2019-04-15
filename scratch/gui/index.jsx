@@ -83,6 +83,30 @@ export default [
     {
         name: (
             <FormattedMessage
+                defaultMessage="ERC20 Token"
+                description="Name of extension"
+                id="gui.extension.erc20.name"
+            />
+        ),
+        extensionId: 'erc20',
+        collaborator: 'Nick Addison',
+        // iconURL: boostIconURL,
+        // insetIconURL: boostInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="ERC20 Token"
+                description="Description of extension"
+                id="gui.extension.erc20.description"
+            />
+        ),
+        featured: true,
+        disabled: false,
+        bluetoothRequired: false,
+        internetConnectionRequired: true
+    },
+    {
+        name: (
+            <FormattedMessage
                 defaultMessage="Music"
                 description="Name for the 'Music' extension"
                 id="gui.extension.music.name"

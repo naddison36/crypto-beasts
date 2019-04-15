@@ -162,7 +162,7 @@ truffle-flattener Battle
 
 The [./truffle-config.js](./truffle-config.js) file has the Truffle config to deploy the contracts to a local Loom chain. The simply compile the contracts, run `truffle compile`. To compile and deploy the contracts to a local Loom node, run
 ```
-truffle deploy --reset --network loom_dapp_chain --skip-dry-run
+truffle deploy --reset --network loom_dapp_chain
 ```
 
 This assume Truffle has been installed globally with
@@ -178,6 +178,16 @@ truffle test
 To run the tests against a local Loom node. Note test that check the revert reason will fail as Loom does not include the revert reason in the transaction receipt.
 ```
 truffle test --network loom_dapp_chain
+```
+
+Deploy to the Loom dev testnet
+```
+truffle test --network extdev
+```
+
+Deploy to the Ropsten network
+```
+truffle deploy --reset --network ropsten
 ```
 
 # Docker
