@@ -15147,6 +15147,230 @@
     "version": "0.5.2+commit.1df8f40c.Emscripten.clang"
   },
   "networks": {
+    "3": {
+      "events": {
+        "0x5f4bfc4bb3efc8381128908c65dba16d774750a4508f87b52ed63512630609f9": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "move",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "attachCardId",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "name": "cardId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "health",
+                  "type": "uint16"
+                },
+                {
+                  "name": "defence",
+                  "type": "uint16"
+                },
+                {
+                  "name": "mana",
+                  "type": "uint16"
+                },
+                {
+                  "name": "attack",
+                  "type": "uint16"
+                },
+                {
+                  "name": "specialAttack",
+                  "type": "uint16"
+                }
+              ],
+              "indexed": false,
+              "name": "defenceCard",
+              "type": "tuple"
+            },
+            {
+              "indexed": false,
+              "name": "nextPlayer",
+              "type": "address"
+            }
+          ],
+          "name": "Turn",
+          "type": "event",
+          "signature": "0x5f4bfc4bb3efc8381128908c65dba16d774750a4508f87b52ed63512630609f9"
+        },
+        "0xc50f4648fa14be3ee68f160a224cc5d77eeeac58ea500c6fb63fac6788afb0be": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "winningPlayer",
+              "type": "address"
+            }
+          ],
+          "name": "EndGame",
+          "type": "event",
+          "signature": "0xc50f4648fa14be3ee68f160a224cc5d77eeeac58ea500c6fb63fac6788afb0be"
+        },
+        "0x48ca02657a8acb3a062f53bf24ca611bb25d8108f29f5e3c5e468080a44dca5d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "desiredCards",
+              "type": "uint256[5]"
+            },
+            {
+              "indexed": false,
+              "name": "pickedCards",
+              "type": "uint256[3]"
+            }
+          ],
+          "name": "PickPayerCards",
+          "type": "event",
+          "signature": "0x48ca02657a8acb3a062f53bf24ca611bb25d8108f29f5e3c5e468080a44dca5d"
+        },
+        "0xb1b17b23cffcf729d34b26aac4faa18940cec6ac11f34c678d0bfe232b00dc81": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "cardId",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "components": [
+                    {
+                      "name": "name",
+                      "type": "string"
+                    },
+                    {
+                      "components": [
+                        {
+                          "name": "health",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "defence",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "mana",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "attack",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "specialAttack",
+                          "type": "uint16"
+                        }
+                      ],
+                      "name": "opponent",
+                      "type": "tuple"
+                    },
+                    {
+                      "components": [
+                        {
+                          "name": "health",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "defence",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "mana",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "attack",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "specialAttack",
+                          "type": "uint16"
+                        }
+                      ],
+                      "name": "player",
+                      "type": "tuple"
+                    },
+                    {
+                      "name": "manaCost",
+                      "type": "uint16"
+                    }
+                  ],
+                  "name": "ability",
+                  "type": "tuple"
+                },
+                {
+                  "name": "initHealth",
+                  "type": "uint16"
+                },
+                {
+                  "name": "initDefence",
+                  "type": "uint16"
+                },
+                {
+                  "name": "initMana",
+                  "type": "uint16"
+                },
+                {
+                  "name": "speed",
+                  "type": "uint16"
+                },
+                {
+                  "name": "attack",
+                  "type": "uint16"
+                },
+                {
+                  "name": "specialAttack",
+                  "type": "uint16"
+                }
+              ],
+              "indexed": false,
+              "name": "card",
+              "type": "tuple"
+            }
+          ],
+          "name": "NewCard",
+          "type": "event",
+          "signature": "0xb1b17b23cffcf729d34b26aac4faa18940cec6ac11f34c678d0bfe232b00dc81"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
+      "links": {},
+      "address": "0xd6C39F2a9Ff00007577B2583EeC090550D94Defe",
+      "transactionHash": "0xcd9b6512f9eb5a9ac181bb5a7d7a4c7d596c6474c65829057b7da86217fbec7d"
+    },
     "13654820909954": {
       "events": {
         "0x5f4bfc4bb3efc8381128908c65dba16d774750a4508f87b52ed63512630609f9": {
@@ -15373,7 +15597,7 @@
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-09T22:06:44.961Z",
+  "updatedAt": "2019-04-15T12:21:43.397Z",
   "devdoc": {
     "methods": {
       "isOwner()": {
