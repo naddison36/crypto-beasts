@@ -8,7 +8,9 @@
     "bashBaseImage": "docker run -it registry.heroku.com/crypto-beasts-prod/base:latest bash",
     "buildWebImage": "docker build -t registry.heroku.com/crypto-beasts-prod/web:latest --target web .",
     "bashWebImage": "docker run -it registry.heroku.com/crypto-beasts-prod/web:latest sh",
-    "runWebImage": "docker run -p 8601:8601 -e PORT=8601 registry.heroku.com/crypto-beasts-prod/web:latest"
+    "runWebImage": "docker run -p 8601:8601 -e PORT=8601 registry.heroku.com/crypto-beasts-prod/web:latest",
+    "deployLocal": "truffle deploy --reset --network loom_dapp_chain",
+    "test": "./node_modules/.bin/jest test --forceExit --detectOpenHandles --runInBand"
   },
   "repository": {
     "type": "git",
@@ -30,11 +32,13 @@
     "ethers": "^4.0.27",
     "loom-js": "^1.42.2",
     "loom-truffle-provider": "^0.13.0",
+    "minilog": "^3.1.0",
     "truffle": "^5.0.11",
     "truffle-hdwallet-provider": "^1.0.6",
-    "web3": "^1.0.0-beta.52"
+    "web3": "^1.0.0-beta.37"
   },
   "devDependencies": {
+    "jest": "^24.7.1",
     "openzeppelin-solidity": "^2.1.2",
     "solc": "^0.5.6"
   }

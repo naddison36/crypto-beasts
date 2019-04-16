@@ -50,7 +50,7 @@ module.exports = function(deployer, network, accounts) {
         initDefence: card.defence,
         initMana: card.mana,
       })
-
+    
       console.log(`Card number ${++cardNumber} tx hash: ${JSON.stringify(result.tx)}`)
     }
 

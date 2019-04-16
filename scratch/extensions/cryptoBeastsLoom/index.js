@@ -71,7 +71,9 @@ class Scratch3CryptoBeastsLoomBlocks {
         const loomProvider = new LoomProvider(client, CryptoUtils.B64ToUint8Array(playerKeys[0].private));
         const web3 = new Web3(loomProvider)
     
-        battleContractWeb3 = new web3.eth.Contract(BattleABI.abi, BattleABI.networks[network].address)
+        this.battleContract = new web3.eth.Contract(BattleABI.abi, BattleABI.networks[network].address)
+
+        log.debug(`Battle contract address is ${BattleABI.networks[network].address}`)
     }
 
     getInfo() {
@@ -112,7 +114,7 @@ class Scratch3CryptoBeastsLoomBlocks {
 
             // Optional: Link to documentation content for this extension.
             // If not present, offer no link.
-            docsURI: 'https://github.com/naddison36/loom-scratch-tcg',
+            docsURI: 'https://github.com/naddison36/crypto-beasts',
 
             // Required: the list of blocks implemented by this extension,
             // in the order intended for display.
@@ -416,12 +418,11 @@ class Scratch3CryptoBeastsLoomBlocks {
                     opcode: 'pickCards',
                     text: formatMessage({
                         id: 'cryptoBeasts.pickCards',
-                        default: 'Player [PLAYER] picks cards [CARD_1], [CARD_2], [CARD_3], [CARD_4] and [CARD_5]',
+                        default: 'Pick cards [CARD_1], [CARD_2], [CARD_3], [CARD_4] and [CARD_5]',
                         description: 'Player picks cards for their deck',
                     }),
                     blockType: BlockType.COMMAND,
                     arguments: {
-                        PLAYER: {type: ArgumentType.STRING, defaultValue: 'Player address'},
                         CARD_1: {type: ArgumentType.STRING, defaultValue: 1},
                         CARD_2: {type: ArgumentType.STRING, defaultValue: 2},
                         CARD_3: {type: ArgumentType.STRING, defaultValue: 3},
@@ -516,25 +517,42 @@ class Scratch3CryptoBeastsLoomBlocks {
 
             log.debug(`My player ${this.myPlayer} did move ${args.MOVE} for their turn`)
 
-            const attackCard = this.playerCards[this.myPlayer][this.playersCurrentCard[this.myPlayer]]
-            const defenceCard = this.playerCards[this.oppositionPlayer][this.playersCurrentCard[this.oppositionPlayer]]
+            this.battleContract.move(args.MOVE).send({from: this.myPlayer})
+                .once('transactionHash', hash => {
+                    log.debug(`Got tx hash ${hash} for player move`)
+                })
+               .once('receipt', receipt => {
+                   log.debug(`Got tx receipt for player move`)
+                   this.myTurnCompletedFlag = true
 
-            let attackAmount
-            if (args.move == 1) { // attack
-                attackAmount = attackCard['attack']
-            } else if (args.move == 2) {    // special attack
-                attackAmount = attackCard['specialAttack']
-            // } else if (args.move == 3) {    // ability
-            } else {
-                log.error(`Invalid move ${args.move}. Must be 1, 2 or 3`)
-            }
+                   // If the receipt contains a EndGame event
+                //    if (receipt.) {
+                //        this.winningPlayer = winningPlayer
+                //        this.gameOverFlag = true
+                //    }
+                   resolve
+               })
 
-            this.attack(attackAmount, defenceCard, this.oppositionPlayer)
+            // TODO is the game over?
+            // const attackCard = this.playerCards[this.myPlayer][this.playersCurrentCard[this.myPlayer]]
+            // const defenceCard = this.playerCards[this.oppositionPlayer][this.playersCurrentCard[this.oppositionPlayer]]
 
-            attackCard['defence'] += turnDefenceIncrease
+            // let attackAmount
+            // if (args.move == 1) { // attack
+            //     attackAmount = attackCard['attack']
+            // } else if (args.move == 2) {    // special attack
+            //     attackAmount = attackCard['specialAttack']
+            // // } else if (args.move == 3) {    // ability
+            // } else {
+            //     log.error(`Invalid move ${args.move}. Must be 1, 2 or 3`)
+            // }
 
-            // Run for some time even when no motor is connected
-            setTimeout(resolve, 1000)
+            // this.attack(attackAmount, defenceCard, this.oppositionPlayer)
+
+            // attackCard['defence'] += turnDefenceIncrease
+
+            // // Run for some time even when no motor is connected
+            // setTimeout(resolve, 1000)
         })
     }
 
@@ -859,29 +877,42 @@ class Scratch3CryptoBeastsLoomBlocks {
         return new Promise((resolve, reject) => {
             // TODO call pickCards function on the Battle contract
 
-            if (!args.PLAYER || !args.PLAYER.match(regEx.ethereumAddress)) {
-                const error = new TypeError(`Invalid PLAYER argument ${args.PLAYER} for the pick cards command. Must be a 40 char hexadecimal with a 0x prefix`)
+            if (!this.myPlayer) {
+                return reject(`Failed to challenge other players as my player address has not been set. ${this.myPlayer}`)
+            }
+
+            if (this.playerCards[this.myPlayer]) {
+                const error = new Error(`PLAYER ${this.myPlayer} has already picked cards`)
                 return reject(error)
             }
 
-            if (this.playerCards[args.PLAYER]) {
-                const error = new Error(`PLAYER ${args.PLAYER} has already picked cards`)
-                return reject(error)
-            }
+            log.debug(`Player ${this.myPlayer} picks cards ${JSON.stringify(args)}`)
 
-            log.debug(`Player ${args.PLAYER} picks cards ${JSON.stringify(args)}`)
+            this.battleContract.methods.pickPayerCards([
+                args.CARD_1,
+                args.CARD_2,
+                args.CARD_3,
+                args.CARD_4,
+                args.CARD_5]
+            ).send({from: this.myPlayer})
+            .once('transactionHash', hash => {
+                log.debug(`Got tx hash ${hash} for player move`)
+            })
+           .once('receipt', receipt => {
+               log.debug(`Got tx receipt for player ${this.myPlayer} picking cards ${JSON.stringify(args)}`)
+               this.myTurnCompletedFlag = true
 
-            // clone the cards into player cards
-            this.playerCards[args.PLAYER] = [
-                {...cards[args.CARD_1]},
-                {...cards[args.CARD_2]},
-                {...cards[args.CARD_3]},
-            ]
+                // TODO parse cards from event
+                // clone the cards into player cards
+                this.playerCards[this.myPlayer] = [
+                    {...cards[args.CARD_1]},
+                    {...cards[args.CARD_2]},
+                    {...cards[args.CARD_3]},
+                ]
+                this.playersCurrentCard[this.myPlayer] = 0
 
-            this.playersCurrentCard[args.PLAYER] = 0
-
-            // Run for some time even when no motor is connected
-            setTimeout(resolve, 200)
+               resolve
+           })
         })
     }
 
