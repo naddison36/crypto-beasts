@@ -41,26 +41,6 @@ describe('Battle', () => {
         expect(result).toEqual(player2)
     })
 
-    test('get first card', async() => {
-        const card = await battle.getCard(0)
-
-        console.log(`Card 1: ${JSON.stringify(card, null, 2)}`)
-
-        expect(card).toBeDefined()
-        expect(card.name).toEqual('Donald Trump')
-        expect(card.initHealth).toEqual("950")
-    })
-
-    test('get second card', async() => {
-        const card = await battle.getCard(1)
-
-        console.log(`Card 2: ${JSON.stringify(card, null, 2)}`)
-
-        expect(card).toBeDefined()
-        expect(card.name).toEqual('Electro')
-        expect(card.initHealth).toEqual("900")
-    })
-
     test('test first player empty deck', async () => {
         const deck = await battle.getPlayerDeck(player1)
 

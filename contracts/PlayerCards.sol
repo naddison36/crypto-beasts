@@ -1,9 +1,10 @@
 pragma solidity ^0.5.2;
 pragma experimental ABIEncoderV2;
 
+import {CryptoBeastsTypes} from "./CryptoBeastsTypes.sol";
 import {Cards} from "./Cards.sol";
 
-contract PlayerCards is Cards {
+contract PlayerCards is CryptoBeastsTypes {
 
     struct PlayerCard {
         uint cardId;
@@ -21,15 +22,18 @@ contract PlayerCards is Cards {
         uint8 currentCard;
     }
 
+    Cards cardsContract;
     address public player1;
     address public player2;
     mapping (address => PlayerDeck) public playerDecks;
     bool public cardsPicked;
     address public playersTurn;
 
-    constructor(address _player1, address _player2) public {
+    constructor(address _player1, address _player2, address cardsAddress) public {
         player1 = _player1;
         player2 = _player2;
+
+        cardsContract = Cards(cardsAddress);
     }
 
     function _randomNumber(uint numberOfPicks, uint8 pickNumber) private view returns (uint) {
@@ -39,8 +43,7 @@ contract PlayerCards is Cards {
                 abi.encodePacked(
                     pickNumber,
                     blockhash(block.number - 1),
-                    msg.sender,
-                    cards.length
+                    msg.sender
                 )
             )
         );
@@ -49,13 +52,15 @@ contract PlayerCards is Cards {
 
     function _setPlayerCard(PlayerCard[] storage playerCards, uint cardId) internal {
 
+        Card memory card = cardsContract.getCard(cardId);
+
         playerCards.push( PlayerCard({
             cardId: cardId,
-            health: cards[cardId].initHealth,
-            defence: cards[cardId].initDefence,
-            mana: cards[cardId].initMana,
-            attack: cards[cardId].attack,
-            specialAttack: cards[cardId].specialAttack
+            health: card.initHealth,
+            defence: card.initDefence,
+            mana: card.initMana,
+            attack: card.attack,
+            specialAttack: card.specialAttack
         }));
     }
 
@@ -101,7 +106,7 @@ contract PlayerCards is Cards {
         // if picked the same card as before, or not the first 5 desgined cards
         if (randomPick1 == randomPick2 ||
             randomPick2 > 4) {
-            randomPick2 = _randomNumber(cards.length - 1, 2);
+            randomPick2 = _randomNumber(cardsContract.cardCount() - 1, 2);
             // pick any card
             _setPlayerCard(playerCards, randomPick2);
         }
@@ -112,7 +117,7 @@ contract PlayerCards is Cards {
 
         pickedCardNumbers[1] = playerCards[1].cardId;
 
-        uint randomPick3 = _randomNumber(cards.length - 1, 3);
+        uint randomPick3 = _randomNumber(cardsContract.cardCount() - 1, 3);
         _setPlayerCard(playerCards, randomPick3);
 
         pickedCardNumbers[2] = playerCards[2].cardId;
@@ -146,7 +151,7 @@ contract PlayerCards is Cards {
 
         for (uint i=0; i<playerCards.length; i++) {
 
-            uint16 cardSpeed = cards[playerCards[i].cardId].speed;
+            uint16 cardSpeed = cardsContract.getCard(playerCards[i].cardId).speed;
 
             if (cardSpeed > maxSpeed) {
                 maxSpeed = cardSpeed;

@@ -1,4 +1,4 @@
-const Battle = artifacts.require("./Battle.sol")
+const Cards = artifacts.require("./Cards.sol")
 
 const cards = require('../scratch/extensions/cards')
 console.log(`Number of cards ${cards.length}`)
@@ -7,11 +7,11 @@ module.exports = function(deployer, network, accounts) {
 
   deployer.then(async () => {
 
-    console.log(`About to deploy Battle contract with player 1 and 2 address: ${accounts[1]}, ${accounts[2]}`)
-    await deployer.deploy(Battle, accounts[1], accounts[2], {from: accounts[0]})
-    const battleContract = await Battle.deployed()
+    console.log(`About to deploy Cards contract`)
+    await deployer.deploy(Cards, {from: accounts[0]})
+    const cardsContract = await Cards.deployed()
 
-    console.log(`Battle contract address: ${battleContract.address}`)
+    console.log(`Cards contract address: ${cardsContract.address}`)
 
     let cardNumber = 0
     for (const card of cards) {
@@ -26,7 +26,7 @@ module.exports = function(deployer, network, accounts) {
         card.ability.player = {}
       }
 
-      const result = await battleContract.createCard({
+      const result = await cardsContract.createCard({
         ...card,
         ability: {
           name: card.ability.name,

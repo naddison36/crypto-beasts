@@ -160,14 +160,19 @@ truffle-flattener Battle
 
 ### Local loom
 
-The [./truffle-config.js](./truffle-config.js) file has the Truffle config to deploy the contracts to a local Loom chain. The simply compile the contracts, run `truffle compile`. To compile and deploy the contracts to a local Loom node, run
+The following assume Truffle has been installed globally with
+```
+truffle install -g
+```
+
+The [./truffle-config.js](./truffle-config.js) file has the Truffle config to deploy the contracts to a local Loom chain. To simply compile the contracts, run `truffle compile`. To compile and deploy the contracts to a local Loom node, run
 ```
 truffle deploy --reset --network loom_dapp_chain
 ```
 
-This assume Truffle has been installed globally with
+To deploy a new Battle contract and not the cards contract which also needs all the cards loaded, run the following. This runs the third migration which deploys the battle contract.
 ```
-truffle install -g
+truffle deploy --reset -f 3 --network loom_dapp_chain
 ```
 
 To run the tests against Ganache, which is a much faster JS implementation of an Ethereum node, run

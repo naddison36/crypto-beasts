@@ -20,13 +20,6 @@ contract('Battle', async accounts => {
         assert.equal(await battleContract.player2.call(), player2)
     })
 
-    it('First card', async () => {
-        let card = await battleContract.cards.call(0)
-        console.log(`First case name: ${card.name}`)
-        assert.equal(card.name, 'Donald Trump')
-        assert.equal(card.initHealth, 950)
-    })
-
     it('Player 1 picks their cards', async () => {
         desiredCards = [1, 3, 5, 7, 8]
         let result = await battleContract.pickPayerCards(desiredCards, { from: player1 })

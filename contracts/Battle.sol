@@ -2,6 +2,7 @@ pragma solidity ^0.5.2;
 pragma experimental ABIEncoderV2;
 
 import {PlayerCards} from "./PlayerCards.sol";
+import {Cards} from "./Cards.sol";
 import {MathUtils} from "./MathUtils.sol";
 
 contract Battle is PlayerCards {
@@ -16,29 +17,29 @@ contract Battle is PlayerCards {
 
     address public winningPlayer;
 
-    event Turn(Move move, uint attachCardId, PlayerCard defenceCard, address nextPlayer);
+    event Turn(Move move, uint attachCardId, PlayerCard playerDefenceCard, address nextPlayer);
     event EndGame(address winningPlayer);
     
-    constructor(address _player1, address _player2) public
-        PlayerCards(_player1, _player2)
+    constructor(address _player1, address _player2, address cardsAddress) public
+        PlayerCards(_player1, _player2, cardsAddress)
     {}
 
     function turn(Move move) public {
         require(playersTurn == msg.sender, "Not your turn");
 
         // Assume playersTurn == player1 as Solidity does not allow uninitialized storage pointers
-        PlayerCard storage attackCard = playerDecks[player1].playerCards[playerDecks[player1].currentCard];
-        PlayerCard storage defenceCard = playerDecks[player2].playerCards[playerDecks[player2].currentCard];
+        PlayerCard storage playerAttackCard = playerDecks[player1].playerCards[playerDecks[player1].currentCard];
+        PlayerCard storage playerDefenceCard = playerDecks[player2].playerCards[playerDecks[player2].currentCard];
         PlayerDeck storage defenceDeck = playerDecks[player2];
         address nextPlayer = player2;
         // if (playersTurn == player1) {
-        //     attackCard = player1Cards[currentCardPlayer1];
-        //     defenceCard = player2Cards[currentCardPlayer2];
+        //     playerAttackCard = player1Cards[currentCardPlayer1];
+        //     playerDefenceCard = player2Cards[currentCardPlayer2];
         //     nextPlayer = player2;
         // } else 
         if (playersTurn == player2) {
-            attackCard = playerDecks[player2].playerCards[playerDecks[player2].currentCard];
-            defenceCard = playerDecks[player1].playerCards[playerDecks[player1].currentCard];
+            playerAttackCard = playerDecks[player2].playerCards[playerDecks[player2].currentCard];
+            playerDefenceCard = playerDecks[player1].playerCards[playerDecks[player1].currentCard];
             defenceDeck = playerDecks[player1];
             nextPlayer = player1;
         } else if (playersTurn != player1) {
@@ -48,34 +49,36 @@ contract Battle is PlayerCards {
         // move logic
         uint16 remainingAttackAmount;
         if (move == Move.Attack) {
-            attackCard.mana = attackCard.mana + 1;
+            playerAttackCard.mana = playerAttackCard.mana + 1;
 
             // attack the defence and then health of the opponent
-            attack(attackCard.attack, defenceCard, defenceDeck);
+            attack(playerAttackCard.attack, playerDefenceCard, defenceDeck);
         } else if (move == Move.SpecialAttack) {
 
-            require(attackCard.mana > 0);
+            require(playerAttackCard.mana > 0);
 
             // attack the defence and then health of the opponent
-            attack(attackCard.specialAttack, defenceCard, defenceDeck);
+            attack(playerAttackCard.specialAttack, playerDefenceCard, defenceDeck);
 
         } else if (move == Move.Ability) {
             uint16 remainder = 0;
 
-            (attackCard.mana, remainder) = MathUtils.subToZero(attackCard.mana + 1, cards[attackCard.cardId].ability.manaCost);
+            Card memory attackCard = cardsContract.getCard(playerAttackCard.cardId);
 
-            CardProperties memory opponentAbility = cards[attackCard.cardId].ability.opponent;
-            CardProperties memory playerAbility = cards[attackCard.cardId].ability.opponent;
+            (playerAttackCard.mana, remainder) = MathUtils.subToZero(playerAttackCard.mana + 1, attackCard.ability.manaCost);
+
+            Cards.CardProperties memory opponentAbility = attackCard.ability.opponent;
+            Cards.CardProperties memory playerAbility = attackCard.ability.opponent;
 
             // reduce opponents current card
-            (defenceCard.health, remainder) = MathUtils.subToZero(defenceCard.health, opponentAbility.health);
-            (defenceCard.defence, remainder) = MathUtils.subToZero(defenceCard.defence, opponentAbility.defence);
-            (defenceCard.mana, remainder) = MathUtils.subToZero(defenceCard.mana, opponentAbility.mana);
-            (defenceCard.attack, remainder) = MathUtils.subToZero(defenceCard.attack, opponentAbility.attack);
-            (defenceCard.specialAttack, remainder) = MathUtils.subToZero(defenceCard.specialAttack, opponentAbility.specialAttack);
+            (playerDefenceCard.health, remainder) = MathUtils.subToZero(playerDefenceCard.health, opponentAbility.health);
+            (playerDefenceCard.defence, remainder) = MathUtils.subToZero(playerDefenceCard.defence, opponentAbility.defence);
+            (playerDefenceCard.mana, remainder) = MathUtils.subToZero(playerDefenceCard.mana, opponentAbility.mana);
+            (playerDefenceCard.attack, remainder) = MathUtils.subToZero(playerDefenceCard.attack, opponentAbility.attack);
+            (playerDefenceCard.specialAttack, remainder) = MathUtils.subToZero(playerDefenceCard.specialAttack, opponentAbility.specialAttack);
 
             // if opponent health went to zero
-            if (defenceCard.health == 0) {
+            if (playerDefenceCard.health == 0) {
                 // if last card in defence deck
                 if  (defenceDeck.currentCard == defenceDeck.playerCards.length - 1) {
                     endGame(msg.sender);
@@ -85,11 +88,11 @@ contract Battle is PlayerCards {
             }
 
             // boost your current card
-            attackCard.health = attackCard.health + playerAbility.health;
-            attackCard.defence = attackCard.defence + playerAbility.defence;
-            attackCard.mana = attackCard.mana + playerAbility.mana;
-            attackCard.attack = attackCard.attack + playerAbility.attack;
-            attackCard.specialAttack = attackCard.specialAttack + playerAbility.specialAttack;
+            playerAttackCard.health = playerAttackCard.health + playerAbility.health;
+            playerAttackCard.defence = playerAttackCard.defence + playerAbility.defence;
+            playerAttackCard.mana = playerAttackCard.mana + playerAbility.mana;
+            playerAttackCard.attack = playerAttackCard.attack + playerAbility.attack;
+            playerAttackCard.specialAttack = playerAttackCard.specialAttack + playerAbility.specialAttack;
         }
         else {
             revert('Invalid move');
@@ -97,18 +100,18 @@ contract Battle is PlayerCards {
         
         playersTurn = nextPlayer;
 
-        emit Turn(move, attackCard.cardId, defenceCard, nextPlayer);
+        emit Turn(move, playerAttackCard.cardId, playerDefenceCard, nextPlayer);
     }
 
     // Attacked the defence and then health of the opponent
-    function attack(uint16 attackAmount, PlayerCard storage defenceCard, PlayerDeck storage defenceDeck) internal {
+    function attack(uint16 attackAmount, PlayerCard storage playerDefenceCard, PlayerDeck storage defenceDeck) internal {
         uint16 remainingAttackAmount;
 
-        if (defenceCard.defence > 0) {
-            (defenceCard.defence, remainingAttackAmount) = MathUtils.subToZero(defenceCard.defence, attackAmount);
+        if (playerDefenceCard.defence > 0) {
+            (playerDefenceCard.defence, remainingAttackAmount) = MathUtils.subToZero(playerDefenceCard.defence, attackAmount);
 
             if (remainingAttackAmount > 0) {
-                (defenceCard.health, remainingAttackAmount) = MathUtils.subToZero(defenceCard.health, remainingAttackAmount);
+                (playerDefenceCard.health, remainingAttackAmount) = MathUtils.subToZero(playerDefenceCard.health, remainingAttackAmount);
 
                 if (remainingAttackAmount > 0) {
                     defenceDeck.currentCard++;
@@ -120,7 +123,7 @@ contract Battle is PlayerCards {
             }
         } else {
 
-            (defenceCard.health, remainingAttackAmount) = MathUtils.subToZero(defenceCard.health, attackAmount);
+            (playerDefenceCard.health, remainingAttackAmount) = MathUtils.subToZero(playerDefenceCard.health, attackAmount);
 
             if (remainingAttackAmount > 0) {
                 defenceDeck.currentCard++;
