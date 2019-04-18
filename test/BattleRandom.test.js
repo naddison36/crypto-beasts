@@ -1,10 +1,10 @@
-const BattleContract = artifacts.require('Battle')
+const BattleContract = artifacts.require('BattleRandom')
 const cards = require('../scratch/extensions/cards')
 
 let battleContract
 let firstPlayer
 
-contract('Battle', async accounts => {
+contract('Battle with random pick', async accounts => {
 
     const player1 = accounts[1]
     const player2 = accounts[2]
@@ -15,7 +15,7 @@ contract('Battle', async accounts => {
         battleContract = await BattleContract.deployed()
     })
 
-    it('Validate deployed contract', async () => {
+    it('Validate players in deployed contract', async () => {
         assert.equal(await battleContract.player1.call(), player1)
         assert.equal(await battleContract.player2.call(), player2)
     })
@@ -140,53 +140,53 @@ contract('Battle', async accounts => {
         assert.equal(parseInt(postAttackCard.mana), parseInt(preAttackCard.mana) + 1)
     })
 
-    it('First player\'s second move is special attack', async() => {
+    // it('First player\'s second move is special attack', async() => {
 
-        const preAttackCard = await battleContract.getPlayerCurrentCard(firstPlayer)
-        const preDefenceCard = await battleContract.getPlayerCurrentCard(secondPlayer)
+    //     const preAttackCard = await battleContract.getPlayerCurrentCard(firstPlayer)
+    //     const preDefenceCard = await battleContract.getPlayerCurrentCard(secondPlayer)
 
-        await battleContract.turn(1, { from: firstPlayer })
+    //     await battleContract.turn(1, { from: firstPlayer })
 
-        assert.equal(await battleContract.playersTurn.call(), secondPlayer)
+    //     assert.equal(await battleContract.playersTurn.call(), secondPlayer)
 
-        // defence player's defence has gone down
-        const postAttackCard = await battleContract.getPlayerCurrentCard(firstPlayer)
-        const postDefenceCard = await battleContract.getPlayerCurrentCard(secondPlayer)
+    //     // defence player's defence has gone down
+    //     const postAttackCard = await battleContract.getPlayerCurrentCard(firstPlayer)
+    //     const postDefenceCard = await battleContract.getPlayerCurrentCard(secondPlayer)
 
-        const attackAmount = parseInt(preAttackCard.specialAttack)
-        validateAttack(attackAmount, preDefenceCard, postDefenceCard)
+    //     const attackAmount = parseInt(preAttackCard.specialAttack)
+    //     validateAttack(attackAmount, preDefenceCard, postDefenceCard)
 
-        // attacker mana has not changed
-        assert.equal(postAttackCard.mana, preAttackCard.mana)
-    })
+    //     // attacker mana has not changed
+    //     assert.equal(postAttackCard.mana, preAttackCard.mana)
+    // })
 
-    it('Second player\'s second move is ability', async() => {
+    // it('Second player\'s second move is ability', async() => {
 
-        const preAttackCard = await battleContract.getPlayerCurrentCard(secondPlayer)
-        const preDefenceCard = await battleContract.getPlayerCurrentCard(firstPlayer)
+    //     const preAttackCard = await battleContract.getPlayerCurrentCard(secondPlayer)
+    //     const preDefenceCard = await battleContract.getPlayerCurrentCard(firstPlayer)
 
-        await battleContract.turn(2, { from: secondPlayer })
+    //     await battleContract.turn(2, { from: secondPlayer })
 
-        assert.equal(await battleContract.playersTurn.call(), firstPlayer)
+    //     assert.equal(await battleContract.playersTurn.call(), firstPlayer)
 
-        // defence player's defence has gone down
-        const postAttackCard = await battleContract.getPlayerCurrentCard(secondPlayer)
-        const postDefenceCard = await battleContract.getPlayerCurrentCard(firstPlayer)
+    //     // defence player's defence has gone down
+    //     const postAttackCard = await battleContract.getPlayerCurrentCard(secondPlayer)
+    //     const postDefenceCard = await battleContract.getPlayerCurrentCard(firstPlayer)
 
-        // const attackAmount = parseInt(preAttackCard.specialAttack)
-        // validateAttack(attackAmount, preDefenceCard, postDefenceCard)
+    //     // const attackAmount = parseInt(preAttackCard.specialAttack)
+    //     // validateAttack(attackAmount, preDefenceCard, postDefenceCard)
 
-        assert.equal(await battleContract.playersTurn.call(), firstPlayer)
+    //     assert.equal(await battleContract.playersTurn.call(), firstPlayer)
 
-        // attacker mana is plus 1 less the ability mana cost
-        const newMana = parseInt(preAttackCard.mana) + 1 - parseInt(cards[parseInt(preAttackCard.cardId)].ability.mana)
-        if (newMana >= 0) {
-            assert.equal(parseInt(postAttackCard.mana), parseInt(preAttackCard.mana) + 1 - parseInt(cards[parseInt(preAttackCard.cardId)].ability.mana))
-        }
-        else {
-            assert.equal(parseInt(postAttackCard.mana), 0)
-        }
-    })
+    //     // attacker mana is plus 1 less the ability mana cost
+    //     const newMana = parseInt(preAttackCard.mana) + 1 - parseInt(cards[parseInt(preAttackCard.cardId)].ability.mana)
+    //     if (newMana >= 0) {
+    //         assert.equal(parseInt(postAttackCard.mana), parseInt(preAttackCard.mana) + 1 - parseInt(cards[parseInt(preAttackCard.cardId)].ability.mana))
+    //     }
+    //     else {
+    //         assert.equal(parseInt(postAttackCard.mana), 0)
+    //     }
+    // })
 })
 
 function validateAttack(attackAmount, preDefenceCard, postDefenceCard) {

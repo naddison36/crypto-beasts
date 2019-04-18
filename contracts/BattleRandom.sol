@@ -1,11 +1,11 @@
 pragma solidity ^0.5.2;
 pragma experimental ABIEncoderV2;
 
-import {PlayerCards} from "./PlayerCards.sol";
+import {PlayerCardsRandom} from "./PlayerCardsRandom.sol";
 import {Cards} from "./Cards.sol";
 import {MathUtils} from "./MathUtils.sol";
 
-contract Battle is PlayerCards {
+contract BattleRandom is PlayerCardsRandom {
 
     enum Move {
         Attack,
@@ -21,7 +21,7 @@ contract Battle is PlayerCards {
     event EndGame(address winningPlayer);
     
     constructor(address _player1, address _player2, address cardsAddress) public
-        PlayerCards(_player1, _player2, cardsAddress)
+        PlayerCardsRandom(_player1, _player2, cardsAddress)
     {}
 
     function turn(Move move) public {
@@ -55,20 +55,20 @@ contract Battle is PlayerCards {
             attack(playerAttackCard.attack, playerDefenceCard, defenceDeck);
         } else if (move == Move.SpecialAttack) {
 
-            require(playerAttackCard.mana > 0);
-
             // attack the defence and then health of the opponent
             attack(playerAttackCard.specialAttack, playerDefenceCard, defenceDeck);
 
         } else if (move == Move.Ability) {
-            uint16 remainder = 0;
 
             Card memory attackCard = cardsContract.getCard(playerAttackCard.cardId);
 
+            require(playerAttackCard.mana + 1 >= attackCard.ability.manaCost, 'Not enough mana');
+
+            uint16 remainder = 0;
             (playerAttackCard.mana, remainder) = MathUtils.subToZero(playerAttackCard.mana + 1, attackCard.ability.manaCost);
 
             Cards.CardProperties memory opponentAbility = attackCard.ability.opponent;
-            Cards.CardProperties memory playerAbility = attackCard.ability.opponent;
+            Cards.CardProperties memory playerAbility = attackCard.ability.player;
 
             // reduce opponents current card
             (playerDefenceCard.health, remainder) = MathUtils.subToZero(playerDefenceCard.health, opponentAbility.health);

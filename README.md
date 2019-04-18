@@ -175,6 +175,11 @@ To deploy a new Battle contract and not the cards contract which also needs all 
 truffle deploy --reset -f 3 --network loom_dapp_chain
 ```
 
+To deploy to the Loom testnet
+```
+truffle deploy --reset --network extdev_plasma_us1
+```
+
 To run the tests against Ganache, which is a much faster JS implementation of an Ethereum node, run
 ```
 truffle test
@@ -193,6 +198,15 @@ truffle test --network extdev
 Deploy to the Ropsten network
 ```
 truffle deploy --reset --network ropsten
+```
+
+# Jest test
+
+There is a mixture of Truffle and (Jest)[https://jestjs.io/] tests in this repo. Jest is used to test the JavaScript classes that abstract smart contracts. For exmaple, [scratch/extensions/cryptoBeastsLoom/__tests__/battle.test.js](./scratch/extensions/cryptoBeastsLoom/__tests__/battle.test.js).
+
+`npm run test` will run the Jest tests. This runs from the test script in the package.json
+```
+./node_modules/.bin/jest test --forceExit --detectOpenHandles --runInBand
 ```
 
 # Docker

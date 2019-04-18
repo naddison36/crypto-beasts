@@ -1,0 +1,1046 @@
+{
+  "contractName": "CryptoBeastsTypes",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/CryptoBeastsTypes.sol\":\"CryptoBeastsTypes\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/CryptoBeastsTypes.sol\":{\"keccak256\":\"0x48f1a221455ed200b21b9313ef19c8f5b705a2bd3e370bb3f649af6c3e0c0c4b\",\"urls\":[\"bzzr://66a39f885bfd0b4b04c5bb74c3e35426c2dcaeb194524b7d65563bce3b920d1b\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3fe6080604052600080fdfea165627a7a723058204937665791a062c2f6a0f4d3491bb8ebe6b2f3432f78fa064b52793ed51acc0c0029",
+  "deployedBytecode": "0x6080604052600080fdfea165627a7a723058204937665791a062c2f6a0f4d3491bb8ebe6b2f3432f78fa064b52793ed51acc0c0029",
+  "sourceMap": "2:618:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;2:618:2;;;;;;;",
+  "deployedSourceMap": "2:618:2:-;;;;;",
+  "source": "\n\ncontract CryptoBeastsTypes {\n    \n    struct CardProperties {\n        uint16 health;\n        uint16 defence;\n        uint16 mana;\n        uint16 attack;\n        uint16 specialAttack;\n    }\n\n    struct Ability {\n        string name;\n        CardProperties opponent;\n        CardProperties player;\n        uint16 manaCost;\n    }\n\n    struct Card {\n        string name;\n        Ability ability;\n\n        uint16 initHealth;  // 0-1000\n        uint16 initDefence; // 0-500\n        uint16 initMana;    // 0-20\n\n        uint16 speed;   // 0-500\n        uint16 attack; // 0-120\n        uint16 specialAttack; // 120-240\n    }\n}",
+  "sourcePath": "/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/CryptoBeastsTypes.sol",
+  "ast": {
+    "absolutePath": "/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/CryptoBeastsTypes.sol",
+    "exportedSymbols": {
+      "CryptoBeastsTypes": [
+        657
+      ]
+    },
+    "id": 658,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 657,
+        "linearizedBaseContracts": [
+          657
+        ],
+        "name": "CryptoBeastsTypes",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "CryptoBeastsTypes.CardProperties",
+            "id": 630,
+            "members": [
+              {
+                "constant": false,
+                "id": 621,
+                "name": "health",
+                "nodeType": "VariableDeclaration",
+                "scope": 630,
+                "src": "72:13:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 620,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "72:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 623,
+                "name": "defence",
+                "nodeType": "VariableDeclaration",
+                "scope": 630,
+                "src": "95:14:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 622,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "95:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 625,
+                "name": "mana",
+                "nodeType": "VariableDeclaration",
+                "scope": 630,
+                "src": "119:11:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 624,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "119:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 627,
+                "name": "attack",
+                "nodeType": "VariableDeclaration",
+                "scope": 630,
+                "src": "140:13:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 626,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "140:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 629,
+                "name": "specialAttack",
+                "nodeType": "VariableDeclaration",
+                "scope": 630,
+                "src": "163:20:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 628,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "163:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "CardProperties",
+            "nodeType": "StructDefinition",
+            "scope": 657,
+            "src": "40:150:2",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "CryptoBeastsTypes.Ability",
+            "id": 639,
+            "members": [
+              {
+                "constant": false,
+                "id": 632,
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 639,
+                "src": "221:11:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 631,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "221:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 634,
+                "name": "opponent",
+                "nodeType": "VariableDeclaration",
+                "scope": 639,
+                "src": "242:23:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_CardProperties_$630_storage_ptr",
+                  "typeString": "struct CryptoBeastsTypes.CardProperties"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 633,
+                  "name": "CardProperties",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 630,
+                  "src": "242:14:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_CardProperties_$630_storage_ptr",
+                    "typeString": "struct CryptoBeastsTypes.CardProperties"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 636,
+                "name": "player",
+                "nodeType": "VariableDeclaration",
+                "scope": 639,
+                "src": "275:21:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_CardProperties_$630_storage_ptr",
+                  "typeString": "struct CryptoBeastsTypes.CardProperties"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 635,
+                  "name": "CardProperties",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 630,
+                  "src": "275:14:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_CardProperties_$630_storage_ptr",
+                    "typeString": "struct CryptoBeastsTypes.CardProperties"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 638,
+                "name": "manaCost",
+                "nodeType": "VariableDeclaration",
+                "scope": 639,
+                "src": "306:15:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 637,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "306:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Ability",
+            "nodeType": "StructDefinition",
+            "scope": 657,
+            "src": "196:132:2",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "CryptoBeastsTypes.Card",
+            "id": 656,
+            "members": [
+              {
+                "constant": false,
+                "id": 641,
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "356:11:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 640,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "356:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 643,
+                "name": "ability",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "377:15:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Ability_$639_storage_ptr",
+                  "typeString": "struct CryptoBeastsTypes.Ability"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 642,
+                  "name": "Ability",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 639,
+                  "src": "377:7:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Ability_$639_storage_ptr",
+                    "typeString": "struct CryptoBeastsTypes.Ability"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 645,
+                "name": "initHealth",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "403:17:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 644,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "403:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 647,
+                "name": "initDefence",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "441:18:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 646,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "441:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 649,
+                "name": "initMana",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "478:15:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 648,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "478:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 651,
+                "name": "speed",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "515:12:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 650,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "515:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 653,
+                "name": "attack",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "548:13:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 652,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "548:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 655,
+                "name": "specialAttack",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "580:20:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 654,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "580:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Card",
+            "nodeType": "StructDefinition",
+            "scope": 657,
+            "src": "334:284:2",
+            "visibility": "public"
+          }
+        ],
+        "scope": 658,
+        "src": "2:618:2"
+      }
+    ],
+    "src": "2:618:2"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/CryptoBeastsTypes.sol",
+    "exportedSymbols": {
+      "CryptoBeastsTypes": [
+        657
+      ]
+    },
+    "id": 658,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 657,
+        "linearizedBaseContracts": [
+          657
+        ],
+        "name": "CryptoBeastsTypes",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "CryptoBeastsTypes.CardProperties",
+            "id": 630,
+            "members": [
+              {
+                "constant": false,
+                "id": 621,
+                "name": "health",
+                "nodeType": "VariableDeclaration",
+                "scope": 630,
+                "src": "72:13:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 620,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "72:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 623,
+                "name": "defence",
+                "nodeType": "VariableDeclaration",
+                "scope": 630,
+                "src": "95:14:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 622,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "95:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 625,
+                "name": "mana",
+                "nodeType": "VariableDeclaration",
+                "scope": 630,
+                "src": "119:11:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 624,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "119:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 627,
+                "name": "attack",
+                "nodeType": "VariableDeclaration",
+                "scope": 630,
+                "src": "140:13:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 626,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "140:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 629,
+                "name": "specialAttack",
+                "nodeType": "VariableDeclaration",
+                "scope": 630,
+                "src": "163:20:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 628,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "163:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "CardProperties",
+            "nodeType": "StructDefinition",
+            "scope": 657,
+            "src": "40:150:2",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "CryptoBeastsTypes.Ability",
+            "id": 639,
+            "members": [
+              {
+                "constant": false,
+                "id": 632,
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 639,
+                "src": "221:11:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 631,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "221:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 634,
+                "name": "opponent",
+                "nodeType": "VariableDeclaration",
+                "scope": 639,
+                "src": "242:23:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_CardProperties_$630_storage_ptr",
+                  "typeString": "struct CryptoBeastsTypes.CardProperties"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 633,
+                  "name": "CardProperties",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 630,
+                  "src": "242:14:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_CardProperties_$630_storage_ptr",
+                    "typeString": "struct CryptoBeastsTypes.CardProperties"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 636,
+                "name": "player",
+                "nodeType": "VariableDeclaration",
+                "scope": 639,
+                "src": "275:21:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_CardProperties_$630_storage_ptr",
+                  "typeString": "struct CryptoBeastsTypes.CardProperties"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 635,
+                  "name": "CardProperties",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 630,
+                  "src": "275:14:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_CardProperties_$630_storage_ptr",
+                    "typeString": "struct CryptoBeastsTypes.CardProperties"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 638,
+                "name": "manaCost",
+                "nodeType": "VariableDeclaration",
+                "scope": 639,
+                "src": "306:15:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 637,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "306:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Ability",
+            "nodeType": "StructDefinition",
+            "scope": 657,
+            "src": "196:132:2",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "CryptoBeastsTypes.Card",
+            "id": 656,
+            "members": [
+              {
+                "constant": false,
+                "id": 641,
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "356:11:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 640,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "356:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 643,
+                "name": "ability",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "377:15:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Ability_$639_storage_ptr",
+                  "typeString": "struct CryptoBeastsTypes.Ability"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 642,
+                  "name": "Ability",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 639,
+                  "src": "377:7:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Ability_$639_storage_ptr",
+                    "typeString": "struct CryptoBeastsTypes.Ability"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 645,
+                "name": "initHealth",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "403:17:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 644,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "403:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 647,
+                "name": "initDefence",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "441:18:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 646,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "441:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 649,
+                "name": "initMana",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "478:15:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 648,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "478:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 651,
+                "name": "speed",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "515:12:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 650,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "515:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 653,
+                "name": "attack",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "548:13:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 652,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "548:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 655,
+                "name": "specialAttack",
+                "nodeType": "VariableDeclaration",
+                "scope": 656,
+                "src": "580:20:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 654,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "580:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Card",
+            "nodeType": "StructDefinition",
+            "scope": 657,
+            "src": "334:284:2",
+            "visibility": "public"
+          }
+        ],
+        "scope": 658,
+        "src": "2:618:2"
+      }
+    ],
+    "src": "2:618:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.2+commit.1df8f40c.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-04-17T00:53:17.919Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

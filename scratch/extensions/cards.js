@@ -25,7 +25,7 @@ module.exports =
         ability: {
             name: 'Electro Charge',
             opponent: {
-                health:375
+                health: 375
             },
             player: {
                 attack: 10,
@@ -71,7 +71,6 @@ module.exports =
         speed: 110,
         attack: 70,
         specialAttack: 120,
-        
     },
     {
         name: 'Spy Hippo',

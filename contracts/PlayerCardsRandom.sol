@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 import {CryptoBeastsTypes} from "./CryptoBeastsTypes.sol";
 import {Cards} from "./Cards.sol";
 
-contract PlayerCards is CryptoBeastsTypes {
+contract PlayerCardsRandom is CryptoBeastsTypes {
 
     struct PlayerCard {
         uint cardId;
@@ -159,5 +159,9 @@ contract PlayerCards is CryptoBeastsTypes {
         }
 
         return maxSpeed;
+    }
+
+    function getPlayerDeck(address player) public view returns (PlayerDeck memory) {
+        return playerDecks[player];
     }
 }

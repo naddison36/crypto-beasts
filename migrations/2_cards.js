@@ -19,14 +19,14 @@ module.exports = function(deployer, network, accounts) {
       if (!card.ability) {
         card.ability = {}
       }
-      if (!card.opponent) {
+      if (!card.ability.opponent) {
         card.ability.opponent = {}
       }
-      if (!card.player) {
+      if (!card.ability.player) {
         card.ability.player = {}
       }
 
-      const result = await cardsContract.createCard({
+      const createCard = {
         ...card,
         ability: {
           name: card.ability.name,
@@ -49,7 +49,9 @@ module.exports = function(deployer, network, accounts) {
         initHealth: card.health,
         initDefence: card.defence,
         initMana: card.mana,
-      })
+      }
+
+      const result = await cardsContract.createCard(createCard)
     
       console.log(`Card number ${++cardNumber} tx hash: ${JSON.stringify(result.tx)}`)
     }

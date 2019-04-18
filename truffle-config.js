@@ -33,14 +33,30 @@ module.exports = {
       },
       network_id: '*'
     },
-    extdev: {
+    loomv2b: {
       provider: function() {
-        const chainId = 'extdev-plasma-us1';
-        const writeUrl = 'http://extdev-plasma-us1.dappchains.com:80/rpc';
-        const readUrl = 'http://extdev-plasma-us1.dappchains.com:80/query';
-        return new LoomTruffleProvider(chainId, writeUrl, readUrl, privateKey)
+        const privateKey = readFileSync(path.join(__dirname, 'loomv2b_pk'), 'utf-8')
+        const chainId = 'loomv2b'
+        const writeUrl = 'http://loomv2b.dappchains.com:46658/rpc'
+        const readUrl = 'http://loomv2b.dappchains.com:46658/query'
+        const loomTruffleProvider = new LoomTruffleProvider(chainId, writeUrl, readUrl, privateKey)
+        const providerEngine = loomTruffleProvider.getProviderEngine()
+        providerEngine.addAccounts([player1PrivateKey, player2PrivateKey])
+        return loomTruffleProvider
       },
-      network_id: 'extdev-plasma-us1'
+      network_id: '12106039541279'
+    },
+    extdev_plasma_us1: {
+      provider: function() {
+        const chainId = 'extdev-plasma-us1'
+        const writeUrl = 'http://extdev-plasma-us1.dappchains.com:80/rpc'
+        const readUrl = 'http://extdev-plasma-us1.dappchains.com:80/query'
+        const loomTruffleProvider = new LoomTruffleProvider(chainId, writeUrl, readUrl, privateKey)
+        const providerEngine = loomTruffleProvider.getProviderEngine()
+        providerEngine.addAccounts([player1PrivateKey, player2PrivateKey])
+        return loomTruffleProvider
+      },
+      network_id: '9545242630824'
     },
     ropsten:  {
       provider: () => {
