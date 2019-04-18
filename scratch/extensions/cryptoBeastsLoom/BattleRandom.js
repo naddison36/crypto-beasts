@@ -5,8 +5,8 @@ var log = require('minilog')('cryptoBeasts')
 
 const cards = require('../cards')
 // const regEx = require('../regEx')
-const BattleContract = require('../../../build/contracts/BattleRandom.json')
-const CardsContract = require('../../../build/contracts/Cards.json')
+const BattleContract = require('../contracts/BattleRandom.json')
+const CardsContract = require('../contracts/Cards.json')
 
 const clientConfig = [
     'default',
