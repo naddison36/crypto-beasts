@@ -1,16 +1,23 @@
 # Crypto Beasts
 
-A Blockchain-based card game that uses [Scratch](https://scratch.mit.edu/) for the UI and [Loom](https://loomx.io/) for the Ethereum smart contracts.
+A Blockchain-based game that uses [Scratch](https://scratch.mit.edu/) for the UI and [Loom](https://loomx.io/) for the Ethereum smart contracts.
 
 # Scratch
 
-## Prerequisite 
+## Scratch files
+
+* [Game without Loom](./scratch/CryptoBeasts.sb3)
+* [Hackathon presentation](./scratch/CryptoBeastsPresentation.sb3)
+
+## Scratch 3.0 Extension Development
+
+### Prerequisite 
 
 The following software must be installed before running the installation steps
 - [Git](https://git-scm.com/downloads)
 - [Node.js](https://nodejs.org/en/download/)
 
-## Installation
+### Installation
 
 The following will install this [crypto-beasts](https://github.com/naddison36/crypto-beasts) repository and the Scratch repositories [scratch-gui](https://github.com/LLK/scratch-gui) and [scratch-vm](https://github.com/LLK/scratch-vm). This will allow Scratch with the custom extensions to be run locally.
 ```bash
@@ -68,7 +75,7 @@ npm start
 
 After the server starts, Scratch should be available at [http://localhost:8601](http://localhost:8601) 
 
-## Customization
+### Customization
 
 The following steps are done in the above but a listed here for anyone who wants to write their own Scratch extension.
 
@@ -110,17 +117,14 @@ node: {
 }
 ```
 
-# Scratch files
-
-* [Game without Loom](./scratch/Crypto Beasts.sb3)
-* [Hackathon presentation](./scratch/Crypto Beasts Presentation.sb3)
-
-## Useful links
+## Useful Scratch 3.0 links
 * [How to Develop Your Own Block for Scratch 3.0](https://medium.com/@hiroyuki.osaki/how-to-develop-your-own-block-for-scratch-3-0-1b5892026421) matches what has been done for this project.
 * The [Scratch 3.0 Extensions Specification](https://github.com/LLK/scratch-vm/wiki/Scratch-3.0-Extensions-Specification) is now out of date and does not work.
 * The unofficial Scratch 3 wiki is also now out of date. It covers how to install Scratch 3.0 on your local machine and develop an extension. See [Testing your Extensions](https://github.com/kyleplo/scratch-three-extension-docs/wiki/Testing-your-Extensions) and [Scratch GUI Getting Started](https://github.com/LLK/scratch-gui/wiki/Getting-Started) for more details.
 
 # Loom
+
+Loom Network’s DPoS sidechains allow for truly scalable blockchain games and DApps with the security of Ethereum mainnet. Like EOS on Ethereum.
 
 ## Installation
 
@@ -192,7 +196,7 @@ truffle test --network loom_dapp_chain
 
 Deploy to the Loom dev testnet
 ```
-truffle test --network extdev
+truffle test --network extdev_plasma_us1
 ```
 
 Deploy to the Ropsten network
@@ -200,9 +204,16 @@ Deploy to the Ropsten network
 truffle deploy --reset --network ropsten
 ```
 
+## Useful Loom links
+
+* [Loom website](https://loomx.io)
+* [Loom SDK](https://loomx.io/developers/)
+* [Everything You Need to Know About Loom Network, All in One Place ](https://medium.com/loom-network/everything-you-need-to-know-about-loom-network-all-in-one-place-updated-regularly-64742bd839fe)
+* [Web3, LoomProvider and Truffle](https://loomx.io/developers/docs/en/web3js-loom-provider-truffle.html)
+
 # Jest test
 
-There is a mixture of Truffle and (Jest)[https://jestjs.io/] tests in this repo. Jest is used to test the JavaScript classes that abstract smart contracts. For exmaple, [scratch/extensions/cryptoBeastsLoom/__tests__/battle.test.js](./scratch/extensions/cryptoBeastsLoom/__tests__/battle.test.js).
+There is a mixture of Truffle and [Jest](https://jestjs.io/) tests in this repo. Jest is used to test the JavaScript classes that abstract smart contracts. For exmaple, [scratch/extensions/cryptoBeastsLoom/__tests__/battle.test.js](./scratch/extensions/cryptoBeastsLoom/__tests__/battle.test.js).
 
 `npm run test` will run the Jest tests. This runs from the test script in the package.json
 ```
