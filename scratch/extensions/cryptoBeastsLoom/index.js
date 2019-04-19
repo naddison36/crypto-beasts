@@ -1,15 +1,12 @@
 const formatMessage = require('format-message')
-const Web3 = require('web3')
-const { Client, CryptoUtils, LoomProvider } = require('loom-js')
 
 const ArgumentType = require('../../../extension-support/argument-type')
 const BlockType = require('../../../extension-support/block-type')
 const log = require('../../../util/log')
 
+const Battle = require('./BattleRandom')
 const cards = require('../cards')
 const regEx = require('../regEx')
-const BattleABI = require('../Battle.json')
-const network = 13654820909954
 
 // For testing
 const playerKeys = [
@@ -31,7 +28,7 @@ class Scratch3CryptoBeastsLoomBlocks {
 
         this.init()
 
-        this.connectLoom()
+        this.battle = new Battle()
     }
 
     init() {
@@ -55,25 +52,6 @@ class Scratch3CryptoBeastsLoomBlocks {
         this.whenChallengedFlag = false
 
         this.whenChallengedAcceptedFlag = false
-    }
-
-    connectLoom() {
-
-        log.debug(`About to connect to local Loom`)
-
-        // TODO put these in env vars
-        const client = new Client(
-            'default',
-            'ws://127.0.0.1:46658/websocket',
-            'ws://127.0.0.1:46658/queryws',
-        )  
-
-        const loomProvider = new LoomProvider(client, CryptoUtils.B64ToUint8Array(playerKeys[0].private));
-        const web3 = new Web3(loomProvider)
-    
-        this.battleContract = new web3.eth.Contract(BattleABI.abi, BattleABI.networks[network].address)
-
-        log.debug(`Battle contract address is ${BattleABI.networks[network].address}`)
     }
 
     getInfo() {
@@ -517,22 +495,7 @@ class Scratch3CryptoBeastsLoomBlocks {
 
             log.debug(`My player ${this.myPlayer} did move ${args.MOVE} for their turn`)
 
-            this.battleContract.move(args.MOVE).send({from: this.myPlayer})
-                .once('transactionHash', hash => {
-                    log.debug(`Got tx hash ${hash} for player move`)
-                })
-               .once('receipt', receipt => {
-                   log.debug(`Got tx receipt for player move`)
-                   this.myTurnCompletedFlag = true
-
-                   // If the receipt contains a EndGame event
-                //    if (receipt.) {
-                //        this.winningPlayer = winningPlayer
-                //        this.gameOverFlag = true
-                //    }
-                   resolve
-               })
-
+            
             // TODO is the game over?
             // const attackCard = this.playerCards[this.myPlayer][this.playersCurrentCard[this.myPlayer]]
             // const defenceCard = this.playerCards[this.oppositionPlayer][this.playersCurrentCard[this.oppositionPlayer]]
