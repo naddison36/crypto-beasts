@@ -75,49 +75,6 @@ class Testing {
         this.loomProvider.addAccounts([newAccountPrivateKey])
     }
 
-    msgSender() {
-        return this.contract.methods.msgSender().call()
-    }
-
-    failRequire() {
-
-        return new Promise((resolve, reject) => {
-            
-            log.debug(`About to failRequire`)
-
-            this.contract.methods
-            .failRequire()
-            .send()
-            .then(tx => {
-                resolve()
-            })
-            .catch(err => {
-                const error = new Error(`Fail require. Error: ${err.message}`)
-                log.error(error.message)
-                reject(error)
-            })
-        })
-    }
-
-    increment() {
-        return new Promise((resolve, reject) => {
-            
-            log.debug(`About to increment`)
-
-            this.contract.methods
-            .increment()
-            .send()
-            .then(tx => {
-                resolve(parseInt(tx.events.Increment.returnValues.counter))
-            })
-            .catch(err => {
-                const error = new Error(`Fail increment. Error: ${err.message}`)
-                log.error(error.message)
-                reject(error)
-            })
-        })
-    }
-
     toggleFail() {
         return new Promise((resolve, reject) => {
             

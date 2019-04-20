@@ -53,28 +53,4 @@ describe('Testing', () => {
     test('Third toggle', async () => {
         await testing.toggleFail()
     })
-
-    test('1st failed require', async () => {
-
-        expect.assertions(1)
-
-        try {
-            await testing.failRequire()
-        }
-        catch (err) {
-            expect(err).toBeInstanceOf(Error)
-        }
-    })
-
-    test('Increment', async () => {
-
-        const counter = await testing.increment()
-        expect(counter).toEqual(1)
-    })
-
-    test('Increment', async () => {
-
-        const counter = await testing.increment()
-        expect(counter).toEqual(2)
-    })
 })
