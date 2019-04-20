@@ -225,21 +225,6 @@ class Scratch3CryptoBeastsLoomBlocks {
                     }
                 },
                 {
-                    opcode: 'getPlayerAddress',
-                    text: formatMessage({
-                        id: 'cryptoBeasts.getPlayerAddress',
-                        default: 'address of player [PLAYER_NUMBER]',
-                        description: 'get the Ethereum address of a test player',
-                    }),
-                    blockType: BlockType.REPORTER,
-                    arguments: {
-                        PLAYER_NUMBER: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: 1,
-                        },
-                    }
-                },
-                {
                     opcode: 'getWinningPlayer',
                     text: formatMessage({
                         id: 'cryptoBeasts.getWinningPlayer',
@@ -495,6 +480,29 @@ class Scratch3CryptoBeastsLoomBlocks {
 
             log.debug(`My player ${this.myPlayer} did move ${args.MOVE} for their turn`)
 
+            this.battle.turn(move)
+            .then((tx) => {
+
+                // TODO check end game event
+                
+
+                return this.battle.getPlayerDeck(this.myPlayer)
+            })
+            .then(myCards => {
+                playerCards[this.myPlayer] = myCards
+
+                return this.battle.getPlayerDeck(this.oppositionPlayer)
+            })
+            .then(oppositionCards => {
+                playerCards[this.oppositionPlayer] = oppositionCards
+
+                this.playersCurrentCard[this.oppositionPlayer] = oppositionCards.currentCard
+
+                this.myTurnCompletedFlag = true
+
+                resolve()
+            })
+
             
             // TODO is the game over?
             // const attackCard = this.playerCards[this.myPlayer][this.playersCurrentCard[this.myPlayer]]
@@ -619,19 +627,6 @@ class Scratch3CryptoBeastsLoomBlocks {
 
     countCards() {
         return cards.length
-    }
-
-    getPlayerAddress(args) {
-
-        if (!Number.isInteger(args.PLAYER_NUMBER) && args.PLAYER_NUMBER < 0) {
-            return log.error(`Invalid PLAYER_NUMBER argument ${args.PLAYER_NUMBER} for get player address. Must be a positive integer`)
-        }
-
-        if (args.PLAYER_NUMBER >= playerKeys.length) {
-            return log.error(`Failed to get address for player number ${args.PLAYER_NUMBER}. Only ${playerKeys.length} test players exist. The player number must be less than ${playerKeys.length}`)
-        }
-
-        return playerKeys[args.PLAYER_NUMBER].address
     }
 
     getWinningPlayer() {
@@ -851,30 +846,27 @@ class Scratch3CryptoBeastsLoomBlocks {
 
             log.debug(`Player ${this.myPlayer} picks cards ${JSON.stringify(args)}`)
 
-            this.battleContract.methods.pickPayerCards([
+            this.battleContract.methods
+            .pickPayerCards([
                 args.CARD_1,
                 args.CARD_2,
                 args.CARD_3,
                 args.CARD_4,
                 args.CARD_5]
             ).send({from: this.myPlayer})
-            .once('transactionHash', hash => {
-                log.debug(`Got tx hash ${hash} for player move`)
-            })
-           .once('receipt', receipt => {
+            .then(pickedCards => {
                log.debug(`Got tx receipt for player ${this.myPlayer} picking cards ${JSON.stringify(args)}`)
-               this.myTurnCompletedFlag = true
 
                 // TODO parse cards from event
                 // clone the cards into player cards
                 this.playerCards[this.myPlayer] = [
-                    {...cards[args.CARD_1]},
-                    {...cards[args.CARD_2]},
-                    {...cards[args.CARD_3]},
+                    {...cards[pickedCards[0]]},
+                    {...cards[pickedCards[1]]},
+                    {...cards[pickedCards[2]]},
                 ]
                 this.playersCurrentCard[this.myPlayer] = 0
 
-               resolve
+               resolve()
            })
         })
     }

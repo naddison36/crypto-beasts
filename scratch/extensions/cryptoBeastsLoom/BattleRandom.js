@@ -109,7 +109,7 @@ class Battle {
                 })
             })
             .catch(err => {
-                reject(`Failed to get player deck for ${player}. Error: ${err.message}`)
+                reject(new Error(`Failed to get player deck for ${player}. Error: ${err.message}`))
             })
         })
     }
@@ -143,7 +143,7 @@ class Battle {
                 resolve(pickedCardsInt)
             })
             .catch(err => {
-                reject(`Failed to pick player cards for ${this.myPlayer}`)
+                reject(new Error(`Failed to pick player cards for ${this.myPlayer}`))
             })
         })
     }
@@ -161,10 +161,10 @@ class Battle {
 
                 log.info(`Got turn event for player ${this.myPlayer}  ${JSON.stringify(turnEvent)}`)
     
-                resolve(pickedCardsInt)
+                resolve()
             })
             .catch(err => {
-                reject(`Failed to move ${move} for player ${this.myPlayer}`)
+                reject(new Error(`Failed to move ${move} for player ${this.myPlayer}`))
             })
         })
     }

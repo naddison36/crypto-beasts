@@ -176,7 +176,7 @@ truffle deploy --reset --network loom_dapp_chain
 
 To deploy a new Battle contract and not the cards contract which also needs all the cards loaded, run the following. This runs the third migration which deploys the battle contract.
 ```
-truffle deploy --reset -f 3 --network loom_dapp_chain
+truffle deploy --reset -f 4 --network loom_dapp_chain
 ```
 
 To deploy to the Loom testnet
