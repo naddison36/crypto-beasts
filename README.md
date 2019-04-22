@@ -139,6 +139,15 @@ chmod +x loom
 ./loom run
 ```
 
+To install a particular loom version, eg build 921,
+```
+wget -O loom921 https://private.delegatecall.com/loom/osx/build-921/loom
+chmod a+x loom921
+ln -s loom921 loom
+```
+
+You can confirm the installed version with `./loom version`
+
 ## Generate keys
 ```
 ./loom genkey -a public_key -k private_key
@@ -171,12 +180,12 @@ truffle install -g
 
 The [./truffle-config.js](./truffle-config.js) file has the Truffle config to deploy the contracts to a local Loom chain. To simply compile the contracts, run `truffle compile`. To compile and deploy the contracts to a local Loom node, run
 ```
-truffle deploy --reset --network loom_dapp_chain
+truffle deploy --reset --network CryptoBeastsLocal
 ```
 
 To deploy a new Battle contract and not the cards contract which also needs all the cards loaded, run the following. This runs the third migration which deploys the battle contract.
 ```
-truffle deploy --reset -f 4 --network loom_dapp_chain
+truffle deploy --reset -f 4 --network CryptoBeastsLocal
 ```
 
 To deploy to the Loom testnet
@@ -191,7 +200,7 @@ truffle test
 
 To run the tests against a local Loom node. Note test that check the revert reason will fail as Loom does not include the revert reason in the transaction receipt.
 ```
-truffle test --network loom_dapp_chain
+truffle test --network CryptoBeastsLocal
 ```
 
 Deploy to the Loom dev testnet
@@ -218,6 +227,11 @@ There is a mixture of Truffle and [Jest](https://jestjs.io/) tests in this repo.
 `npm run test` will run the Jest tests. This runs from the test script in the package.json
 ```
 ./node_modules/.bin/jest test --forceExit --detectOpenHandles --runInBand
+```
+
+To run a particular test, use the `-t` option. eg
+```
+./node_modules/.bin/jest test --forceExit --detectOpenHandles --runInBand -t Challenge
 ```
 
 # Docker

@@ -31,14 +31,14 @@ class Challenge {
 
         log.debug(`About to connect to local Loom`)
 
-        const client = new Client(...clientConfig)
-        client.txMiddleware = [
-            // new CachedNonceTxMiddleware(challengerPublicKey, client),
-            new SpeculativeNonceTxMiddleware(challengerPublicKey, client),
+        this.client = new Client(...clientConfig)
+        this.client.txMiddleware = [
+            // new CachedNonceTxMiddleware(challengerPublicKey, this.client),
+            new SpeculativeNonceTxMiddleware(challengerPublicKey, this.client),
             new SignedTxMiddleware(challengerPrivateKey)
           ]
 
-        this.loomProvider = new LoomProvider(client, challengerPrivateKey)
+        this.loomProvider = new LoomProvider(this.client, challengerPrivateKey)
         const web3 = new Web3(this.loomProvider)
 
         this.contract = new web3.eth.Contract(
@@ -76,11 +76,11 @@ class Challenge {
         this.loomProvider.addAccounts([newAccountPrivateKey])
     }
 
-    isChallenging(challenger) {
-        return this.contract.methods.challenges(challenger).call()
+    challenger() {
+        return this.contract.methods.challenger().call()
     }
 
-    anyone(challenger) {
+    challenge(challenger) {
 
         return new Promise((resolve, reject) => {
             
@@ -88,10 +88,10 @@ class Challenge {
                 challenger = this.challengerAddress
             }
 
-            log.debug(`About to challenge anyone using challenger ${challenger}`)
+            log.debug(`About to challenge using ${challenger}`)
 
             this.contract.methods
-            .anyone()
+            .challenge()
             .send({from: challenger})
             .then(tx => {
                 log.debug(`Challenger anyone transaction ${tx}`)

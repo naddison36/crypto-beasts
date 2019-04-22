@@ -31,19 +31,27 @@ class Testing {
 
         log.debug(`About to connect to local Loom`)
 
-        const client = new Client(...clientConfig)
-        client.txMiddleware = [
-            new CachedNonceTxMiddleware(publicKey, client),
-            // new SpeculativeNonceTxMiddleware(publicKey, client),
-            new SignedTxMiddleware(privateKey)
-          ]
+        this.client = new Client(...clientConfig)
 
-        this.loomProvider = new LoomProvider(client, privateKey)
+        const setupMiddlewareFn = function(client, privateKey) {
+            const publicKey = CryptoUtils.publicKeyFromPrivateKey(privateKey)
+            return [
+                // new CachedNonceTxMiddleware(publicKey, client),
+                new SpeculativeNonceTxMiddleware(publicKey, client),
+                new SignedTxMiddleware(privateKey)]
+          }
+          
+        // this.client.txMiddleware = [
+        //     new CachedNonceTxMiddleware(publicKey, this.client),
+        //     // new SpeculativeNonceTxMiddleware(publicKey, this.client),
+        //     new SignedTxMiddleware(privateKey)
+        //   ]
+
+        this.loomProvider = new LoomProvider(this.client, privateKey, setupMiddlewareFn)
         const web3 = new Web3(this.loomProvider)
 
         this.contract = new web3.eth.Contract(
             TestingContract.abi,
-            TestingContract.networks[network].address,
             {from: address})
 
         log.debug(`Testing contract address is ${this.contract.options.address}`)
@@ -64,34 +72,83 @@ class Testing {
                 this.contract = contract
 
                 log.info(`Deployed Testing contract address ${this.contract.options.address}`)
-    
+
                 resolve(this.contract.options.address)
             })
         })
     }
 
-    addAccount(newAccountPrivateKeyBase64) {
-        const newAccountPrivateKey = CryptoUtils.B64ToUint8Array(newAccountPrivateKeyBase64)
-        this.loomProvider.addAccounts([newAccountPrivateKey])
+    addAccount(privateKeyBase64) {
+        
+        let privateKey
+        if (!privateKeyBase64) {
+            log.debug(`No private key passed so generating one`)
+            privateKey = CryptoUtils.generatePrivateKey()
+        }
+        else {
+            privateKey = CryptoUtils.B64ToUint8Array(privateKeyBase64)
+        }
+
+        this.loomProvider.addAccounts([privateKey])
+
+        const publicKey = CryptoUtils.publicKeyFromPrivateKey(privateKey)
+        const account = LocalAddress.fromPublicKey(publicKey).toString()
+
+        log.info(`Added new account ${account}`)
+
+        return account
     }
 
-    toggleFail() {
+    testTx(sender) {
         return new Promise((resolve, reject) => {
-            
-            log.debug(`About to toggleFail`)
+
+            let sendOptions = {}
+            if (sender) {
+                sendOptions = {from: sender}
+            }
+
+            log.debug(`About to testTx`)
 
             this.contract.methods
-            .toggleFail()
-            .send()
+            .testTx()
+            .send(sendOptions)
             .then(tx => {
-                resolve()
+                resolve(tx)
             })
             .catch(err => {
-                const error = new Error(`Fail toggleFail. Error: ${err.message}`)
+                const error = new Error(`Failed testTx. Error: ${err.message}`)
                 log.error(error.message)
                 reject(error)
             })
         })
+    }
+
+    setFail(failFlag, sender) {
+        return new Promise((resolve, reject) => {
+
+            let sendOptions = {}
+            if (sender) {
+                sendOptions = {from: sender}
+            }
+
+            log.debug(`About to set fail flag to ${failFlag}`)
+
+            this.contract.methods
+            .setFail(failFlag)
+            .send(sendOptions)
+            .then(tx => {
+                resolve(tx)
+            })
+            .catch(err => {
+                const error = new Error(`Fail to set fail flag. Error: ${err.message}`)
+                log.error(error.message)
+                reject(error)
+            })
+        })
+    }
+
+    fail() {
+        return this.contract.methods.fail().call()
     }
 }
 

@@ -3,35 +3,29 @@ pragma solidity ^0.5.0;
 
 contract Challenge {
 
-    mapping (address => bool) public challenges;
-
-    address[] public challengeQueue;
+    address public challenger = address(0);
 
     event Challenge(address challenger);
     event Cancel(address challenger);
     event Accept(address challenger, address acceptor);
 
-    function anyone() public {
-        // can not already have issued a challenge
-        require(!challenges[msg.sender], 'Already challenging');
+    function challenge() public {
+        // have already issued a challenge
+        require(challenger != msg.sender, 'Already challenging');
 
-        if (challengeQueue.length > 0) {
-            // TODO currently FILO. Ideally should be FIFO
-            address challenger = challengeQueue[challengeQueue.length - 1];
-            challengeQueue.pop();
-            challenges[challenger] = false;
-
-            emit Accept(challenger, msg.sender);
+        if (challenger == address(0)) {
+            challenger = msg.sender;
+            emit Challenge(msg.sender);
         }
         else {
-            challengeQueue.push(msg.sender);
-            challenges[msg.sender] = true;
-
-            emit Challenge(msg.sender);
+            emit Accept(challenger, msg.sender);
+            challenger = address(0);
         }
     }
 
-    function isChallenging(address challenger) public view returns (bool) {
-        return challenges[challenger];
+    function cancel() public {
+        require(challenger == msg.sender);
+        
+        emit Cancel(msg.sender);
     }
 }

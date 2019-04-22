@@ -1,15 +1,13 @@
 
 contract Testing {
 
-    bool fail = false;
+    bool public fail = false;
 
-    function toggleFail() public {
-        if (fail) {
-            revert('Fail transaction');
-            fail = false;
-        }
-        else {
-            fail = true;
-        }
+    function testTx() public {
+        require(fail == false, 'Tx set to fail');
+    }
+
+    function setFail(bool _fail) public {
+        fail = _fail;
     }
 }

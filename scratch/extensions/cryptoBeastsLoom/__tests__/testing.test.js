@@ -21,9 +21,14 @@ const playerKeys = [
 describe('Testing', () => {
 
     let testing
+    let testSender
 
     beforeAll(() => {
         testing = new Testing(playerKeys[0].private)
+    })
+
+    afterAll(() => {
+        testing.client.disconnect()
     })
 
     test('Connect', () => {
@@ -35,22 +40,48 @@ describe('Testing', () => {
 
         console.log(`Deployed contract address is ${contractAddress}`)
         expect(contractAddress).toMatch(/^0x([A-Fa-f0-9]{40})$/)
+
+        expect(await testing.fail()).toBeFalsy();
     })
 
-    test('First toggle', async () => {
-        await testing.toggleFail()
+    test('Create test account', () => {
+        testSender = testing.addAccount()
     })
 
-    test('Second toggle', async () => {
+    test('First tx success', async () => {
+        // expect(await testing.client.getAccountNonceAsync({account: testSender})).toEqual(0)
+        // expect(await testing.client.getNonceAsync(testSender)).toEqual(0)
+        await testing.testTx(testSender)
+        // expect(await testing.client.getAccountNonceAsync({account: testSender})).toEqual(1)
+    })
+
+    test('Set test tx to fail', async () => {
+        await testing.setFail(true)
+        expect(await testing.fail()).toBeTruthy();
+    })
+
+    test('Second tx to fail', async () => {
+
+        expect.assertions(1)
+
         try {
-            await testing.toggleFail()
+            await testing.testTx(testSender)
         }
         catch (err) {
             expect(err).toBeInstanceOf(Error)
         }
     })
 
-    test('Third toggle', async () => {
-        await testing.toggleFail()
+    test('Set test tx to succeed', async () => {
+        await testing.setFail(false)
+        expect(await testing.fail()).toBeFalsy();
     })
+
+    // test('Third tx success', async () => {
+    //     await testing.testTx(testSender)
+    // })
+
+    // test('Retry third tx success', async () => {
+    //     await testing.testTx(testSender)
+    // })
 })

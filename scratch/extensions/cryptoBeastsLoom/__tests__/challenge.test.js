@@ -27,6 +27,10 @@ describe('Challenge', () => {
         challenge = new Challenge(playerKeys[0].private)
     })
 
+    afterAll(() => {
+        challenge.client.disconnect()
+    })
+
     test('Connect', () => {
         expect(challenge.contract).toBeDefined()
     })
@@ -41,44 +45,41 @@ describe('Challenge', () => {
 
     test('Player 1 challenges anyone', async () => {
 
-        expect(await challenge.isChallenging(playerKeys[0].address)).toBeFalsy()
-        const challenger = await challenge.anyone()
+        expect(await challenge.challenger()).toEqual("0x0000000000000000000000000000000000000000")
+        const challenger = await challenge.challenge()
         expect(challenger).toBeUndefined()
-        expect(await challenge.isChallenging(playerKeys[0].address)).toBeTruthy()
+        expect(await challenge.challenger()).toEqual(playerKeys[0].address)
     })
 
     test('Player 1 challenges anyone again', async () => {
 
-        expect.assertions(3)
+        expect.assertions(2)
 
-        expect(await challenge.isChallenging(playerKeys[0].address)).toBeTruthy()
         try {
-            await challenge.anyone()
+            await challenge.challenge()
         }
         catch (err) {
             expect(err).toBeInstanceOf(Error)
-            expect(await challenge.isChallenging(playerKeys[0].address)).toBeTruthy()
+            expect(await challenge.challenger()).toEqual(playerKeys[0].address)
         }
     })
 
-    // test('Player 2 accept challenge by player 1', async () => {
+    test('Player 2 challenges accepting by player 1\'s challenge', async () => {
 
-    //     challenge.addAccount(playerKeys[1].private)
+        challenge.addAccount(playerKeys[1].private)
 
-    //     const challenger = await challenge.anyone(playerKeys[1].address)
+        const challenger = await challenge.challenge(playerKeys[1].address)
 
-    //     expect(challenger).toEqual(playerKeys[0].address)
-    //     expect(await challenge.isChallenging(playerKeys[0].address)).toBeFalsy()
-    //     expect(await challenge.isChallenging(playerKeys[1].address)).toBeFalsy()
-    // })
+        expect(challenger).toEqual(playerKeys[0].address)
+        expect(await challenge.challenger()).toEqual("0x0000000000000000000000000000000000000000")
+    })
 
-    // test('Player 1 challenges anyone again', async () => {
+    test('Player 1 challenges anyone again', async () => {
 
-    //     expect(await challenge.isChallenging(playerKeys[0].address)).toBeFalsy()
-    //     const challenger = await challenge.anyone(playerKeys[0].address)
-    //     expect(challenger).toBeUndefined()
-    //     expect(await challenge.isChallenging(playerKeys[0].address)).toBeTruthy()
-    // })
+        const challenger = await challenge.challenge()
+        expect(challenger).toBeUndefined()
+        expect(await challenge.challenger()).toEqual(playerKeys[0].address)
+    })
 
     // test('Player 3 challenges anyone', async () => {
 

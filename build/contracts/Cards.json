@@ -2187,8 +2187,8 @@
         }
       },
       "links": {},
-      "address": "0x7Fa4c69beE2d03764Ab2C1712A5b1321F0aD1889",
-      "transactionHash": "0x8e609d667124dd84c85588ac9f24dfb352f8089d0cc9048d6ca5e115117c1c41"
+      "address": "0x932A02c73Ac7e2ED844540A613CE3256b3c84492",
+      "transactionHash": "0xe2091d2b9e209a9f99fc933b065ea26e9905cc9fbf703004552d849e49544f3b"
     },
     "9545242630824": {
       "events": {
@@ -2328,10 +2328,149 @@
       "links": {},
       "address": "0x2Fdc3b6FAC46d7D17BAC38910c4b24AAbd1258Ee",
       "transactionHash": "0xc0f967f6ccd8624d065d3412b78b7efd64f53593b053bfa3ada7798892ce4dc6"
+    },
+    "10138269186315": {
+      "events": {
+        "0xb1b17b23cffcf729d34b26aac4faa18940cec6ac11f34c678d0bfe232b00dc81": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "cardId",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "components": [
+                    {
+                      "name": "name",
+                      "type": "string"
+                    },
+                    {
+                      "components": [
+                        {
+                          "name": "health",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "defence",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "mana",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "attack",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "specialAttack",
+                          "type": "uint16"
+                        }
+                      ],
+                      "name": "opponent",
+                      "type": "tuple"
+                    },
+                    {
+                      "components": [
+                        {
+                          "name": "health",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "defence",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "mana",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "attack",
+                          "type": "uint16"
+                        },
+                        {
+                          "name": "specialAttack",
+                          "type": "uint16"
+                        }
+                      ],
+                      "name": "player",
+                      "type": "tuple"
+                    },
+                    {
+                      "name": "manaCost",
+                      "type": "uint16"
+                    }
+                  ],
+                  "name": "ability",
+                  "type": "tuple"
+                },
+                {
+                  "name": "initHealth",
+                  "type": "uint16"
+                },
+                {
+                  "name": "initDefence",
+                  "type": "uint16"
+                },
+                {
+                  "name": "initMana",
+                  "type": "uint16"
+                },
+                {
+                  "name": "speed",
+                  "type": "uint16"
+                },
+                {
+                  "name": "attack",
+                  "type": "uint16"
+                },
+                {
+                  "name": "specialAttack",
+                  "type": "uint16"
+                }
+              ],
+              "indexed": false,
+              "name": "card",
+              "type": "tuple"
+            }
+          ],
+          "name": "NewCard",
+          "type": "event",
+          "signature": "0xb1b17b23cffcf729d34b26aac4faa18940cec6ac11f34c678d0bfe232b00dc81"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
+      "links": {},
+      "address": "0x932A02c73Ac7e2ED844540A613CE3256b3c84492",
+      "transactionHash": "0x5d588bafeb8fb02410f3e5de4c5eb6e7d9521da271db993add95ed98b488e317"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-20T12:15:51.361Z",
+  "updatedAt": "2019-04-22T04:27:50.398Z",
   "devdoc": {
     "methods": {
       "isOwner()": {

@@ -2,31 +2,61 @@
   "contractName": "Testing",
   "abi": [
     {
+      "constant": true,
+      "inputs": [],
+      "name": "fail",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0xa9cc4718"
+    },
+    {
       "constant": false,
       "inputs": [],
-      "name": "toggleFail",
+      "name": "testTx",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function",
-      "signature": "0xb2d3a513"
+      "signature": "0x3edbbe0f"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_fail",
+          "type": "bool"
+        }
+      ],
+      "name": "setFail",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x9d769402"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[],\"name\":\"toggleFail\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/Testing.sol\":\"Testing\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/Testing.sol\":{\"keccak256\":\"0xf5ccf3eabb6ed54dab9a1deca6f07420b0a388bfbdefa6c95fddb8ec211cbaa0\",\"urls\":[\"bzzr://dc31d5f7762129afe7e81ee6b67cdb625a765ab084b805deed6e14cc7f3f040e\"]}},\"version\":1}",
-  "bytecode": "0x608060405260008060006101000a81548160ff02191690831515021790555034801561002a57600080fd5b5061011b8061003a6000396000f3fe6080604052348015600f57600080fd5b50600436106045576000357c010000000000000000000000000000000000000000000000000000000090048063b2d3a51314604a575b600080fd5b60506052565b005b6000809054906101000a900460ff161560d3576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260108152602001807f4661696c207472616e73616374696f6e0000000000000000000000000000000081525060200191505060405180910390fd5b60016000806101000a81548160ff02191690831515021790555056fea165627a7a72305820ac51ec212b7f1c880eb2780eb94d3012ec65539b98fd54b39c02b41a461a6f6d0029",
-  "deployedBytecode": "0x6080604052348015600f57600080fd5b50600436106045576000357c010000000000000000000000000000000000000000000000000000000090048063b2d3a51314604a575b600080fd5b60506052565b005b6000809054906101000a900460ff161560d3576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260108152602001807f4661696c207472616e73616374696f6e0000000000000000000000000000000081525060200191505060405180910390fd5b60016000806101000a81548160ff02191690831515021790555056fea165627a7a72305820ac51ec212b7f1c880eb2780eb94d3012ec65539b98fd54b39c02b41a461a6f6d0029",
-  "sourceMap": "1:232:9:-;;;37:5;25:17;;;;;;;;;;;;;;;;;;;;1:232;8:9:-1;5:2;;;30:1;27;20:12;5:2;1:232:9;;;;;;;",
-  "deployedSourceMap": "1:232:9:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1:232:9;;;;;;;;;;;;;;;;;;;;49:182;;;:::i;:::-;;;92:4;;;;;;;;;;;88:137;;;112:26;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;88:137;210:4;203;;:11;;;;;;;;;;;;;;;;;;49:182::o",
-  "source": "\ncontract Testing {\n\n    bool fail = false;\n\n    function toggleFail() public {\n        if (fail) {\n            revert('Fail transaction');\n            fail = false;\n        }\n        else {\n            fail = true;\n        }\n    }\n}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[],\"name\":\"testTx\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_fail\",\"type\":\"bool\"}],\"name\":\"setFail\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"fail\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/Testing.sol\":\"Testing\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/Testing.sol\":{\"keccak256\":\"0x5e83d67844c6f288b5ab4eac5d11ab44942fedfffb8918762ecb70d6426e9dba\",\"urls\":[\"bzzr://9c33fe07585665919c81321467734be5e663992f89d5cac18050bdb49ddf1883\"]}},\"version\":1}",
+  "bytecode": "0x608060405260008060006101000a81548160ff02191690831515021790555034801561002a57600080fd5b506101a58061003a6000396000f3fe608060405234801561001057600080fd5b506004361061005e576000357c0100000000000000000000000000000000000000000000000000000000900480633edbbe0f146100635780639d7694021461006d578063a9cc47181461009d575b600080fd5b61006b6100bf565b005b61009b6004803603602081101561008357600080fd5b8101908080351515906020019092919050505061014b565b005b6100a5610167565b604051808215151515815260200191505060405180910390f35b600015156000809054906101000a900460ff161515141515610149576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252600e8152602001807f54782073657420746f206661696c00000000000000000000000000000000000081525060200191505060405180910390fd5b565b806000806101000a81548160ff02191690831515021790555050565b6000809054906101000a900460ff168156fea165627a7a72305820deecac378af9de2653d99a16283ca3a141c4949a62031e64d70536c4e81782930029",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061005e576000357c0100000000000000000000000000000000000000000000000000000000900480633edbbe0f146100635780639d7694021461006d578063a9cc47181461009d575b600080fd5b61006b6100bf565b005b61009b6004803603602081101561008357600080fd5b8101908080351515906020019092919050505061014b565b005b6100a5610167565b604051808215151515815260200191505060405180910390f35b600015156000809054906101000a900460ff161515141515610149576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252600e8152602001807f54782073657420746f206661696c00000000000000000000000000000000000081525060200191505060405180910390fd5b565b806000806101000a81548160ff02191690831515021790555050565b6000809054906101000a900460ff168156fea165627a7a72305820deecac378af9de2653d99a16283ca3a141c4949a62031e64d70536c4e81782930029",
+  "sourceMap": "1:210:9:-;;;44:5;25:24;;;;;;;;;;;;;;;;;;;;1:210;8:9:-1;5:2;;;30:1;27;20:12;5:2;1:210:9;;;;;;;",
+  "deployedSourceMap": "1:210:9:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1:210:9;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;56:82;;;:::i;:::-;;144:65;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;144:65:9;;;;;;;;;;;;;;;;;;;:::i;:::-;;25:24;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;56:82;107:5;99:13;;:4;;;;;;;;;;;:13;;;91:40;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;56:82::o;144:65::-;197:5;190:4;;:12;;;;;;;;;;;;;;;;;;144:65;:::o;25:24::-;;;;;;;;;;;;;:::o",
+  "source": "\ncontract Testing {\n\n    bool public fail = false;\n\n    function testTx() public {\n        require(fail == false, 'Tx set to fail');\n    }\n\n    function setFail(bool _fail) public {\n        fail = _fail;\n    }\n}\n",
   "sourcePath": "/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/Testing.sol",
   "ast": {
     "absolutePath": "/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/Testing.sol",
     "exportedSymbols": {
       "Testing": [
-        2271
+        2251
       ]
     },
-    "id": 2272,
+    "id": 2252,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -35,20 +65,20 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 2271,
+        "id": 2251,
         "linearizedBaseContracts": [
-          2271
+          2251
         ],
         "name": "Testing",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 2250,
+            "id": 2229,
             "name": "fail",
             "nodeType": "VariableDeclaration",
-            "scope": 2271,
-            "src": "25:17:9",
+            "scope": 2251,
+            "src": "25:24:9",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -56,7 +86,7 @@
               "typeString": "bool"
             },
             "typeName": {
-              "id": 2248,
+              "id": 2227,
               "name": "bool",
               "nodeType": "ElementaryTypeName",
               "src": "25:4:9",
@@ -68,14 +98,14 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "66616c7365",
-              "id": 2249,
+              "id": 2228,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
               "kind": "bool",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "37:5:9",
+              "src": "44:5:9",
               "subdenomination": null,
               "typeDescriptions": {
                 "typeIdentifier": "t_bool",
@@ -83,252 +113,278 @@
               },
               "value": "false"
             },
-            "visibility": "internal"
+            "visibility": "public"
           },
           {
             "body": {
-              "id": 2269,
+              "id": 2239,
               "nodeType": "Block",
-              "src": "78:153:9",
+              "src": "81:57:9",
               "statements": [
                 {
-                  "condition": {
+                  "expression": {
                     "argumentTypes": null,
-                    "id": 2253,
-                    "name": "fail",
-                    "nodeType": "Identifier",
-                    "overloadedDeclarations": [],
-                    "referencedDeclaration": 2250,
-                    "src": "92:4:9",
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        "id": 2235,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 2233,
+                          "name": "fail",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2229,
+                          "src": "99:4:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "hexValue": "66616c7365",
+                          "id": 2234,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "bool",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "107:5:9",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          },
+                          "value": "false"
+                        },
+                        "src": "99:13:9",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "54782073657420746f206661696c",
+                        "id": 2236,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "114:16:9",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_7f9d67f178d6e0eb39cd7deeba60bc57c26a674519b54ade9d4acdc51ade0bdf",
+                          "typeString": "literal_string \"Tx set to fail\""
+                        },
+                        "value": "Tx set to fail"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_7f9d67f178d6e0eb39cd7deeba60bc57c26a674519b54ade9d4acdc51ade0bdf",
+                          "typeString": "literal_string \"Tx set to fail\""
+                        }
+                      ],
+                      "id": 2232,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        2378,
+                        2379
+                      ],
+                      "referencedDeclaration": 2379,
+                      "src": "91:7:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 2237,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "91:40:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 2238,
+                  "nodeType": "ExpressionStatement",
+                  "src": "91:40:9"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 2240,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "testTx",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2230,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "71:2:9"
+            },
+            "returnParameters": {
+              "id": 2231,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "81:0:9"
+            },
+            "scope": 2251,
+            "src": "56:82:9",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 2249,
+              "nodeType": "Block",
+              "src": "180:29:9",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 2247,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 2245,
+                      "name": "fail",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2229,
+                      "src": "190:4:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 2246,
+                      "name": "_fail",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2242,
+                      "src": "197:5:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "src": "190:12:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "falseBody": {
-                    "id": 2267,
-                    "nodeType": "Block",
-                    "src": "189:36:9",
-                    "statements": [
-                      {
-                        "expression": {
-                          "argumentTypes": null,
-                          "id": 2265,
-                          "isConstant": false,
-                          "isLValue": false,
-                          "isPure": false,
-                          "lValueRequested": false,
-                          "leftHandSide": {
-                            "argumentTypes": null,
-                            "id": 2263,
-                            "name": "fail",
-                            "nodeType": "Identifier",
-                            "overloadedDeclarations": [],
-                            "referencedDeclaration": 2250,
-                            "src": "203:4:9",
-                            "typeDescriptions": {
-                              "typeIdentifier": "t_bool",
-                              "typeString": "bool"
-                            }
-                          },
-                          "nodeType": "Assignment",
-                          "operator": "=",
-                          "rightHandSide": {
-                            "argumentTypes": null,
-                            "hexValue": "74727565",
-                            "id": 2264,
-                            "isConstant": false,
-                            "isLValue": false,
-                            "isPure": true,
-                            "kind": "bool",
-                            "lValueRequested": false,
-                            "nodeType": "Literal",
-                            "src": "210:4:9",
-                            "subdenomination": null,
-                            "typeDescriptions": {
-                              "typeIdentifier": "t_bool",
-                              "typeString": "bool"
-                            },
-                            "value": "true"
-                          },
-                          "src": "203:11:9",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_bool",
-                            "typeString": "bool"
-                          }
-                        },
-                        "id": 2266,
-                        "nodeType": "ExpressionStatement",
-                        "src": "203:11:9"
-                      }
-                    ]
-                  },
-                  "id": 2268,
-                  "nodeType": "IfStatement",
-                  "src": "88:137:9",
-                  "trueBody": {
-                    "id": 2262,
-                    "nodeType": "Block",
-                    "src": "98:77:9",
-                    "statements": [
-                      {
-                        "expression": {
-                          "argumentTypes": null,
-                          "arguments": [
-                            {
-                              "argumentTypes": null,
-                              "hexValue": "4661696c207472616e73616374696f6e",
-                              "id": 2255,
-                              "isConstant": false,
-                              "isLValue": false,
-                              "isPure": true,
-                              "kind": "string",
-                              "lValueRequested": false,
-                              "nodeType": "Literal",
-                              "src": "119:18:9",
-                              "subdenomination": null,
-                              "typeDescriptions": {
-                                "typeIdentifier": "t_stringliteral_2efaf59cdcac4321f8b0d268397eadc45d74050254a02c86b41b1557e7c72fa1",
-                                "typeString": "literal_string \"Fail transaction\""
-                              },
-                              "value": "Fail transaction"
-                            }
-                          ],
-                          "expression": {
-                            "argumentTypes": [
-                              {
-                                "typeIdentifier": "t_stringliteral_2efaf59cdcac4321f8b0d268397eadc45d74050254a02c86b41b1557e7c72fa1",
-                                "typeString": "literal_string \"Fail transaction\""
-                              }
-                            ],
-                            "id": 2254,
-                            "name": "revert",
-                            "nodeType": "Identifier",
-                            "overloadedDeclarations": [
-                              2400,
-                              2401
-                            ],
-                            "referencedDeclaration": 2401,
-                            "src": "112:6:9",
-                            "typeDescriptions": {
-                              "typeIdentifier": "t_function_revert_pure$_t_string_memory_ptr_$returns$__$",
-                              "typeString": "function (string memory) pure"
-                            }
-                          },
-                          "id": 2256,
-                          "isConstant": false,
-                          "isLValue": false,
-                          "isPure": false,
-                          "kind": "functionCall",
-                          "lValueRequested": false,
-                          "names": [],
-                          "nodeType": "FunctionCall",
-                          "src": "112:26:9",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$__$",
-                            "typeString": "tuple()"
-                          }
-                        },
-                        "id": 2257,
-                        "nodeType": "ExpressionStatement",
-                        "src": "112:26:9"
-                      },
-                      {
-                        "expression": {
-                          "argumentTypes": null,
-                          "id": 2260,
-                          "isConstant": false,
-                          "isLValue": false,
-                          "isPure": false,
-                          "lValueRequested": false,
-                          "leftHandSide": {
-                            "argumentTypes": null,
-                            "id": 2258,
-                            "name": "fail",
-                            "nodeType": "Identifier",
-                            "overloadedDeclarations": [],
-                            "referencedDeclaration": 2250,
-                            "src": "152:4:9",
-                            "typeDescriptions": {
-                              "typeIdentifier": "t_bool",
-                              "typeString": "bool"
-                            }
-                          },
-                          "nodeType": "Assignment",
-                          "operator": "=",
-                          "rightHandSide": {
-                            "argumentTypes": null,
-                            "hexValue": "66616c7365",
-                            "id": 2259,
-                            "isConstant": false,
-                            "isLValue": false,
-                            "isPure": true,
-                            "kind": "bool",
-                            "lValueRequested": false,
-                            "nodeType": "Literal",
-                            "src": "159:5:9",
-                            "subdenomination": null,
-                            "typeDescriptions": {
-                              "typeIdentifier": "t_bool",
-                              "typeString": "bool"
-                            },
-                            "value": "false"
-                          },
-                          "src": "152:12:9",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_bool",
-                            "typeString": "bool"
-                          }
-                        },
-                        "id": 2261,
-                        "nodeType": "ExpressionStatement",
-                        "src": "152:12:9"
-                      }
-                    ]
-                  }
+                  "id": 2248,
+                  "nodeType": "ExpressionStatement",
+                  "src": "190:12:9"
                 }
               ]
             },
             "documentation": null,
-            "id": 2270,
+            "id": 2250,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
-            "name": "toggleFail",
+            "name": "setFail",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2251,
+              "id": 2243,
               "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "68:2:9"
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2242,
+                  "name": "_fail",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2250,
+                  "src": "161:10:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2241,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "161:4:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "160:12:9"
             },
             "returnParameters": {
-              "id": 2252,
+              "id": 2244,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "78:0:9"
+              "src": "180:0:9"
             },
-            "scope": 2271,
-            "src": "49:182:9",
+            "scope": 2251,
+            "src": "144:65:9",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 2272,
-        "src": "1:232:9"
+        "scope": 2252,
+        "src": "1:210:9"
       }
     ],
-    "src": "1:232:9"
+    "src": "1:211:9"
   },
   "legacyAST": {
     "absolutePath": "/Users/nicholasaddison/Documents/workspaces/scratch/crypto-beasts/contracts/Testing.sol",
     "exportedSymbols": {
       "Testing": [
-        2271
+        2251
       ]
     },
-    "id": 2272,
+    "id": 2252,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -337,20 +393,20 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 2271,
+        "id": 2251,
         "linearizedBaseContracts": [
-          2271
+          2251
         ],
         "name": "Testing",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 2250,
+            "id": 2229,
             "name": "fail",
             "nodeType": "VariableDeclaration",
-            "scope": 2271,
-            "src": "25:17:9",
+            "scope": 2251,
+            "src": "25:24:9",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -358,7 +414,7 @@
               "typeString": "bool"
             },
             "typeName": {
-              "id": 2248,
+              "id": 2227,
               "name": "bool",
               "nodeType": "ElementaryTypeName",
               "src": "25:4:9",
@@ -370,14 +426,14 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "66616c7365",
-              "id": 2249,
+              "id": 2228,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
               "kind": "bool",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "37:5:9",
+              "src": "44:5:9",
               "subdenomination": null,
               "typeDescriptions": {
                 "typeIdentifier": "t_bool",
@@ -385,243 +441,269 @@
               },
               "value": "false"
             },
-            "visibility": "internal"
+            "visibility": "public"
           },
           {
             "body": {
-              "id": 2269,
+              "id": 2239,
               "nodeType": "Block",
-              "src": "78:153:9",
+              "src": "81:57:9",
               "statements": [
                 {
-                  "condition": {
+                  "expression": {
                     "argumentTypes": null,
-                    "id": 2253,
-                    "name": "fail",
-                    "nodeType": "Identifier",
-                    "overloadedDeclarations": [],
-                    "referencedDeclaration": 2250,
-                    "src": "92:4:9",
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        "id": 2235,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 2233,
+                          "name": "fail",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2229,
+                          "src": "99:4:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "hexValue": "66616c7365",
+                          "id": 2234,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "bool",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "107:5:9",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          },
+                          "value": "false"
+                        },
+                        "src": "99:13:9",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "54782073657420746f206661696c",
+                        "id": 2236,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "114:16:9",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_7f9d67f178d6e0eb39cd7deeba60bc57c26a674519b54ade9d4acdc51ade0bdf",
+                          "typeString": "literal_string \"Tx set to fail\""
+                        },
+                        "value": "Tx set to fail"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_7f9d67f178d6e0eb39cd7deeba60bc57c26a674519b54ade9d4acdc51ade0bdf",
+                          "typeString": "literal_string \"Tx set to fail\""
+                        }
+                      ],
+                      "id": 2232,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        2378,
+                        2379
+                      ],
+                      "referencedDeclaration": 2379,
+                      "src": "91:7:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 2237,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "91:40:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 2238,
+                  "nodeType": "ExpressionStatement",
+                  "src": "91:40:9"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 2240,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "testTx",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2230,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "71:2:9"
+            },
+            "returnParameters": {
+              "id": 2231,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "81:0:9"
+            },
+            "scope": 2251,
+            "src": "56:82:9",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 2249,
+              "nodeType": "Block",
+              "src": "180:29:9",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 2247,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 2245,
+                      "name": "fail",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2229,
+                      "src": "190:4:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 2246,
+                      "name": "_fail",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2242,
+                      "src": "197:5:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "src": "190:12:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "falseBody": {
-                    "id": 2267,
-                    "nodeType": "Block",
-                    "src": "189:36:9",
-                    "statements": [
-                      {
-                        "expression": {
-                          "argumentTypes": null,
-                          "id": 2265,
-                          "isConstant": false,
-                          "isLValue": false,
-                          "isPure": false,
-                          "lValueRequested": false,
-                          "leftHandSide": {
-                            "argumentTypes": null,
-                            "id": 2263,
-                            "name": "fail",
-                            "nodeType": "Identifier",
-                            "overloadedDeclarations": [],
-                            "referencedDeclaration": 2250,
-                            "src": "203:4:9",
-                            "typeDescriptions": {
-                              "typeIdentifier": "t_bool",
-                              "typeString": "bool"
-                            }
-                          },
-                          "nodeType": "Assignment",
-                          "operator": "=",
-                          "rightHandSide": {
-                            "argumentTypes": null,
-                            "hexValue": "74727565",
-                            "id": 2264,
-                            "isConstant": false,
-                            "isLValue": false,
-                            "isPure": true,
-                            "kind": "bool",
-                            "lValueRequested": false,
-                            "nodeType": "Literal",
-                            "src": "210:4:9",
-                            "subdenomination": null,
-                            "typeDescriptions": {
-                              "typeIdentifier": "t_bool",
-                              "typeString": "bool"
-                            },
-                            "value": "true"
-                          },
-                          "src": "203:11:9",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_bool",
-                            "typeString": "bool"
-                          }
-                        },
-                        "id": 2266,
-                        "nodeType": "ExpressionStatement",
-                        "src": "203:11:9"
-                      }
-                    ]
-                  },
-                  "id": 2268,
-                  "nodeType": "IfStatement",
-                  "src": "88:137:9",
-                  "trueBody": {
-                    "id": 2262,
-                    "nodeType": "Block",
-                    "src": "98:77:9",
-                    "statements": [
-                      {
-                        "expression": {
-                          "argumentTypes": null,
-                          "arguments": [
-                            {
-                              "argumentTypes": null,
-                              "hexValue": "4661696c207472616e73616374696f6e",
-                              "id": 2255,
-                              "isConstant": false,
-                              "isLValue": false,
-                              "isPure": true,
-                              "kind": "string",
-                              "lValueRequested": false,
-                              "nodeType": "Literal",
-                              "src": "119:18:9",
-                              "subdenomination": null,
-                              "typeDescriptions": {
-                                "typeIdentifier": "t_stringliteral_2efaf59cdcac4321f8b0d268397eadc45d74050254a02c86b41b1557e7c72fa1",
-                                "typeString": "literal_string \"Fail transaction\""
-                              },
-                              "value": "Fail transaction"
-                            }
-                          ],
-                          "expression": {
-                            "argumentTypes": [
-                              {
-                                "typeIdentifier": "t_stringliteral_2efaf59cdcac4321f8b0d268397eadc45d74050254a02c86b41b1557e7c72fa1",
-                                "typeString": "literal_string \"Fail transaction\""
-                              }
-                            ],
-                            "id": 2254,
-                            "name": "revert",
-                            "nodeType": "Identifier",
-                            "overloadedDeclarations": [
-                              2400,
-                              2401
-                            ],
-                            "referencedDeclaration": 2401,
-                            "src": "112:6:9",
-                            "typeDescriptions": {
-                              "typeIdentifier": "t_function_revert_pure$_t_string_memory_ptr_$returns$__$",
-                              "typeString": "function (string memory) pure"
-                            }
-                          },
-                          "id": 2256,
-                          "isConstant": false,
-                          "isLValue": false,
-                          "isPure": false,
-                          "kind": "functionCall",
-                          "lValueRequested": false,
-                          "names": [],
-                          "nodeType": "FunctionCall",
-                          "src": "112:26:9",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$__$",
-                            "typeString": "tuple()"
-                          }
-                        },
-                        "id": 2257,
-                        "nodeType": "ExpressionStatement",
-                        "src": "112:26:9"
-                      },
-                      {
-                        "expression": {
-                          "argumentTypes": null,
-                          "id": 2260,
-                          "isConstant": false,
-                          "isLValue": false,
-                          "isPure": false,
-                          "lValueRequested": false,
-                          "leftHandSide": {
-                            "argumentTypes": null,
-                            "id": 2258,
-                            "name": "fail",
-                            "nodeType": "Identifier",
-                            "overloadedDeclarations": [],
-                            "referencedDeclaration": 2250,
-                            "src": "152:4:9",
-                            "typeDescriptions": {
-                              "typeIdentifier": "t_bool",
-                              "typeString": "bool"
-                            }
-                          },
-                          "nodeType": "Assignment",
-                          "operator": "=",
-                          "rightHandSide": {
-                            "argumentTypes": null,
-                            "hexValue": "66616c7365",
-                            "id": 2259,
-                            "isConstant": false,
-                            "isLValue": false,
-                            "isPure": true,
-                            "kind": "bool",
-                            "lValueRequested": false,
-                            "nodeType": "Literal",
-                            "src": "159:5:9",
-                            "subdenomination": null,
-                            "typeDescriptions": {
-                              "typeIdentifier": "t_bool",
-                              "typeString": "bool"
-                            },
-                            "value": "false"
-                          },
-                          "src": "152:12:9",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_bool",
-                            "typeString": "bool"
-                          }
-                        },
-                        "id": 2261,
-                        "nodeType": "ExpressionStatement",
-                        "src": "152:12:9"
-                      }
-                    ]
-                  }
+                  "id": 2248,
+                  "nodeType": "ExpressionStatement",
+                  "src": "190:12:9"
                 }
               ]
             },
             "documentation": null,
-            "id": 2270,
+            "id": 2250,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
-            "name": "toggleFail",
+            "name": "setFail",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2251,
+              "id": 2243,
               "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "68:2:9"
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2242,
+                  "name": "_fail",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2250,
+                  "src": "161:10:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2241,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "161:4:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "160:12:9"
             },
             "returnParameters": {
-              "id": 2252,
+              "id": 2244,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "78:0:9"
+              "src": "180:0:9"
             },
-            "scope": 2271,
-            "src": "49:182:9",
+            "scope": 2251,
+            "src": "144:65:9",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 2272,
-        "src": "1:232:9"
+        "scope": 2252,
+        "src": "1:210:9"
       }
     ],
-    "src": "1:232:9"
+    "src": "1:211:9"
   },
   "compiler": {
     "name": "solc",
@@ -631,12 +713,18 @@
     "13654820909954": {
       "events": {},
       "links": {},
-      "address": "0x78d90DB1C837b32474e06eDc80709Ee6652E4a6e",
-      "transactionHash": "0x4f00a5103a09c0d518544f177f39f74aafa41477e7a76c49ac4b0b12e365ed08"
+      "address": "0xE1F1d73DFb53faFB1aEDf61AAd25975b36d0987F",
+      "transactionHash": "0x546d8491b79f0146e0dccbe5f95c4a4223819f276b3723c8b2278b2dd19b7a68"
+    },
+    "10138269186315": {
+      "events": {},
+      "links": {},
+      "address": "0x03011380363a57baf785fB4cE33739789cc28b44",
+      "transactionHash": "0x064e7221464c704be593f81f72b13e671e34c0a57fffec3ec32a6520850aeb19"
     }
   },
   "schemaVersion": "3.0.6",
-  "updatedAt": "2019-04-20T20:08:25.326Z",
+  "updatedAt": "2019-04-22T04:27:53.701Z",
   "devdoc": {
     "methods": {}
   },
